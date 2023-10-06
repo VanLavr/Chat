@@ -1,7 +1,7 @@
 package main
 
 import (
-	"chat/internal/service/migrations/schema"
+	"chat/internal/repository/migrations/schema"
 )
 
 func main() {

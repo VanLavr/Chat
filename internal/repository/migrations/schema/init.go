@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"chat/internal/service/models"
+	"chat/internal/repository/models"
 	"chat/pkg/config"
 	"log"
 
