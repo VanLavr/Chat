@@ -1,0 +1,9 @@
+run:
+	go mod tidy
+	go run ./cmd/app/main.go
+
+build_linux:
+	go build -o ./bin/main ./cmd/app/main.go
+
+build_windows:
+	GOOS=windows GOARCH=amd64 go build -o ./bin/main_win ./cmd/app/main.go
