@@ -1,6 +1,8 @@
 package main
 
-import "chat/internal/service/migrations/schema"
+import (
+	"chat/internal/service/migrations/schema"
+)
 
 func main() {
 	var initer = new(schema.Database)
