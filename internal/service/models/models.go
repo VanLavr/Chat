@@ -9,8 +9,9 @@ type User struct {
 }
 
 type ChatRoom struct {
-	ID   int `gorm:"primarykey"`
-	Name string
+	ID       int `gorm:"primarykey"`
+	Name     string
+	Password string
 }
 
 type Message struct {
@@ -18,4 +19,9 @@ type Message struct {
 	UserID     int `gorm:"foreignkey"`
 	ChatRoomID int `gorm:"foreignkey"`
 	Content    string
+}
+
+type UserChat struct {
+	UserID     int `gorm:"foreignkey"`
+	ChatRoomID int `gorm:"foreignkey"`
 }
