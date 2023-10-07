@@ -9,32 +9,37 @@ import (
 	"gorm.io/gorm"
 )
 
-type Database struct {
+type Storage struct {
 	Postrgres *gorm.DB
 }
 
-func (d Database) MigrateAll() {
+func NewStorage() *Storage {
+	s := new(Storage)
 	dsn := config.Con.GetPostgres()
 
 	var err error
-	d.Postrgres, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	s.Postrgres, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = d.Postrgres.Migrator().AutoMigrate(&models.User{})
+	return s
+}
+
+func (a Storage) MigrateAll() {
+	err := a.Postrgres.Migrator().AutoMigrate(&models.User{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = d.Postrgres.Migrator().AutoMigrate(&models.ChatRoom{})
+	err = a.Postrgres.Migrator().AutoMigrate(&models.Chatroom{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = d.Postrgres.Migrator().AutoMigrate(&models.Message{})
+	err = a.Postrgres.Migrator().AutoMigrate(&models.Message{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = d.Postrgres.Migrator().AutoMigrate(&UserChat{})
+	err = a.Postrgres.Migrator().AutoMigrate(&UserChat{})
 	if err != nil {
 		log.Fatal(err)
 	}
