@@ -10,7 +10,7 @@ type UserRepository interface {
 	Fetch(limit int) ([]User, error)
 	FetchOne(id int) (User, error)
 	FetchFewCertain(id ...int) ([]User, error)
-	Store(*User) error
-	Update(m *User) error
+	Store(user *User) error
+	Update(user *User) error
 	Delete(id int) error
 }

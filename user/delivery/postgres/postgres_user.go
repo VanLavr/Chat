@@ -29,3 +29,50 @@ func (u *UserRepository) Fetch(limit int) ([]models.User, error) {
 
 	return result, nil
 }
+
+func (u *UserRepository) FetchOne(id int) (models.User, error) {
+	var result models.User
+	tx := u.db.Postrgres.First(&result, id)
+	if tx.Error != nil {
+		return models.User{}, tx.Error
+	}
+
+	return result, nil
+}
+
+func (u *UserRepository) FetchFewCertain(id ...int) ([]models.User, error) {
+	var result []models.User
+	tx := u.db.Postrgres.Find(&result, id)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return result, nil
+}
+
+func (u *UserRepository) Store(user *models.User) error {
+	tx := u.db.Postrgres.Save(user)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
+
+func (u *UserRepository) Update(user *models.User) error {
+	tx := u.db.Postrgres.Save(user)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
+
+func (u *UserRepository) Delete(id int) error {
+	tx := u.db.Postrgres.Delete(&models.User{ID: id})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
