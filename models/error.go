@@ -13,4 +13,6 @@ var (
 	ErrBadParamInput = errors.New("given Param is not valid")
 	// ErrUnauthorized will throw if the user is unauthorized
 	ErrUnauthorized = errors.New("unauthorized")
+	// ErrUserAlreadyInChat will throw if the user already entered this chatroom
+	ErrUserAlreadyInChat = errors.New("user already entered this chatroom")
 )

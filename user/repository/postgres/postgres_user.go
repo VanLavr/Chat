@@ -3,6 +3,8 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
@@ -70,6 +72,34 @@ func (u *UserRepository) Update(user *models.User) error {
 
 func (u *UserRepository) Delete(id int) error {
 	tx := u.db.Postrgres.Delete(&models.User{ID: id})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
+
+func (u *UserRepository) BeforeAddUserToChatroom(tx *gorm.DB) (err error) {
+	res := u.db.Postrgres.Find(tx)
+	if res.RowsAffected != 0 {
+		return models.ErrUserAlreadyInChat
+	}
+
+	return nil
+}
+
+func (u *UserRepository) AddUserToChatroom(uid, chatId int) error {
+	tx := u.db.Postrgres.Save(&schema.UserChat{UserID: uid, ChatroomID: chatId})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
+
+// Raw(fmt.Sprintf("delete from user_chats where user_id = %d and chatroom_id = %d", uid, chatId))
+func (u *UserRepository) RemoveUserFromChatroom(uid, chatId int) error {
+	tx := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Delete(&schema.UserChat{})
 	if tx.Error != nil {
 		return tx.Error
 	}
