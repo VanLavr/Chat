@@ -1,9 +1,12 @@
 package models
 
+import "time"
+
 type Message struct {
 	ID         int `gorm:"primarykey"`
 	UserChatID int `gorm:"foreignkey"`
 	Content    string
+	Sended     time.Time
 }
 
 type MessageRepository interface {

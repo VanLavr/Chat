@@ -1,15 +1,15 @@
 package models
 
-type ChatRoom struct {
+type Chatroom struct {
 	ID       int `gorm:"primarykey"`
 	Name     string
 	Password string
 }
 
 type ChatroomRepository interface {
-	Fetch(limit int) ([]ChatRoom, error)
-	FetchOne(id int) (ChatRoom, error)
-	Store(*ChatRoom) error
-	Update(c *ChatRoom) error
+	Fetch(limit int) ([]Chatroom, error)
+	FetchOne(id int) (Chatroom, error)
+	Store(*Chatroom) error
+	Update(c *Chatroom) error
 	Delete(id int) error
 }
