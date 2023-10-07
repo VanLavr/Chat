@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"chat/internal/repository/models"
+	"chat/models"
 	"chat/pkg/config"
 	"log"
 
@@ -34,7 +34,7 @@ func (d Database) MigrateAll() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = d.Postrgres.Migrator().AutoMigrate(&models.UserChat{})
+	err = d.Postrgres.Migrator().AutoMigrate(&UserChat{})
 	if err != nil {
 		log.Fatal(err)
 	}
