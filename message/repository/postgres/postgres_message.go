@@ -50,7 +50,7 @@ func (m *MessageRepository) Store(Message *models.Message) error {
 }
 
 func (m *MessageRepository) Update(Message *models.Message) error {
-	if err := m.BeforeUpdate(Message); err != nil {
+	if err := m.beforeUpdate(Message); err != nil {
 		return err
 	}
 

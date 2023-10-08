@@ -60,7 +60,7 @@ func (u *UserRepository) Store(user *models.User) error {
 }
 
 func (u *UserRepository) Update(user *models.User) error {
-	if err := u.BeforeUpdate(user); err != nil {
+	if err := u.beforeUpdate(user); err != nil {
 		return err
 	}
 
@@ -82,7 +82,7 @@ func (u *UserRepository) Delete(id int) error {
 }
 
 func (u *UserRepository) AddUserToChatroom(uid, chatId int) error {
-	if err := u.BeforeAddUserToChatroom(uid, chatId); err != nil {
+	if err := u.beforeAddUserToChatroom(uid, chatId); err != nil {
 		return err
 	}
 

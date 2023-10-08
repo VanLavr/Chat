@@ -46,7 +46,7 @@ func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
 }
 
 func (c *ChatroomRepository) Update(Chatroom *models.Chatroom) error {
-	if err := c.BeforeUpdate(Chatroom); err != nil {
+	if err := c.beforeUpdate(Chatroom); err != nil {
 		return err
 	}
 
