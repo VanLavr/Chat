@@ -12,3 +12,4 @@ test:
 	echo "REPO:PG"
 	go test ./user/repository/postgres/
 	go test ./chatroom/repository/postgres/
+	go test ./message/repository/postgres/

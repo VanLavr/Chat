@@ -1,7 +1,7 @@
 package schema
 
 type UserChat struct {
-	UserID     int `gorm:"foreignkey"`
-	ChatroomID int `gorm:"foreignkey"`
+	UserID     int
+	ChatroomID int
 	ID         int `gorm:"primarykey"`
 }

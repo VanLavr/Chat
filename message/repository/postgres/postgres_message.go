@@ -41,6 +41,9 @@ func (m *MessageRepository) FetchOne(id int) (models.Message, error) {
 }
 
 func (m *MessageRepository) Store(Message *models.Message) error {
+	if err := m.beforeCreate(Message); err != nil {
+		return err
+	}
 	tx := m.db.Postrgres.Save(Message)
 	if tx.Error != nil {
 		return tx.Error
@@ -63,6 +66,9 @@ func (m *MessageRepository) Update(Message *models.Message) error {
 }
 
 func (m *MessageRepository) Delete(id int) error {
+	if err := m.beforeDelete(id); err != nil {
+		return err
+	}
 	tx := m.db.Postrgres.Delete(&models.Message{ID: id})
 	if tx.Error != nil {
 		return tx.Error

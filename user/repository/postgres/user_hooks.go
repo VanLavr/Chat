@@ -6,6 +6,14 @@ import (
 )
 
 func (u *UserRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
+	var user models.User
+	var chat models.Chatroom
+	u.db.Postrgres.Where("id = ?", uid).Find(&user)
+	u.db.Postrgres.Where("id = ?", chatId).Find(&chat)
+	if user.ID == 0 || chat.ID == 0 {
+		return models.ErrNotFound
+	}
+
 	res := u.db.Postrgres.Find(&schema.UserChat{UserID: uid, ChatroomID: chatId})
 	if res.RowsAffected != 0 {
 		return models.ErrUserAlreadyInChat
