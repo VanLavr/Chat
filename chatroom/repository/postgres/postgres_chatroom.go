@@ -42,8 +42,6 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 }
 
 func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
-	log.Println("CHATROOM ADDED")
-
 	if err := c.beforeCreate(Chatroom); err != nil {
 		return err
 	}
