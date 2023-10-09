@@ -14,9 +14,7 @@ type Configurator struct {
 
 func NewConfigurator() *Configurator {
 	v := viper.New()
-	v.SetConfigName("app")
-	v.SetConfigType("env")
-	v.AddConfigPath("./")
+	v.SetConfigFile("./app.env")
 	err := v.ReadInConfig()
 	if err != nil {
 		log.Fatal(err.Error())

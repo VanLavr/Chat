@@ -15,4 +15,8 @@ var (
 	ErrUnauthorized = errors.New("unauthorized")
 	// ErrUserAlreadyInChat will throw if the user already entered this chatroom
 	ErrUserAlreadyInChat = errors.New("user already entered this chatroom")
+	// ErrEmptyFields will throw when trying ti create a user without name or password
+	ErrEmptyFields = errors.New("can not create user without name or password")
+	// ErrAlreadyExists will throw if entity with such params already exists
+	ErrAlreadyExists = errors.New("such entity already exists")
 )

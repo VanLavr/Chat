@@ -51,6 +51,10 @@ func (u *UserRepository) FetchFewCertain(id ...int) ([]models.User, error) {
 }
 
 func (u *UserRepository) Store(user *models.User) error {
+	if err := u.beforeCreate(user); err != nil {
+		return err
+	}
+
 	tx := u.db.Postrgres.Save(user)
 	if tx.Error != nil {
 		return tx.Error
@@ -73,7 +77,11 @@ func (u *UserRepository) Update(user *models.User) error {
 }
 
 func (u *UserRepository) Delete(id int) error {
-	tx := u.db.Postrgres.Delete(&models.User{ID: id})
+	if err := u.beforeDelete(id); err != nil {
+		return err
+	}
+
+	tx := u.db.Postrgres.Delete(&models.User{}, id)
 	if tx.Error != nil {
 		return tx.Error
 	}

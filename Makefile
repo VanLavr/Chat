@@ -8,5 +8,6 @@ build_linux:
 build_windows:
 	GOOS=windows GOARCH=amd64 go build -o ./bin/main_win ./cmd/app/main.go
 
-test_repo_pg_user:
+test:
+	echo "REPO:PG"
 	go test ./user/repository/postgres/
