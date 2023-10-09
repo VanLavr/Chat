@@ -12,5 +12,6 @@ type UpdateUserDTO struct {
 }
 
 type DeleteUserDTO struct {
-	ID int `json:"id"`
+	ID      int `json:"id"`
+	Deleter int `json:"deleter_id"`
 }
