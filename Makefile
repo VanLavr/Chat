@@ -10,6 +10,6 @@ build_windows:
 
 test:
 	echo "REPO:PG"
-	go test ./user/repository/postgres/
-	go test ./chatroom/repository/postgres/
-	go test ./message/repository/postgres/
+	go test ./internal/user/repository/postgres/
+	go test ./internal/chatroom/repository/postgres/
+	go test ./internal/message/repository/postgres/
