@@ -3,10 +3,15 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"log"
 )
 
 type ChatroomRepository struct {
 	db *schema.Storage
+}
+
+func NewChatroomRepository(db *schema.Storage) *ChatroomRepository {
+	return &ChatroomRepository{db: db}
 }
 
 func (c *ChatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
@@ -37,10 +42,18 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 }
 
 func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
+	log.Println("CHATROOM ADDED")
+
+	if err := c.beforeCreate(Chatroom); err != nil {
+		return err
+	}
+
 	tx := c.db.Postrgres.Save(Chatroom)
 	if tx.Error != nil {
 		return tx.Error
 	}
+
+	log.Println("CHATROOM ADDED")
 
 	return nil
 }
@@ -59,6 +72,10 @@ func (c *ChatroomRepository) Update(Chatroom *models.Chatroom) error {
 }
 
 func (c *ChatroomRepository) Delete(id int) error {
+	if err := c.beforeDelete(id); err != nil {
+		return err
+	}
+
 	tx := c.db.Postrgres.Delete(&models.Chatroom{ID: id})
 	if tx.Error != nil {
 		return tx.Error

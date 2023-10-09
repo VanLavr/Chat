@@ -52,7 +52,7 @@ func (u *UserRepository) beforeCreate(user *models.User) error {
 	}
 
 	var result models.User
-	tx := u.db.Postrgres.Where(&models.User{Name: user.Name}).Find(&result)
+	tx := u.db.Postrgres.Where("name = ?", user.Name).Find(&result)
 	if tx.Error != nil {
 		return tx.Error
 	}
