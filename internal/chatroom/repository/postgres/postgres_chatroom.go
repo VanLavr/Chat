@@ -3,7 +3,6 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
-	"log"
 )
 
 type ChatroomRepository struct {
@@ -51,8 +50,6 @@ func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
 		return tx.Error
 	}
 
-	log.Println("CHATROOM ADDED")
-
 	return nil
 }
 
@@ -69,8 +66,8 @@ func (c *ChatroomRepository) Update(Chatroom *models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) Delete(id int) error {
-	if err := c.beforeDelete(id); err != nil {
+func (c *ChatroomRepository) Delete(deleter, id int) error {
+	if err := c.beforeDelete(deleter, id); err != nil {
 		return err
 	}
 

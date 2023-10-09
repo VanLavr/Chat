@@ -1,9 +1,10 @@
 package models
 
 type Chatroom struct {
-	ID       int `gorm:"primarykey"`
-	Name     string
-	Password string
+	ID        int `gorm:"primarykey"`
+	Name      string
+	Password  string
+	CreatorID int
 }
 
 type ChatroomRepository interface {

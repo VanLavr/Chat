@@ -51,7 +51,7 @@ func TestDelete(t *testing.T) {
 	ur := NewChatroomRepository(schema.NewStorage())
 
 	// test with unexisting Chatroom
-	if err := ur.Delete(0); err != models.ErrNotFound {
+	if err := ur.Delete(1, 0); err != models.ErrNotFound {
 		t.Fail()
 	} else {
 		log.Println(err.Error())

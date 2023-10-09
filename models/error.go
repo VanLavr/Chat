@@ -19,4 +19,6 @@ var (
 	ErrEmptyFields = errors.New("can not create user without name or password")
 	// ErrAlreadyExists will throw if entity with such params already exists
 	ErrAlreadyExists = errors.New("such entity already exists")
+	// ErrPermisionDenied will throw if user has no admin rights
+	ErrPermisionDenied = errors.New("permisson denied")
 )

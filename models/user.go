@@ -1,9 +1,11 @@
 package models
 
 type User struct {
-	ID       int `gorm:"primarykey"`
-	Name     string
-	Password string
+	ID         int `gorm:"primarykey"`
+	Name       string
+	Password   string
+	IsAdmin    bool `gorm:"default:false"`
+	RoomsOwned int
 }
 
 type UserRepository interface {
