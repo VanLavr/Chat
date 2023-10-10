@@ -54,7 +54,7 @@ func (u *userRepository) FetchFewCertain(id ...int) ([]models.User, error) {
 	return result, nil
 }
 
-func (u *userRepository) Store(user *models.User) error {
+func (u *userRepository) Store(user models.User) error {
 	if err := u.beforeCreate(user); err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (u *userRepository) Store(user *models.User) error {
 	return nil
 }
 
-func (u *userRepository) Update(user *models.User) error {
+func (u *userRepository) Update(user models.User) error {
 	if err := u.beforeUpdate(user); err != nil {
 		return err
 	}

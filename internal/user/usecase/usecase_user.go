@@ -59,7 +59,7 @@ func (u *usecase) LeaveChat(uid, chatroomID int) error {
 }
 
 func (u *usecase) CreateUser(user models.User) error {
-	if err := u.repo.Store(&user); err != nil {
+	if err := u.repo.Store(user); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err
 		} else {
@@ -70,8 +70,8 @@ func (u *usecase) CreateUser(user models.User) error {
 	return nil
 }
 
-func (u *usecase) DeleteUser(user models.User) error {
-	if err := u.repo.Delete(user.ID); err != nil {
+func (u *usecase) DeleteUser(id int) error {
+	if err := u.repo.Delete(id); err != nil {
 		if errors.Is(err, models.ErrNotFound) {
 			return err
 		}
@@ -81,7 +81,7 @@ func (u *usecase) DeleteUser(user models.User) error {
 }
 
 func (u *usecase) UpdateUser(user models.User) error {
-	if err := u.repo.Update(&user); err != nil {
+	if err := u.repo.Update(user); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return err
 		}

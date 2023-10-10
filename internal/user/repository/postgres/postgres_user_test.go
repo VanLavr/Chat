@@ -11,15 +11,15 @@ func TestCreate(t *testing.T) {
 	ur := NewUserRepository(schema.NewStorage())
 
 	// test with unexisting user (empty fields)
-	if err := ur.Store(&models.User{}); err == nil {
+	if err := ur.Store(models.User{}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
 	}
 
 	// test with existing user
-	ur.Store(&models.User{Name: "BOBBY", Password: "123"})
-	if err := ur.Store(&models.User{Name: "BOBBY", Password: "123"}); err == nil {
+	ur.Store(models.User{Name: "BOBBY", Password: "123"})
+	if err := ur.Store(models.User{Name: "BOBBY", Password: "123"}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
@@ -30,7 +30,7 @@ func TestUpdate(t *testing.T) {
 	ur := NewUserRepository(schema.NewStorage())
 
 	// test with unexisting user
-	if err := ur.Update(&models.User{ID: 0, Name: "dfks", Password: "jkdf"}); err != models.ErrNotFound {
+	if err := ur.Update(models.User{ID: 0, Name: "dfks", Password: "jkdf"}); err != models.ErrNotFound {
 		t.Fail()
 		log.Println(err, "OHO")
 	} else {
@@ -38,7 +38,7 @@ func TestUpdate(t *testing.T) {
 	}
 
 	// test with unexisting user (empty fields)
-	if err := ur.Update(&models.User{}); err == nil {
+	if err := ur.Update(models.User{}); err == nil {
 		t.Fail()
 		log.Println(err)
 	} else {

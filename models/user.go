@@ -14,8 +14,8 @@ type UserRepository interface {
 	FetchFewCertain(id ...int) ([]User, error)
 	AddUserToChatroom(uid, chatId int) error
 	RemoveUserFromChatroom(uid, chatId int) error
-	Store(user *User) error
-	Update(user *User) error
+	Store(user User) error
+	Update(user User) error
 	Delete(id int) error
 }
 
@@ -25,6 +25,6 @@ type UserUsecase interface {
 	EnterChat(uid, chatroomID int) error
 	LeaveChat(uid, chatroomID int) error
 	CreateUser(user User) error
-	DeleteUser(user User) error
 	UpdateUser(user User) error
+	DeleteUser(id int) error
 }

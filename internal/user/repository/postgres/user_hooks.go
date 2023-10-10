@@ -22,13 +22,13 @@ func (u *userRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
 	return nil
 }
 
-func (u *userRepository) beforeUpdate(user *models.User) error {
+func (u *userRepository) beforeUpdate(user models.User) error {
 	if user.Name == "" || user.Password == "" {
 		return models.ErrEmptyFields
 	}
 
 	var result models.User
-	tx := u.db.Postrgres.Where(user.ID).Find(&result)
+	tx := u.db.Postrgres.Where("id = ?", user.ID).Find(&result)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -42,7 +42,7 @@ func (u *userRepository) beforeUpdate(user *models.User) error {
 
 func (u *userRepository) beforeDelete(id int) error {
 	var result models.User
-	tx := u.db.Postrgres.Where(id).Find(&result)
+	tx := u.db.Postrgres.Where("id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -54,7 +54,7 @@ func (u *userRepository) beforeDelete(id int) error {
 	return nil
 }
 
-func (u *userRepository) beforeCreate(user *models.User) error {
+func (u *userRepository) beforeCreate(user models.User) error {
 	if user.Name == "" || user.Password == "" {
 		return models.ErrEmptyFields
 	}
