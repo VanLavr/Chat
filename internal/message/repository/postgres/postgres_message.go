@@ -89,7 +89,7 @@ func (m *MessageRepository) FetchByUserID(limit, id int) ([]models.Message, erro
 
 func (m *MessageRepository) FetchByChatroomID(limit, id int) ([]models.Message, error) {
 	var result []models.Message
-	tx := m.db.Postrgres.Where(&models.Message{ChatroomID: id})
+	tx := m.db.Postrgres.Where("id = ?", &models.Message{ChatroomID: id}).Find(&result)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

@@ -5,7 +5,7 @@ import (
 	"chat/models"
 )
 
-func (u *UserRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
+func (u *userRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
 	var user models.User
 	var chat models.Chatroom
 	u.db.Postrgres.Where("id = ?", uid).Find(&user)
@@ -22,7 +22,7 @@ func (u *UserRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
 	return nil
 }
 
-func (u *UserRepository) beforeUpdate(user *models.User) error {
+func (u *userRepository) beforeUpdate(user *models.User) error {
 	if user.Name == "" || user.Password == "" {
 		return models.ErrEmptyFields
 	}
@@ -40,7 +40,7 @@ func (u *UserRepository) beforeUpdate(user *models.User) error {
 	return nil
 }
 
-func (u *UserRepository) beforeDelete(id int) error {
+func (u *userRepository) beforeDelete(id int) error {
 	var result models.User
 	tx := u.db.Postrgres.Where(id).Find(&result)
 	if tx.Error != nil {
@@ -54,7 +54,7 @@ func (u *UserRepository) beforeDelete(id int) error {
 	return nil
 }
 
-func (u *UserRepository) beforeCreate(user *models.User) error {
+func (u *userRepository) beforeCreate(user *models.User) error {
 	if user.Name == "" || user.Password == "" {
 		return models.ErrEmptyFields
 	}

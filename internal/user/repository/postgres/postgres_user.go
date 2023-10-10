@@ -5,15 +5,15 @@ import (
 	"chat/models"
 )
 
-type UserRepository struct {
+type userRepository struct {
 	db *schema.Storage
 }
 
-func NewUserRepository(db *schema.Storage) *UserRepository {
-	return &UserRepository{db: db}
+func NewUserRepository(db *schema.Storage) models.UserRepository {
+	return &userRepository{db: db}
 }
 
-func (u *UserRepository) Fetch(limit int) ([]models.User, error) {
+func (u *userRepository) Fetch(limit int) ([]models.User, error) {
 	var result []models.User
 	if limit == 0 {
 		tx := u.db.Postrgres.Find(&result)
@@ -30,17 +30,21 @@ func (u *UserRepository) Fetch(limit int) ([]models.User, error) {
 	return result, nil
 }
 
-func (u *UserRepository) FetchOne(id int) (models.User, error) {
+func (u *userRepository) FetchOne(id int) (models.User, error) {
 	var result models.User
 	tx := u.db.Postrgres.First(&result, id)
 	if tx.Error != nil {
 		return models.User{}, tx.Error
 	}
 
+	if result.ID == 0 {
+		return models.User{}, models.ErrNotFound
+	}
+
 	return result, nil
 }
 
-func (u *UserRepository) FetchFewCertain(id ...int) ([]models.User, error) {
+func (u *userRepository) FetchFewCertain(id ...int) ([]models.User, error) {
 	var result []models.User
 	tx := u.db.Postrgres.Find(&result, id)
 	if tx.Error != nil {
@@ -50,7 +54,7 @@ func (u *UserRepository) FetchFewCertain(id ...int) ([]models.User, error) {
 	return result, nil
 }
 
-func (u *UserRepository) Store(user *models.User) error {
+func (u *userRepository) Store(user *models.User) error {
 	if err := u.beforeCreate(user); err != nil {
 		return err
 	}
@@ -63,7 +67,7 @@ func (u *UserRepository) Store(user *models.User) error {
 	return nil
 }
 
-func (u *UserRepository) Update(user *models.User) error {
+func (u *userRepository) Update(user *models.User) error {
 	if err := u.beforeUpdate(user); err != nil {
 		return err
 	}
@@ -76,7 +80,7 @@ func (u *UserRepository) Update(user *models.User) error {
 	return nil
 }
 
-func (u *UserRepository) Delete(id int) error {
+func (u *userRepository) Delete(id int) error {
 	if err := u.beforeDelete(id); err != nil {
 		return err
 	}
@@ -89,7 +93,7 @@ func (u *UserRepository) Delete(id int) error {
 	return nil
 }
 
-func (u *UserRepository) AddUserToChatroom(uid, chatId int) error {
+func (u *userRepository) AddUserToChatroom(uid, chatId int) error {
 	if err := u.beforeAddUserToChatroom(uid, chatId); err != nil {
 		return err
 	}
@@ -103,7 +107,7 @@ func (u *UserRepository) AddUserToChatroom(uid, chatId int) error {
 }
 
 // Raw(fmt.Sprintf("delete from user_chats where user_id = %d and chatroom_id = %d", uid, chatId))
-func (u *UserRepository) RemoveUserFromChatroom(uid, chatId int) error {
+func (u *userRepository) RemoveUserFromChatroom(uid, chatId int) error {
 	tx := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Delete(&schema.UserChat{})
 	if tx.Error != nil {
 		return tx.Error

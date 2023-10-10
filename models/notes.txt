@@ -1,4 +1,4 @@
-DAO (data access objects here)
+DAO (data access objects here) integrated whith DTO (data transfer object)
 
 user.go:
 

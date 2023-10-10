@@ -1,0 +1,91 @@
+package usecase
+
+import (
+	"chat/models"
+	"errors"
+	"log"
+)
+
+type usecase struct {
+	repo models.UserRepository
+}
+
+func NewUsecase(repo models.UserRepository) models.UserUsecase {
+	return &usecase{
+		repo: repo,
+	}
+}
+
+func (u *usecase) GetById(uid int) (models.User, error) {
+	user, err := u.repo.FetchOne(uid)
+	if err != nil {
+		if errors.Is(err, models.ErrNotFound) {
+			return models.User{}, err
+		} else {
+			log.Fatal(err)
+		}
+	}
+
+	return user, nil
+}
+
+func (u *usecase) GetUsers(limit int) ([]models.User, error) {
+	users, err := u.repo.Fetch(limit)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return users, nil
+}
+
+func (u *usecase) EnterChat(uid, chatroomID int) error {
+	if err := u.repo.AddUserToChatroom(uid, chatroomID); err != nil {
+		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat) {
+			return err
+		} else {
+			log.Fatal(err)
+		}
+	}
+
+	return nil
+}
+
+func (u *usecase) LeaveChat(uid, chatroomID int) error {
+	if err := u.repo.RemoveUserFromChatroom(uid, chatroomID); err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
+}
+
+func (u *usecase) CreateUser(user models.User) error {
+	if err := u.repo.Store(&user); err != nil {
+		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
+			return err
+		} else {
+			log.Fatal(err)
+		}
+	}
+
+	return nil
+}
+
+func (u *usecase) DeleteUser(user models.User) error {
+	if err := u.repo.Delete(user.ID); err != nil {
+		if errors.Is(err, models.ErrNotFound) {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (u *usecase) UpdateUser(user models.User) error {
+	if err := u.repo.Update(&user); err != nil {
+		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
+			return err
+		}
+	}
+
+	return nil
+}

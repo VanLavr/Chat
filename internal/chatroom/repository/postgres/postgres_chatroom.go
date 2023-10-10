@@ -37,6 +37,10 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 		return models.Chatroom{}, tx.Error
 	}
 
+	if result.ID == 0 {
+		return models.Chatroom{}, models.ErrNotFound
+	}
+
 	return result, nil
 }
 
