@@ -32,7 +32,7 @@ func (u *userRepository) Fetch(limit int) ([]models.User, error) {
 
 func (u *userRepository) FetchOne(id int) (models.User, error) {
 	var result models.User
-	tx := u.db.Postrgres.First(&result, id)
+	tx := u.db.Postrgres.Where("id = ?", id).First(&result)
 	if tx.Error != nil {
 		return models.User{}, tx.Error
 	}
@@ -59,7 +59,7 @@ func (u *userRepository) Store(user models.User) error {
 		return err
 	}
 
-	tx := u.db.Postrgres.Save(user)
+	tx := u.db.Postrgres.Save(&user)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -72,7 +72,7 @@ func (u *userRepository) Update(user models.User) error {
 		return err
 	}
 
-	tx := u.db.Postrgres.Save(user)
+	tx := u.db.Postrgres.Save(&user)
 	if tx.Error != nil {
 		return tx.Error
 	}

@@ -11,7 +11,7 @@ func TestCreate(t *testing.T) {
 	ur := NewMessageRepository(schema.NewStorage())
 
 	// test with unexisting Message (empty fields)
-	if err := ur.Store(&models.Message{}); err == nil {
+	if err := ur.Store(models.Message{}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
@@ -19,8 +19,8 @@ func TestCreate(t *testing.T) {
 
 	// test with existing Message
 	print("Message ADDED")
-	ur.Store(&models.Message{Content: "test", UserID: 11, ChatroomID: 2})
-	if err := ur.Store(&models.Message{Content: "test", UserID: 11, ChatroomID: 2}); err == nil {
+	ur.Store(models.Message{Content: "test", UserID: 11, ChatroomID: 2})
+	if err := ur.Store(models.Message{Content: "test", UserID: 11, ChatroomID: 2}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
@@ -31,7 +31,7 @@ func TestUpdate(t *testing.T) {
 	ur := NewMessageRepository(schema.NewStorage())
 
 	// test with unexisting Message
-	if err := ur.Update(&models.Message{ID: 0, Content: "hdjsgfdjtest", UserID: 11, ChatroomID: 2}); err != models.ErrNotFound {
+	if err := ur.Update(models.Message{ID: 0, Content: "hdjsgfdjtest", UserID: 11, ChatroomID: 2}); err != models.ErrNotFound {
 		t.Fail()
 		log.Println(err, "OHO")
 	} else {
@@ -39,7 +39,7 @@ func TestUpdate(t *testing.T) {
 	}
 
 	// test with unexisting Message (empty fields)
-	if err := ur.Update(&models.Message{}); err == nil {
+	if err := ur.Update(models.Message{}); err == nil {
 		t.Fail()
 		log.Println(err)
 	} else {

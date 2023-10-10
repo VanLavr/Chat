@@ -32,7 +32,7 @@ func (m *MessageRepository) Fetch(limit int) ([]models.Message, error) {
 
 func (m *MessageRepository) FetchOne(id int) (models.Message, error) {
 	var result models.Message
-	tx := m.db.Postrgres.First(&result, id)
+	tx := m.db.Postrgres.Where("id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return models.Message{}, tx.Error
 	}
@@ -40,11 +40,11 @@ func (m *MessageRepository) FetchOne(id int) (models.Message, error) {
 	return result, nil
 }
 
-func (m *MessageRepository) Store(Message *models.Message) error {
+func (m *MessageRepository) Store(Message models.Message) error {
 	if err := m.beforeCreate(Message); err != nil {
 		return err
 	}
-	tx := m.db.Postrgres.Save(Message)
+	tx := m.db.Postrgres.Save(&Message)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -52,12 +52,12 @@ func (m *MessageRepository) Store(Message *models.Message) error {
 	return nil
 }
 
-func (m *MessageRepository) Update(Message *models.Message) error {
+func (m *MessageRepository) Update(Message models.Message) error {
 	if err := m.beforeUpdate(Message); err != nil {
 		return err
 	}
 
-	tx := m.db.Postrgres.Save(Message)
+	tx := m.db.Postrgres.Save(&Message)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -79,7 +79,7 @@ func (m *MessageRepository) Delete(id int) error {
 
 func (m *MessageRepository) FetchByUserID(limit, id int) ([]models.Message, error) {
 	var result []models.Message
-	tx := m.db.Postrgres.Where(&models.Message{UserID: id})
+	tx := m.db.Postrgres.Where("user_id = ?", &models.Message{UserID: id}).Find(&result)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -89,7 +89,7 @@ func (m *MessageRepository) FetchByUserID(limit, id int) ([]models.Message, erro
 
 func (m *MessageRepository) FetchByChatroomID(limit, id int) ([]models.Message, error) {
 	var result []models.Message
-	tx := m.db.Postrgres.Where("id = ?", &models.Message{ChatroomID: id}).Find(&result)
+	tx := m.db.Postrgres.Where("chatroom_id = ?", &models.Message{ChatroomID: id}).Find(&result)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

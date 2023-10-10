@@ -15,8 +15,8 @@ type MessageRepository interface {
 	FetchOne(id int) (Message, error)
 	FetchByUserID(limit, id int) ([]Message, error)
 	FetchByChatroomID(limit, id int) ([]Message, error)
-	Store(Message *Message) error
-	Update(Message *Message) error
+	Store(Message Message) error
+	Update(Message Message) error
 	Delete(id int) error
 }
 
