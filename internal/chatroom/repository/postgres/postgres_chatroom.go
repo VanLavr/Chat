@@ -44,7 +44,7 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 	return result, nil
 }
 
-func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
+func (c *ChatroomRepository) Store(Chatroom models.Chatroom) error {
 	if err := c.beforeCreate(Chatroom); err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (c *ChatroomRepository) Store(Chatroom *models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) Update(Chatroom *models.Chatroom) error {
+func (c *ChatroomRepository) Update(Chatroom models.Chatroom) error {
 	if err := c.beforeUpdate(Chatroom); err != nil {
 		return err
 	}

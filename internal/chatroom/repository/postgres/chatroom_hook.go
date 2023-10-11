@@ -6,13 +6,13 @@ import (
 	"log"
 )
 
-func (c *ChatroomRepository) beforeUpdate(Chatroom *models.Chatroom) error {
+func (c *ChatroomRepository) beforeUpdate(Chatroom models.Chatroom) error {
 	if Chatroom.Name == "" || Chatroom.Password == "" {
 		return models.ErrEmptyFields
 	}
 
 	var result models.Chatroom
-	tx := c.db.Postrgres.Where(Chatroom.ID).Find(&result)
+	tx := c.db.Postrgres.Where("id = ?", Chatroom.ID).Find(&result)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -24,7 +24,7 @@ func (c *ChatroomRepository) beforeUpdate(Chatroom *models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) beforeCreate(Chatroom *models.Chatroom) error {
+func (c *ChatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 	if Chatroom.Name == "" || Chatroom.Password == "" || Chatroom.CreatorID == 0 {
 		return models.ErrEmptyFields
 	}

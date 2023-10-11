@@ -11,7 +11,7 @@ func TestCreate(t *testing.T) {
 	ur := NewChatroomRepository(schema.NewStorage())
 
 	// test with unexisting Chatroom (empty fields)
-	if err := ur.Store(&models.Chatroom{}); err == nil {
+	if err := ur.Store(models.Chatroom{}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
@@ -19,8 +19,8 @@ func TestCreate(t *testing.T) {
 
 	// test with existing Chatroom
 	print("CHATROOM ADDED")
-	ur.Store(&models.Chatroom{Name: "BOBBY's chat", Password: "123"})
-	if err := ur.Store(&models.Chatroom{Name: "BOBBY's chat", Password: "123"}); err == nil {
+	ur.Store(models.Chatroom{Name: "BOBBY's chat", Password: "123"})
+	if err := ur.Store(models.Chatroom{Name: "BOBBY's chat", Password: "123"}); err == nil {
 		t.Fail()
 	} else {
 		log.Println(err.Error())
@@ -31,7 +31,7 @@ func TestUpdate(t *testing.T) {
 	ur := NewChatroomRepository(schema.NewStorage())
 
 	// test with unexisting Chatroom
-	if err := ur.Update(&models.Chatroom{ID: 0, Name: "dfks", Password: "jkdf"}); err != models.ErrNotFound {
+	if err := ur.Update(models.Chatroom{ID: 0, Name: "dfks", Password: "jkdf"}); err != models.ErrNotFound {
 		t.Fail()
 		log.Println(err, "OHO")
 	} else {
@@ -39,7 +39,7 @@ func TestUpdate(t *testing.T) {
 	}
 
 	// test with unexisting Chatroom (empty fields)
-	if err := ur.Update(&models.Chatroom{}); err == nil {
+	if err := ur.Update(models.Chatroom{}); err == nil {
 		t.Fail()
 		log.Println(err)
 	} else {

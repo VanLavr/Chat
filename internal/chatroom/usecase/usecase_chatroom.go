@@ -43,7 +43,7 @@ func (u *usecase) Get(limit int) ([]models.Chatroom, error) {
 }
 
 func (u *usecase) CreateChat(chatroom models.Chatroom) error {
-	if err := u.repo.Store(&chatroom); err != nil {
+	if err := u.repo.Store(chatroom); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err
 		} else {
@@ -54,8 +54,8 @@ func (u *usecase) CreateChat(chatroom models.Chatroom) error {
 	return nil
 }
 
-func (u *usecase) DeleteChat(chat models.Chatroom) error {
-	if err := u.repo.Delete(chat.ID); err != nil {
+func (u *usecase) DeleteChat(deleter, id int) error {
+	if err := u.repo.Delete(deleter, id); err != nil {
 		if errors.Is(err, models.ErrPermisionDenied) || errors.Is(err, models.ErrNotFound) {
 			return err
 		} else {
@@ -67,7 +67,7 @@ func (u *usecase) DeleteChat(chat models.Chatroom) error {
 }
 
 func (u *usecase) UpdateChat(chat models.Chatroom) error {
-	if err := u.repo.Update(&chat); err != nil {
+	if err := u.repo.Update(chat); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return err
 		} else {
