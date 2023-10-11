@@ -31,7 +31,7 @@ func (c *MessageRepository) beforeCreate(Message models.Message) error {
 		return err
 	}
 
-	if user.ID != 0 || chat.ID == 0 {
+	if user.ID == 0 || chat.ID == 0 {
 		return models.ErrNotFound
 	}
 
