@@ -46,7 +46,11 @@ func (u *userRepository) FetchOne(id int) (models.User, error) {
 
 func (u *userRepository) FetchFewCertain(id ...int) ([]models.User, error) {
 	var result []models.User
-	tx := u.db.Postrgres.Find(&result, id)
+
+	var ids []int
+	ids = append(ids, id...)
+
+	tx := u.db.Postrgres.Find(&result, ids)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -85,7 +89,7 @@ func (u *userRepository) Delete(id int) error {
 		return err
 	}
 
-	tx := u.db.Postrgres.Delete(&models.User{}, id)
+	tx := u.db.Postrgres.Where("id = ?", id).Delete(&models.User{})
 	if tx.Error != nil {
 		return tx.Error
 	}

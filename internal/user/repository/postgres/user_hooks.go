@@ -3,6 +3,8 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"fmt"
+	"log"
 )
 
 func (u *userRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
@@ -14,8 +16,12 @@ func (u *userRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
 		return models.ErrNotFound
 	}
 
-	res := u.db.Postrgres.Find(&schema.UserChat{UserID: uid, ChatroomID: chatId})
-	if res.RowsAffected != 0 {
+	var uc schema.UserChat
+	if err := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Find(&uc).Error; err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(uc)
+	if uc.ChatroomID != 0 && uc.UserID != 0 {
 		return models.ErrUserAlreadyInChat
 	}
 
