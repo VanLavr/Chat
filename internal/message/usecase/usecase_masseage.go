@@ -10,13 +10,13 @@ type usecase struct {
 	repo models.MessageRepository
 }
 
-// GetChatMessages(message Message) ([]Message, error)
-// GetUserMessages(message Message) ([]Message, error)
+// GetChatMessages(limit, id int) ([]Message, error)
+// GetUserMessages(limit, id int) ([]Message, error)
 // GetMessages(limit int) ([]Message, error)
-// GetById(id int) ([]Message, error)
+// GetById(id int) (Message, error)
 // CreateMessage(message Message) error
 // UpdateMessage(message Message) error
-// DeleteMessage(message Message) error
+// DeleteMessage(id int) error
 
 func NewUsecase(repo models.MessageRepository) models.MessageUsecase {
 	return &usecase{repo: repo}

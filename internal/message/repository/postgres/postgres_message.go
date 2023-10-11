@@ -13,6 +13,14 @@ func NewMessageRepository(db *schema.Storage) *MessageRepository {
 	return &MessageRepository{db: db}
 }
 
+// Fetch(limit int) ([]Message, error)
+// FetchOne(id int) (Message, error)
+// FetchByUserID(limit, id int) ([]Message, error)
+// FetchByChatroomID(limit, id int) ([]Message, error)
+// Store(Message Message) error
+// Update(Message Message) error
+// Delete(id int) error
+
 func (m *MessageRepository) Fetch(limit int) ([]models.Message, error) {
 	var result []models.Message
 	if limit == 0 {

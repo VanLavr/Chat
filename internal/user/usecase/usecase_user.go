@@ -10,6 +10,14 @@ type usecase struct {
 	repo models.UserRepository
 }
 
+// GetById(uid int) (User, error)
+// GetUsers(limit int) ([]User, error)
+// EnterChat(uid, chatroomID int) error
+// LeaveChat(uid, chatroomID int) error
+// CreateUser(user User) error
+// UpdateUser(user User) error
+// DeleteUser(id int) error
+
 func NewUsecase(repo models.UserRepository) models.UserUsecase {
 	return &usecase{
 		repo: repo,

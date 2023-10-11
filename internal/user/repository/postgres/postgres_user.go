@@ -9,6 +9,15 @@ type userRepository struct {
 	db *schema.Storage
 }
 
+// Fetch(limit int) ([]User, error)
+// FetchOne(id int) (User, error)
+// FetchFewCertain(id ...int) ([]User, error)
+// AddUserToChatroom(uid, chatId int) error
+// RemoveUserFromChatroom(uid, chatId int) error
+// Store(user User) error
+// Update(user User) error
+// Delete(id int) error
+
 func NewUserRepository(db *schema.Storage) models.UserRepository {
 	return &userRepository{db: db}
 }

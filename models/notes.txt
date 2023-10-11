@@ -15,3 +15,6 @@ message.go:
 This file contains the Message struct, which represents a message sent within a chatroom.
 The Message struct may have fields such as ID, Sender, Content, and Chatroom.
 It also includes methods or functions related to message data access, such as CreateMessage, GetMessageByID, UpdateMessage, and DeleteMessage, etc.
+
+reference:
+https://github.com/bxcodec/go-clean-arch/blob/master/domain/article.go

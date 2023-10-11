@@ -13,6 +13,12 @@ func NewChatroomRepository(db *schema.Storage) *ChatroomRepository {
 	return &ChatroomRepository{db: db}
 }
 
+// Fetch(limit int) ([]Chatroom, error)
+// FetchOne(id int) (Chatroom, error)
+// Store(chat Chatroom) error
+// Update(chat Chatroom) error
+// Delete(deleter, id int) error
+
 func (c *ChatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
 	var result []models.Chatroom
 	if limit == 0 {
@@ -44,12 +50,12 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 	return result, nil
 }
 
-func (c *ChatroomRepository) Store(Chatroom models.Chatroom) error {
-	if err := c.beforeCreate(Chatroom); err != nil {
+func (c *ChatroomRepository) Store(chat models.Chatroom) error {
+	if err := c.beforeCreate(chat); err != nil {
 		return err
 	}
 
-	tx := c.db.Postrgres.Save(Chatroom)
+	tx := c.db.Postrgres.Save(chat)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -57,12 +63,12 @@ func (c *ChatroomRepository) Store(Chatroom models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) Update(Chatroom models.Chatroom) error {
-	if err := c.beforeUpdate(Chatroom); err != nil {
+func (c *ChatroomRepository) Update(chat models.Chatroom) error {
+	if err := c.beforeUpdate(chat); err != nil {
 		return err
 	}
 
-	tx := c.db.Postrgres.Save(Chatroom)
+	tx := c.db.Postrgres.Save(chat)
 	if tx.Error != nil {
 		return tx.Error
 	}
