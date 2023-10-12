@@ -37,13 +37,13 @@ func (u *usecase) GetById(uid int) (models.User, error) {
 	return user, nil
 }
 
-func (u *usecase) GetUsers(limit int) ([]models.User, error) {
+func (u *usecase) GetUsers(limit int) []models.User {
 	users, err := u.repo.Fetch(limit)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return users, nil
+	return users
 }
 
 func (u *usecase) EnterChat(uid, chatroomID int) error {

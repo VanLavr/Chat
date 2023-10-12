@@ -21,7 +21,7 @@ type UserRepository interface {
 
 type UserUsecase interface {
 	GetById(uid int) (User, error)
-	GetUsers(limit int) ([]User, error)
+	GetUsers(limit int) []User
 	EnterChat(uid, chatroomID int) error
 	LeaveChat(uid, chatroomID int) error
 	CreateUser(user User) error
