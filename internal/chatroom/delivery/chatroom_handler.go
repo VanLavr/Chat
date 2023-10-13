@@ -60,7 +60,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+			Content: err,
 		})
 	}
 
@@ -94,7 +94,7 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+			Content: err,
 		})
 	}
 
@@ -119,7 +119,7 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return e.JSON(400, models.Response{
 				Message: "Failure",
-				Content: models.ErrEmptyFields.Error() + " or " + models.ErrAlreadyExists.Error(),
+				Content: err,
 			})
 		}
 	}
@@ -145,7 +145,7 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return e.JSON(400, models.Response{
 				Message: "Failure",
-				Content: models.ErrEmptyFields.Error() + " or " + models.ErrNotFound.Error(),
+				Content: err,
 			})
 		}
 	}
@@ -174,7 +174,7 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 	if err != nil {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrPermisionDenied.Error(),
+			Content: err,
 		})
 	}
 

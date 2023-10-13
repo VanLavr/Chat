@@ -116,7 +116,7 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound)) {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrEmptyFields.Error(),
+			Content: err,
 		})
 	} else {
 		return e.JSON(200, models.Response{

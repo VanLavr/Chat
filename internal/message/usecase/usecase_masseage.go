@@ -72,7 +72,7 @@ func (u *usecase) CreateMessage(message models.Message) error {
 
 func (u *usecase) UpdateMessage(message models.Message) error {
 	if err := u.repo.Update(message); err != nil {
-		if errors.Is(err, models.ErrNotFound) {
+		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrEmptyFields) {
 			return err
 		} else {
 			log.Fatal(err)

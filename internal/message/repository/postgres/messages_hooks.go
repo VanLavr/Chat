@@ -5,6 +5,10 @@ import "chat/models"
 func (u *messageRepository) beforeUpdate(message models.Message) error {
 	var result models.Message
 
+	if message.Content == "" {
+		return models.ErrEmptyFields
+	}
+
 	tx := u.db.Postrgres.Find(&result, message.ID)
 	if tx.Error != nil {
 		return tx.Error
