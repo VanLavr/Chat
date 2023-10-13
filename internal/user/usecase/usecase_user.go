@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"chat/models"
+	"chat/pkg/hash"
 	"errors"
 	"log"
 )
@@ -96,4 +97,21 @@ func (u *usecase) UpdateUser(user models.User) error {
 	}
 
 	return nil
+}
+
+func (u *usecase) MakeHub() []models.User {
+	return u.repo.GetChatters()
+}
+
+func (u *usecase) ValidatePassword(uid int, password string) (bool, error) {
+	pwd, err := u.repo.GetUserPassword(uid)
+	if err != nil {
+		return false, models.ErrNotFound
+	}
+
+	if !hash.Hshr.Validate(pwd, password) {
+		return false, models.ErrPermisionDenied
+	}
+
+	return true, nil
 }

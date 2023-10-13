@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func (c *ChatroomRepository) beforeUpdate(Chatroom models.Chatroom) error {
+func (c *chatroomRepository) beforeUpdate(Chatroom models.Chatroom) error {
 	if Chatroom.Name == "" || Chatroom.Password == "" {
 		return models.ErrEmptyFields
 	}
@@ -24,7 +24,7 @@ func (c *ChatroomRepository) beforeUpdate(Chatroom models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
+func (c *chatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 	if Chatroom.Name == "" || Chatroom.Password == "" || Chatroom.CreatorID == 0 {
 		return models.ErrEmptyFields
 	}
@@ -56,7 +56,7 @@ func (c *ChatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) beforeDelete(deleter, id int) error {
+func (c *chatroomRepository) beforeDelete(deleter, id int) error {
 	var result models.Chatroom
 	tx := c.db.Postrgres.Where(id).Find(&result)
 	if tx.Error != nil {

@@ -2,7 +2,7 @@ package postgres
 
 import "chat/models"
 
-func (u *MessageRepository) beforeUpdate(message models.Message) error {
+func (u *messageRepository) beforeUpdate(message models.Message) error {
 	var result models.Message
 
 	tx := u.db.Postrgres.Find(&result, message.ID)
@@ -17,7 +17,7 @@ func (u *MessageRepository) beforeUpdate(message models.Message) error {
 	return nil
 }
 
-func (c *MessageRepository) beforeCreate(Message models.Message) error {
+func (c *messageRepository) beforeCreate(Message models.Message) error {
 	if Message.Content == "" {
 		return models.ErrEmptyFields
 	}
@@ -38,7 +38,7 @@ func (c *MessageRepository) beforeCreate(Message models.Message) error {
 	return nil
 }
 
-func (c *MessageRepository) beforeDelete(id int) error {
+func (c *messageRepository) beforeDelete(id int) error {
 	var result models.Message
 	tx := c.db.Postrgres.Where(id).Find(&result)
 	if tx.Error != nil {

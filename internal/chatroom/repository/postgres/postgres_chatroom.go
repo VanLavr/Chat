@@ -3,14 +3,15 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"log"
 )
 
-type ChatroomRepository struct {
+type chatroomRepository struct {
 	db *schema.Storage
 }
 
-func NewChatroomRepository(db *schema.Storage) *ChatroomRepository {
-	return &ChatroomRepository{db: db}
+func NewChatroomRepository(db *schema.Storage) models.ChatroomRepository {
+	return &chatroomRepository{db: db}
 }
 
 // Fetch(limit int) ([]Chatroom, error)
@@ -19,7 +20,7 @@ func NewChatroomRepository(db *schema.Storage) *ChatroomRepository {
 // Update(chat Chatroom) error
 // Delete(deleter, id int) error
 
-func (c *ChatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
+func (c *chatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
 	var result []models.Chatroom
 	if limit == 0 {
 		tx := c.db.Postrgres.Find(&result)
@@ -36,7 +37,7 @@ func (c *ChatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
 	return result, nil
 }
 
-func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
+func (c *chatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 	var result models.Chatroom
 	tx := c.db.Postrgres.First(&result, id)
 	if tx.Error != nil {
@@ -50,7 +51,7 @@ func (c *ChatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 	return result, nil
 }
 
-func (c *ChatroomRepository) Store(chat models.Chatroom) error {
+func (c *chatroomRepository) Store(chat models.Chatroom) error {
 	if err := c.beforeCreate(chat); err != nil {
 		return err
 	}
@@ -63,7 +64,7 @@ func (c *ChatroomRepository) Store(chat models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) Update(chat models.Chatroom) error {
+func (c *chatroomRepository) Update(chat models.Chatroom) error {
 	if err := c.beforeUpdate(chat); err != nil {
 		return err
 	}
@@ -76,7 +77,7 @@ func (c *ChatroomRepository) Update(chat models.Chatroom) error {
 	return nil
 }
 
-func (c *ChatroomRepository) Delete(deleter, id int) error {
+func (c *chatroomRepository) Delete(deleter, id int) error {
 	if err := c.beforeDelete(deleter, id); err != nil {
 		return err
 	}
@@ -87,4 +88,23 @@ func (c *ChatroomRepository) Delete(deleter, id int) error {
 	}
 
 	return nil
+}
+
+func (c *chatroomRepository) GetRoomPassword(id int) (string, error) {
+	var result models.Chatroom
+	tx := c.db.Postrgres.Where("id = ?", id).Find(&result)
+	if tx.Error != nil {
+		log.Fatal(tx.Error)
+	}
+
+	if result.ID == 0 {
+		return "", models.ErrNotFound
+	}
+
+	var chat models.Chatroom
+	if err := c.db.Postrgres.Where("id = ?", id).Find(&chat).Error; err != nil {
+		log.Fatal(err)
+	}
+
+	return chat.Password, nil
 }

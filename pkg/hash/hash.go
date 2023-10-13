@@ -10,6 +10,8 @@ type Hasher struct {
 	cost int
 }
 
+var Hshr = NewHasher(4)
+
 func NewHasher(cost int) *Hasher {
 	return &Hasher{cost: cost}
 }

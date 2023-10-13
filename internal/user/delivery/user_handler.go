@@ -4,28 +4,39 @@ import (
 	"chat/models"
 	jwtmiddleware "chat/pkg/jwt_middleware"
 	"errors"
+	"net/http"
 	"strconv"
 
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 )
 
 type UserHandler struct {
 	usecase models.UserUsecase
+	hub     []models.User
 	jwtmiddleware.JwtMiddleware
+	websocket.Upgrader
 }
 
 func NewUserHandler(e *echo.Echo, u models.UserUsecase) {
 	jwt := jwtmiddleware.NewJwtMiddlware()
-	uh := &UserHandler{usecase: u, JwtMiddleware: *jwt}
+	upd := websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin:     func(r *http.Request) bool { return true },
+	}
+
+	uh := &UserHandler{usecase: u, JwtMiddleware: *jwt, Upgrader: upd}
 
 	e.GET("/users", uh.GetUsers)
 	e.GET("/user/:id", uh.GetUser)
 	e.POST("/user", uh.CreateUser)
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
 	e.DELETE("/user", uh.ValidateToken(uh.DeleteUser))
-	e.GET("/user/:uid/enter/room/:chatroom_id", uh.ValidateToken(uh.EnterChatroom))
-	e.GET("/user/:uid/leave/room/:chatroom_id", uh.ValidateToken(uh.LeaveChatroom))
-	e.GET("user/jwt", uh.GetJWT)
+	// e.POST("/user/enterChatroom", uh.ValidateToken(uh.EnterChatroom))
+	// e.GET("/user/:uid/leave/room/:chatroom_id", uh.ValidateToken(uh.LeaveChatroom))
+	e.GET("/user/jwt", uh.GetJWT)
+	// e.GET("/ws/start/:username/:chatroomname", uh.ValidateToken())
 }
 
 func (u *UserHandler) GetUsers(e echo.Context) error {
@@ -157,70 +168,75 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	})
 }
 
-func (u *UserHandler) EnterChatroom(e echo.Context) error {
-	sUID := e.Param("uid")
-	sCID := e.Param("chatroom_id")
+// перенести в деливери чатрума
+// func (u *UserHandler) EnterChatroom(e echo.Context) error {
+// 	var UserChat struct {
+// 		Uid          int
+// 		Cid          int
+// 		RoomPassword string
+// 	}
 
-	uid, err := strconv.Atoi(sUID)
-	if err != nil {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: "Invalid params",
-		})
-	}
+// 	err := e.Bind(&UserChat)
+// 	if err != nil {
+// 		return e.JSON(400, models.Response{
+// 			Message: "Failure",
+// 			Content: "Invalid params",
+// 		})
+// 	}
 
-	cid, err := strconv.Atoi(sCID)
-	if err != nil {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: "Invalid params",
-		})
-	}
+// 	valid, err := models.ChatroomUsecase.ValidatePassword()
 
-	err = u.usecase.EnterChat(uid, cid)
-	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
-		})
-	}
+// 	err = u.usecase.EnterChat(uid, cid)
+// 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+// 		return e.JSON(400, models.Response{
+// 			Message: "Failure",
+// 			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+// 		})
+// 	}
 
-	return e.JSON(200, models.Response{
-		Message: "Success",
-		Content: "user has entered in chatroom",
-	})
-}
+// 	return e.JSON(200, models.Response{
+// 		Message: "Success",
+// 		Content: "user has entered in chatroom",
+// 	})
+// }
 
-func (u *UserHandler) LeaveChatroom(e echo.Context) error {
-	sUID := e.Param("uid")
-	sCID := e.Param("chatroom_id")
+// перене5сти в деливери чатрума
+// func (u *UserHandler) LeaveChatroom(e echo.Context) error {
+// 	sUID := e.Param("uid")
+// 	sCID := e.Param("chatroom_id")
 
-	uid, err := strconv.Atoi(sUID)
-	if err != nil {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: "Invalid params",
-		})
-	}
+// 	uid, err := strconv.Atoi(sUID)
+// 	if err != nil {
+// 		return e.JSON(400, models.Response{
+// 			Message: "Failure",
+// 			Content: "Invalid params",
+// 		})
+// 	}
 
-	cid, err := strconv.Atoi(sCID)
-	if err != nil {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: "Invalid params",
-		})
-	}
+// 	cid, err := strconv.Atoi(sCID)
+// 	if err != nil {
+// 		return e.JSON(400, models.Response{
+// 			Message: "Failure",
+// 			Content: "Invalid params",
+// 		})
+// 	}
 
-	err = u.usecase.LeaveChat(uid, cid)
-	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
-		return e.JSON(400, models.Response{
-			Message: "Failure",
-			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
-		})
-	}
+// 	err = u.usecase.LeaveChat(uid, cid)
+// 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+// 		return e.JSON(400, models.Response{
+// 			Message: "Failure",
+// 			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+// 		})
+// 	}
 
-	return e.JSON(200, models.Response{
-		Message: "Success",
-		Content: "user has leaved in chatroom",
-	})
-}
+// 	return e.JSON(200, models.Response{
+// 		Message: "Success",
+// 		Content: "user has leaved in chatroom",
+// 	})
+// }
+
+// func (u *UserHandler) Join(e echo.Context) error {
+// 	sUsername := e.Param("username")
+// 	sChatroomname := e.Param("chatroomname")
+
+// }

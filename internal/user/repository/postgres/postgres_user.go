@@ -3,6 +3,8 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"errors"
+	"log"
 )
 
 type userRepository struct {
@@ -127,4 +129,41 @@ func (u *userRepository) RemoveUserFromChatroom(uid, chatId int) error {
 	}
 
 	return nil
+}
+
+func (u *userRepository) GetChatters() []models.User {
+
+	var chatusers []schema.UserChat
+
+	if err := u.db.Postrgres.Find(&chatusers).Error; err != nil {
+		log.Fatal(err)
+	}
+
+	var ids []int
+	for _, id := range chatusers {
+		ids = append(ids, id.UserID)
+	}
+
+	var chatters []models.User
+	if err := u.db.Postrgres.Find(&chatters, ids).Error; err != nil {
+		log.Fatal(err)
+	}
+
+	return chatters
+}
+
+func (u *userRepository) GetUserPassword(id int) (string, error) {
+	err := u.beforeDelete(id)
+	if err != nil && errors.Is(err, models.ErrNotFound) {
+		return "", err
+	} else if err != nil && !errors.Is(err, models.ErrNotFound) {
+		log.Fatal(err)
+	}
+
+	var user models.User
+	if err := u.db.Postrgres.Where("id = ?", id).Find(&user).Error; err != nil {
+		log.Fatal(err)
+	}
+
+	return user.Password, nil
 }

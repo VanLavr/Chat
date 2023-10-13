@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"chat/models"
+	"chat/pkg/hash"
 	"errors"
 	"log"
 )
@@ -76,4 +77,19 @@ func (u *usecase) UpdateChat(chat models.Chatroom) error {
 	}
 
 	return nil
+}
+
+func (u *usecase) ValidatePassword(id int, password string) (bool, error) {
+	pwd, err := u.repo.GetRoomPassword(id)
+	if err != nil && errors.Is(err, models.ErrNotFound) {
+		return false, err
+	} else if err != nil && !errors.Is(err, models.ErrNotFound) {
+		log.Fatal(err)
+	}
+
+	if !hash.Hshr.Validate(pwd, password) {
+		return false, models.ErrPermisionDenied
+	}
+
+	return true, nil
 }
