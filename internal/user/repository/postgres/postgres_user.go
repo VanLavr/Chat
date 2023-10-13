@@ -108,29 +108,6 @@ func (u *userRepository) Delete(id int) error {
 	return nil
 }
 
-func (u *userRepository) AddUserToChatroom(uid, chatId int) error {
-	if err := u.beforeAddUserToChatroom(uid, chatId); err != nil {
-		return err
-	}
-
-	tx := u.db.Postrgres.Save(&schema.UserChat{UserID: uid, ChatroomID: chatId})
-	if tx.Error != nil {
-		return tx.Error
-	}
-
-	return nil
-}
-
-// Raw(fmt.Sprintf("delete from user_chats where user_id = %d and chatroom_id = %d", uid, chatId))
-func (u *userRepository) RemoveUserFromChatroom(uid, chatId int) error {
-	tx := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Delete(&schema.UserChat{})
-	if tx.Error != nil {
-		return tx.Error
-	}
-
-	return nil
-}
-
 func (u *userRepository) GetChatters() []models.User {
 
 	var chatusers []schema.UserChat

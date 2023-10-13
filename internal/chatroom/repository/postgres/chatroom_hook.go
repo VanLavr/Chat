@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	schema "chat/migrations"
 	"chat/models"
 	"fmt"
 	"log"
@@ -75,6 +76,27 @@ func (c *chatroomRepository) beforeDelete(deleter, id int) error {
 	fmt.Println(author, result, deleter)
 	if !author.IsAdmin || deleter != result.CreatorID {
 		return models.ErrPermisionDenied
+	}
+
+	return nil
+}
+
+func (c *chatroomRepository) beforeAddUserToChatroom(uid, chatId int) (err error) {
+	var user models.User
+	var chat models.Chatroom
+	c.db.Postrgres.Where("id = ?", uid).Find(&user)
+	c.db.Postrgres.Where("id = ?", chatId).Find(&chat)
+	if user.ID == 0 || chat.ID == 0 {
+		return models.ErrNotFound
+	}
+
+	var uc schema.UserChat
+	if err := c.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Find(&uc).Error; err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(uc)
+	if uc.ChatroomID != 0 && uc.UserID != 0 {
+		return models.ErrUserAlreadyInChat
 	}
 
 	return nil

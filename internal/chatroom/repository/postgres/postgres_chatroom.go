@@ -108,3 +108,25 @@ func (c *chatroomRepository) GetRoomPassword(id int) (string, error) {
 
 	return chat.Password, nil
 }
+
+func (c *chatroomRepository) AddUserToChatroom(uid, chatId int) error {
+	if err := c.beforeAddUserToChatroom(uid, chatId); err != nil {
+		return err
+	}
+
+	tx := c.db.Postrgres.Save(&schema.UserChat{UserID: uid, ChatroomID: chatId})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}
+
+func (c *chatroomRepository) RemoveUserFromChatroom(uid, chatId int) error {
+	tx := c.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Delete(&schema.UserChat{})
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
+}

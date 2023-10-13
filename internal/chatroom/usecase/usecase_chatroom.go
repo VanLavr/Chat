@@ -93,3 +93,23 @@ func (u *usecase) ValidatePassword(id int, password string) (bool, error) {
 
 	return true, nil
 }
+
+func (c *usecase) EnterChat(uid, chatroomID int) error {
+	if err := c.repo.AddUserToChatroom(uid, chatroomID); err != nil {
+		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat) {
+			return err
+		} else {
+			log.Fatal(err)
+		}
+	}
+
+	return nil
+}
+
+func (c *usecase) LeaveChat(uid, chatroomID int) error {
+	if err := c.repo.RemoveUserFromChatroom(uid, chatroomID); err != nil {
+		log.Fatal(err)
+	}
+
+	return nil
+}

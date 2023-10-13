@@ -14,6 +14,8 @@ type ChatroomRepository interface {
 	Update(chat Chatroom) error
 	Delete(deleter, id int) error
 	GetRoomPassword(id int) (string, error)
+	AddUserToChatroom(uid, chatId int) error
+	RemoveUserFromChatroom(uid, chatId int) error
 }
 
 type ChatroomUsecase interface {
@@ -23,4 +25,6 @@ type ChatroomUsecase interface {
 	DeleteChat(deleter, id int) error
 	UpdateChat(chat Chatroom) error
 	ValidatePassword(id int, password string) (bool, error)
+	EnterChat(uid, chatroomID int) error
+	LeaveChat(uid, chatroomID int) error
 }

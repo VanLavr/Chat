@@ -47,26 +47,6 @@ func (u *usecase) GetUsers(limit int) []models.User {
 	return users
 }
 
-func (u *usecase) EnterChat(uid, chatroomID int) error {
-	if err := u.repo.AddUserToChatroom(uid, chatroomID); err != nil {
-		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat) {
-			return err
-		} else {
-			log.Fatal(err)
-		}
-	}
-
-	return nil
-}
-
-func (u *usecase) LeaveChat(uid, chatroomID int) error {
-	if err := u.repo.RemoveUserFromChatroom(uid, chatroomID); err != nil {
-		log.Fatal(err)
-	}
-
-	return nil
-}
-
 func (u *usecase) CreateUser(user models.User) error {
 	if err := u.repo.Store(user); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {

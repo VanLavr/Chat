@@ -33,8 +33,6 @@ func NewUserHandler(e *echo.Echo, u models.UserUsecase) {
 	e.POST("/user", uh.CreateUser)
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
 	e.DELETE("/user", uh.ValidateToken(uh.DeleteUser))
-	// e.POST("/user/enterChatroom", uh.ValidateToken(uh.EnterChatroom))
-	// e.GET("/user/:uid/leave/room/:chatroom_id", uh.ValidateToken(uh.LeaveChatroom))
 	e.GET("/user/jwt", uh.GetJWT)
 	// e.GET("/ws/start/:username/:chatroomname", uh.ValidateToken())
 }
@@ -168,75 +166,8 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	})
 }
 
-// перенести в деливери чатрума
-// func (u *UserHandler) EnterChatroom(e echo.Context) error {
-// 	var UserChat struct {
-// 		Uid          int
-// 		Cid          int
-// 		RoomPassword string
-// 	}
-
-// 	err := e.Bind(&UserChat)
-// 	if err != nil {
-// 		return e.JSON(400, models.Response{
-// 			Message: "Failure",
-// 			Content: "Invalid params",
-// 		})
-// 	}
-
-// 	valid, err := models.ChatroomUsecase.ValidatePassword()
-
-// 	err = u.usecase.EnterChat(uid, cid)
-// 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
-// 		return e.JSON(400, models.Response{
-// 			Message: "Failure",
-// 			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
-// 		})
-// 	}
-
-// 	return e.JSON(200, models.Response{
-// 		Message: "Success",
-// 		Content: "user has entered in chatroom",
-// 	})
-// }
-
-// перене5сти в деливери чатрума
-// func (u *UserHandler) LeaveChatroom(e echo.Context) error {
-// 	sUID := e.Param("uid")
-// 	sCID := e.Param("chatroom_id")
-
-// 	uid, err := strconv.Atoi(sUID)
-// 	if err != nil {
-// 		return e.JSON(400, models.Response{
-// 			Message: "Failure",
-// 			Content: "Invalid params",
-// 		})
-// 	}
-
-// 	cid, err := strconv.Atoi(sCID)
-// 	if err != nil {
-// 		return e.JSON(400, models.Response{
-// 			Message: "Failure",
-// 			Content: "Invalid params",
-// 		})
-// 	}
-
-// 	err = u.usecase.LeaveChat(uid, cid)
-// 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
-// 		return e.JSON(400, models.Response{
-// 			Message: "Failure",
-// 			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
-// 		})
-// 	}
-
-// 	return e.JSON(200, models.Response{
-// 		Message: "Success",
-// 		Content: "user has leaved in chatroom",
-// 	})
-// }
-
 // func (u *UserHandler) Join(e echo.Context) error {
-// 	sUsername := e.Param("username")
-// 	sChatroomname := e.Param("chatroomname")
+// sUsername := e.Param("username")
+// sChatroomname := e.Param("chatroomname")
 
 // }
