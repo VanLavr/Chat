@@ -23,6 +23,8 @@ func NewUserHandler(e *echo.Echo, u models.UserUsecase) {
 	e.POST("/user", uh.CreateUser)
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
 	e.DELETE("/user", uh.ValidateToken(uh.DeleteUser))
+	e.GET("/user/:uid/enter/room/:chatroom_id", uh.ValidateToken(uh.EnterChatroom))
+	e.GET("/user/:uid/leave/room/:chatroom_id", uh.ValidateToken(uh.LeaveChatroom))
 	e.GET("user/jwt", uh.GetJWT)
 }
 
@@ -105,7 +107,7 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound)) {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound.Error() + "or" + models.ErrEmptyFields.Error(),
+			Content: models.ErrNotFound.Error() + " or " + models.ErrEmptyFields.Error(),
 		})
 	} else {
 		return e.JSON(200, models.Response{
@@ -152,5 +154,73 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: u.GenerateToken(user),
+	})
+}
+
+func (u *UserHandler) EnterChatroom(e echo.Context) error {
+	sUID := e.Param("uid")
+	sCID := e.Param("chatroom_id")
+
+	uid, err := strconv.Atoi(sUID)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	cid, err := strconv.Atoi(sCID)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	err = u.usecase.EnterChat(uid, cid)
+	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+		})
+	}
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: "user has entered in chatroom",
+	})
+}
+
+func (u *UserHandler) LeaveChatroom(e echo.Context) error {
+	sUID := e.Param("uid")
+	sCID := e.Param("chatroom_id")
+
+	uid, err := strconv.Atoi(sUID)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	cid, err := strconv.Atoi(sCID)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	err = u.usecase.LeaveChat(uid, cid)
+	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrNotFound.Error() + " or " + models.ErrUserAlreadyInChat.Error(),
+		})
+	}
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: "user has leaved in chatroom",
 	})
 }
