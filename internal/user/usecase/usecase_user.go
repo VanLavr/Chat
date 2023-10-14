@@ -11,14 +11,6 @@ type usecase struct {
 	repo models.UserRepository
 }
 
-// GetById(uid int) (User, error)
-// GetUsers(limit int) ([]User, error)
-// EnterChat(uid, chatroomID int) error
-// LeaveChat(uid, chatroomID int) error
-// CreateUser(user User) error
-// UpdateUser(user User) error
-// DeleteUser(id int) error
-
 func NewUsecase(repo models.UserRepository) models.UserUsecase {
 	return &usecase{
 		repo: repo,
@@ -48,6 +40,9 @@ func (u *usecase) GetUsers(limit int) []models.User {
 }
 
 func (u *usecase) CreateUser(user models.User) error {
+	hashed := hash.Hshr.Hash(user.Password)
+	user.Password = hashed
+
 	if err := u.repo.Store(user); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err
@@ -94,4 +89,8 @@ func (u *usecase) ValidatePassword(uid int, password string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (u *usecase) ValidateIncommer(uid, cid int) bool {
+	return u.repo.BeforeJoin(uid, cid)
 }

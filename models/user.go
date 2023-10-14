@@ -23,6 +23,7 @@ type UserRepository interface {
 	Delete(id int) error
 	GetChatters() []User
 	GetUserPassword(id int) (string, error)
+	BeforeJoin(uid, cid int) bool
 }
 
 type UserUsecase interface {
@@ -33,4 +34,5 @@ type UserUsecase interface {
 	DeleteUser(id int) error
 	MakeHub() []User
 	ValidatePassword(uid int, password string) (bool, error)
+	ValidateIncommer(uid, cid int) bool
 }

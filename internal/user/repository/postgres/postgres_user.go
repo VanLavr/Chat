@@ -11,15 +11,6 @@ type userRepository struct {
 	db *schema.Storage
 }
 
-// Fetch(limit int) ([]User, error)
-// FetchOne(id int) (User, error)
-// FetchFewCertain(id ...int) ([]User, error)
-// AddUserToChatroom(uid, chatId int) error
-// RemoveUserFromChatroom(uid, chatId int) error
-// Store(user User) error
-// Update(user User) error
-// Delete(id int) error
-
 func NewUserRepository(db *schema.Storage) models.UserRepository {
 	return &userRepository{db: db}
 }
@@ -143,4 +134,14 @@ func (u *userRepository) GetUserPassword(id int) (string, error) {
 	}
 
 	return user.Password, nil
+}
+
+func (u *userRepository) BeforeJoin(uid, cid int) bool {
+	var pair schema.UserChat
+
+	if err := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", cid).Find(&pair).Error; err != nil {
+		log.Fatal(err)
+	}
+
+	return !(pair.ID == 0)
 }

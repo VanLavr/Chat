@@ -11,12 +11,6 @@ type usecase struct {
 	repo models.ChatroomRepository
 }
 
-// GetById(id int) (Chatroom, error)
-// Get(limit int) ([]Chatroom, error)
-// CreateChat(chatroom Chatroom) error
-// DeleteChat(deleter, id int) error
-// UpdateChat(chat Chatroom) error
-
 func NewUsecase(repo models.ChatroomRepository) models.ChatroomUsecase {
 	return &usecase{repo: repo}
 }
@@ -44,6 +38,9 @@ func (u *usecase) Get(limit int) ([]models.Chatroom, error) {
 }
 
 func (u *usecase) CreateChat(chatroom models.Chatroom) error {
+	hashed := hash.Hshr.Hash(chatroom.Password)
+	chatroom.Password = hashed
+
 	if err := u.repo.Store(chatroom); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err

@@ -1,9 +1,13 @@
 package delivery
 
 import (
+	"chat/internal/message/repository/postgres"
+	"chat/internal/message/usecase"
+	schema "chat/migrations"
 	"chat/models"
 	jwtmiddleware "chat/pkg/jwt_middleware"
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -34,7 +38,7 @@ func NewUserHandler(e *echo.Echo, u models.UserUsecase) {
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
 	e.DELETE("/user", uh.ValidateToken(uh.DeleteUser))
 	e.GET("/user/jwt", uh.GetJWT)
-	// e.GET("/ws/start/:username/:chatroomname", uh.ValidateToken())
+	e.GET("/ws/start/:uid/:cid", uh.ValidateToken(uh.Join))
 }
 
 func (u *UserHandler) GetUsers(e echo.Context) error {
@@ -166,8 +170,105 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	})
 }
 
-// func (u *UserHandler) Join(e echo.Context) error {
-// sUsername := e.Param("username")
-// sChatroomname := e.Param("chatroomname")
+func (u *UserHandler) Join(e echo.Context) error {
+	sUid := e.Param("uid")
+	sCid := e.Param("cid")
 
-// }
+	uid, err := strconv.Atoi(sUid)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	cid, err := strconv.Atoi(sCid)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	if !u.usecase.ValidateIncommer(uid, cid) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied,
+		})
+	}
+
+	user, err := u.usecase.GetById(uid)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err,
+		})
+	}
+
+	user.CurrentChatroomID = cid
+
+	conn, err := u.Upgrade(e.Response().Writer, e.Request(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	user.Connection = conn
+
+	u.hub = append(u.hub, user)
+
+	// go u.readMessage(&user)
+	go func(user *models.User) {
+		if user.ID == 0 {
+			log.Fatal(errors.New("can not resolve user"))
+		}
+
+		u.readMessage(user)
+	}(&user)
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: "connection established",
+	})
+}
+
+func (u *UserHandler) readMessage(user *models.User) {
+	for {
+		msgT, message, err := user.Connection.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure, websocket.CloseGoingAway, websocket.CloseProtocolError, websocket.CloseNoStatusReceived) {
+				log.Println("abnormal disconnect...")
+				break
+			} else {
+				log.Println(err)
+				break
+			}
+		}
+
+		log.Println(string(message))
+
+		u.multicast(msgT, message, user)
+	}
+}
+
+func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) {
+	Mrepo := postgres.NewMessageRepository(schema.NewStorage())
+	Musecase := usecase.NewUsecase(Mrepo)
+
+	err := Musecase.CreateMessage(models.Message{
+		UserID:     user.ID,
+		ChatroomID: user.CurrentChatroomID,
+		Content:    string(message),
+	})
+
+	if err != nil {
+		return
+	}
+
+	for i := 0; i < len(u.hub); i++ {
+		if u.hub[i].CurrentChatroomID == user.CurrentChatroomID && u.hub[i].ID != user.ID {
+			if err := u.hub[i].Connection.WriteMessage(msgType, message); err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+}

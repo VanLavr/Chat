@@ -14,12 +14,6 @@ func NewChatroomRepository(db *schema.Storage) models.ChatroomRepository {
 	return &chatroomRepository{db: db}
 }
 
-// Fetch(limit int) ([]Chatroom, error)
-// FetchOne(id int) (Chatroom, error)
-// Store(chat Chatroom) error
-// Update(chat Chatroom) error
-// Delete(deleter, id int) error
-
 func (c *chatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
 	var result []models.Chatroom
 	if limit == 0 {
