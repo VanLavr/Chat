@@ -5,13 +5,13 @@ import (
 )
 
 type User struct {
-	ID                int    `gorm:"primarykey" json:"id"`
-	Name              string `json:"name"`
-	Password          string `json:"password"`
-	IsAdmin           bool   `gorm:"default:false" json:"admin"`
-	RoomsOwned        int    `json:"rooms_owned"`
-	CurrentChatroomID int
-	Connection        *websocket.Conn
+	ID                int             `gorm:"primarykey" json:"id"`
+	Name              string          `json:"name"`
+	Password          string          `json:"password"`
+	IsAdmin           bool            `gorm:"default:false" json:"admin"`
+	RoomsOwned        int             `json:"rooms_owned"`
+	CurrentChatroomID int             `gorm:"-"`
+	Connection        *websocket.Conn `gorm:"-"`
 }
 
 type UserRepository interface {

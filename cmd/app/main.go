@@ -4,6 +4,9 @@ import (
 	chatroomDelivery "chat/internal/chatroom/delivery"
 	chatroomRepo "chat/internal/chatroom/repository/postgres"
 	chatroomUsecase "chat/internal/chatroom/usecase"
+	"os"
+	"os/signal"
+	"syscall"
 
 	messageDelivery "chat/internal/message/delivery"
 	messageRepo "chat/internal/message/repository/postgres"
@@ -53,4 +56,9 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
+	log.Println("Server started...")
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
 }
