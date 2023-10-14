@@ -14,7 +14,7 @@ type ChatroomHandler struct {
 	jwtmiddleware.JwtMiddleware
 }
 
-func NewChatroomHandler(e *echo.Echo, u models.ChatroomUsecase) {
+func Register(e *echo.Echo, u models.ChatroomUsecase) {
 	jwt := jwtmiddleware.NewJwtMiddlware()
 
 	ch := &ChatroomHandler{usecase: u, JwtMiddleware: *jwt}

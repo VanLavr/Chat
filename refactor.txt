@@ -28,3 +28,7 @@
     viper
     postgres
     gorilla websocket
+
+8) used techniques:
+    MVC
+    

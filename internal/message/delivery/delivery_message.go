@@ -14,7 +14,7 @@ type MessageHandler struct {
 	jwtmiddleware.JwtMiddleware
 }
 
-func NewMessageHandler(e *echo.Echo, u models.MessageUsecase) {
+func Register(e *echo.Echo, u models.MessageUsecase) {
 	jwt := jwtmiddleware.NewJwtMiddlware()
 
 	mh := &MessageHandler{usecase: u, JwtMiddleware: *jwt}

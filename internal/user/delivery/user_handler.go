@@ -22,7 +22,7 @@ type UserHandler struct {
 	websocket.Upgrader
 }
 
-func NewUserHandler(e *echo.Echo, u models.UserUsecase) {
+func Register(e *echo.Echo, u models.UserUsecase) {
 	jwt := jwtmiddleware.NewJwtMiddlware()
 	upd := websocket.Upgrader{
 		ReadBufferSize:  1024,
