@@ -3,6 +3,7 @@ package delivery
 import (
 	"chat/models"
 	jwtmiddleware "chat/pkg/jwt_middleware"
+	"chat/pkg/logger"
 	"errors"
 	"strconv"
 
@@ -64,6 +65,9 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 		})
 	}
 
+	logger.FileLogger.Info("/user/enterChatroom [POST]")
+	logger.STDLogger.Info("/user/enterChatroom [POST]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: "user has entered in chatroom",
@@ -98,6 +102,9 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 		})
 	}
 
+	logger.FileLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+	logger.STDLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: "user has leaved in chatroom",
@@ -124,6 +131,9 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 		}
 	}
 
+	logger.FileLogger.Info("/chatroom [POST]")
+	logger.STDLogger.Info("/chatroom [POST]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: "Chatroom created",
@@ -149,6 +159,9 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 			})
 		}
 	}
+
+	logger.FileLogger.Info("/chatroom [PUT]")
+	logger.STDLogger.Info("/chatroom [PUT]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",
@@ -177,6 +190,9 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 			Content: err,
 		})
 	}
+
+	logger.FileLogger.Info("/chatroom [DELETE]")
+	logger.STDLogger.Info("/chatroom [DELETE]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",

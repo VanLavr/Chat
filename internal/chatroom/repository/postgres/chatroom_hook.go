@@ -3,8 +3,8 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"chat/pkg/logger"
 	"fmt"
-	"log"
 )
 
 func (c *chatroomRepository) beforeUpdate(Chatroom models.Chatroom) error {
@@ -42,7 +42,7 @@ func (c *chatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 
 	var author models.User
 	if err := c.db.Postrgres.Where("id = ?", Chatroom.CreatorID).Find(&author).Error; err != nil {
-		log.Println(err)
+		logger.STDLogger.Warn(err.Error())
 		return err
 	}
 
@@ -50,7 +50,7 @@ func (c *chatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 	author.RoomsOwned++
 	fmt.Println(author)
 	if err := c.db.Postrgres.Save(&author).Error; err != nil {
-		log.Println(err)
+		logger.STDLogger.Warn(err.Error())
 		return err
 	}
 
@@ -92,7 +92,7 @@ func (c *chatroomRepository) beforeAddUserToChatroom(uid, chatId int) (err error
 
 	var uc schema.UserChat
 	if err := c.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", chatId).Find(&uc).Error; err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 	fmt.Println(uc)
 	if uc.ChatroomID != 0 && uc.UserID != 0 {

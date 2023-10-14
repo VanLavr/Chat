@@ -3,8 +3,8 @@ package usecase
 import (
 	"chat/models"
 	"chat/pkg/hash"
+	"chat/pkg/logger"
 	"errors"
-	"log"
 )
 
 type usecase struct {
@@ -21,7 +21,7 @@ func (u *usecase) GetById(id int) (models.Chatroom, error) {
 		if errors.Is(err, models.ErrNotFound) {
 			return models.Chatroom{}, err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -31,7 +31,7 @@ func (u *usecase) GetById(id int) (models.Chatroom, error) {
 func (u *usecase) Get(limit int) ([]models.Chatroom, error) {
 	chats, err := u.repo.Fetch(limit)
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return chats, nil
@@ -45,7 +45,7 @@ func (u *usecase) CreateChat(chatroom models.Chatroom) error {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -57,7 +57,7 @@ func (u *usecase) DeleteChat(deleter, id int) error {
 		if errors.Is(err, models.ErrPermisionDenied) || errors.Is(err, models.ErrNotFound) {
 			return err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -69,7 +69,7 @@ func (u *usecase) UpdateChat(chat models.Chatroom) error {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -81,7 +81,7 @@ func (u *usecase) ValidatePassword(id int, password string) (bool, error) {
 	if err != nil && errors.Is(err, models.ErrNotFound) {
 		return false, err
 	} else if err != nil && !errors.Is(err, models.ErrNotFound) {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	if !hash.Hshr.Validate(pwd, password) {
@@ -96,7 +96,7 @@ func (c *usecase) EnterChat(uid, chatroomID int) error {
 		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat) {
 			return err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -105,7 +105,7 @@ func (c *usecase) EnterChat(uid, chatroomID int) error {
 
 func (c *usecase) LeaveChat(uid, chatroomID int) error {
 	if err := c.repo.RemoveUserFromChatroom(uid, chatroomID); err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return nil

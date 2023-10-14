@@ -10,7 +10,7 @@
     +   GORM
     +   JWT
     -   Swagger
-    -   Logrus (zap better, or, maybe echo built in logger...)
+    +   Logrus (zap better, or, maybe echo built in logger...)
     -   parallel websocket (gorilla/mux)
     -   docker containers (docker compose (orcestrate the sql and backend containers))
     +   MVC

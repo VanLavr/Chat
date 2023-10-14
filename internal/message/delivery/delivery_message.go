@@ -3,6 +3,7 @@ package delivery
 import (
 	"chat/models"
 	jwtmiddleware "chat/pkg/jwt_middleware"
+	"chat/pkg/logger"
 	"errors"
 	"strconv"
 
@@ -44,6 +45,9 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 		})
 	}
 
+	logger.FileLogger.Info("/messages/:limit [GET]")
+	logger.STDLogger.Info("/messages/:limit [GET]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: messages,
@@ -77,6 +81,9 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 			Content: "Oops, smth went wrong",
 		})
 	}
+
+	logger.FileLogger.Info("/messages/:user/:limit [GET]")
+	logger.STDLogger.Info("/messages/:user/:limit [GET]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",
@@ -112,6 +119,9 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 		})
 	}
 
+	logger.FileLogger.Info("/messages/:chat/:limit [GET]")
+	logger.STDLogger.Info("/messages/:chat/:limit [GET]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: messages,
@@ -139,6 +149,9 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 		}
 	}
 
+	logger.FileLogger.Info("/message [PUT]")
+	logger.STDLogger.Info("/message [PUT]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: "Message updated",
@@ -162,6 +175,9 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 			Content: err,
 		})
 	}
+
+	logger.FileLogger.Info("/message [DELETE]")
+	logger.STDLogger.Info("/message [DELETE]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",

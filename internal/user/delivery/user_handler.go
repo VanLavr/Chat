@@ -33,7 +33,7 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 
 	uh := &UserHandler{usecase: u, JwtMiddleware: *jwt, Upgrader: upd}
 
-	e.GET("/users", uh.GetUsers)
+	e.GET("/users/:limit", uh.GetUsers)
 	e.GET("/user/:id", uh.GetUser)
 	e.POST("/user", uh.CreateUser)
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
@@ -54,8 +54,8 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 
 	users := u.usecase.GetUsers(lm)
 
-	logger.FileLogger.Info("/users [GET]")
-	logger.STDLogger.Info("/users [GET]")
+	logger.FileLogger.Info("/users/:limit [GET]")
+	logger.STDLogger.Info("/users/:limit [GET]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",
