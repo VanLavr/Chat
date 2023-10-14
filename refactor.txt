@@ -11,7 +11,7 @@
     +   JWT
     -   Swagger
     +   Logrus (zap better, or, maybe echo built in logger...)
-    -   parallel websocket (gorilla/mux)
+    +   parallel websocket (gorilla/mux)
     -   docker containers (docker compose (orcestrate the sql and backend containers))
     +   MVC
     -   post photos availabiblity (base64 in postgres/redis/mongo or file server)

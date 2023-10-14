@@ -36,6 +36,9 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 	err := e.Bind(&UserChat)
 	if err != nil {
+		logger.FileLogger.Info("/user/enterChatroom [POST]")
+		logger.STDLogger.Info("/user/enterChatroom [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -44,6 +47,9 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 	valid, err := c.usecase.ValidatePassword(UserChat.Cid, UserChat.RoomPassword)
 	if err != nil {
+		logger.FileLogger.Info("/user/enterChatroom [POST]")
+		logger.STDLogger.Info("/user/enterChatroom [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,
@@ -51,6 +57,9 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 	}
 
 	if !valid {
+		logger.FileLogger.Info("/user/enterChatroom [POST]")
+		logger.STDLogger.Info("/user/enterChatroom [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrPermisionDenied,
@@ -59,6 +68,9 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 	err = c.usecase.EnterChat(UserChat.Uid, UserChat.Cid)
 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+		logger.FileLogger.Info("/user/enterChatroom [POST]")
+		logger.STDLogger.Info("/user/enterChatroom [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,
@@ -80,6 +92,9 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 
 	uid, err := strconv.Atoi(sUID)
 	if err != nil {
+		logger.FileLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+		logger.STDLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -88,6 +103,9 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 
 	cid, err := strconv.Atoi(sCID)
 	if err != nil {
+		logger.FileLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+		logger.STDLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -96,6 +114,9 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 
 	err = c.usecase.LeaveChat(uid, cid)
 	if err != nil && (errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrUserAlreadyInChat)) {
+		logger.FileLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+		logger.STDLogger.Info("/user/:uid/leaveRoom/:chatroom_id [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,
@@ -116,6 +137,9 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 
 	err := e.Bind(&chat)
 	if err != nil {
+		logger.FileLogger.Info("/chatroom [POST]")
+		logger.STDLogger.Info("/chatroom [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -124,6 +148,9 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 
 	if err = c.usecase.CreateChat(chat); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
+			logger.FileLogger.Info("/chatroom [POST]")
+			logger.STDLogger.Info("/chatroom [POST]")
+
 			return e.JSON(400, models.Response{
 				Message: "Failure",
 				Content: err,
@@ -145,6 +172,9 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 
 	err := e.Bind(&chat)
 	if err != nil {
+		logger.FileLogger.Info("/chatroom [PUT]")
+		logger.STDLogger.Info("/chatroom [PUT]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -153,6 +183,9 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 
 	if err = c.usecase.UpdateChat(chat); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
+			logger.FileLogger.Info("/chatroom [PUT]")
+			logger.STDLogger.Info("/chatroom [PUT]")
+
 			return e.JSON(400, models.Response{
 				Message: "Failure",
 				Content: err,
@@ -177,6 +210,9 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 
 	err := e.Bind(&deletion)
 	if err != nil {
+		logger.FileLogger.Info("/chatroom [DELETE]")
+		logger.STDLogger.Info("/chatroom [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -185,6 +221,9 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 
 	err = c.usecase.DeleteChat(deletion.uid, deletion.cid)
 	if err != nil {
+		logger.FileLogger.Info("/chatroom [DELETE]")
+		logger.STDLogger.Info("/chatroom [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,

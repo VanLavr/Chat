@@ -31,6 +31,9 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:limit [GET]")
+		logger.STDLogger.Info("/messages/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -39,6 +42,9 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 
 	messages, err := m.usecase.GetMessages(limit)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:limit [GET]")
+		logger.STDLogger.Info("/messages/:limit [GET]")
+
 		return e.JSON(500, models.Response{
 			Message: "Failure",
 			Content: "Oops, smth went wrong...",
@@ -60,6 +66,9 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 
 	limit, err := strconv.Atoi(sLimit)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:user/:limit [GET]")
+		logger.STDLogger.Info("/messages/:user/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -68,6 +77,9 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 
 	uid, err := strconv.Atoi(sUid)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:user/:limit [GET]")
+		logger.STDLogger.Info("/messages/:user/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -76,6 +88,9 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 
 	messages, err := m.usecase.GetUserMessages(limit, uid)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:user/:limit [GET]")
+		logger.STDLogger.Info("/messages/:user/:limit [GET]")
+
 		return e.JSON(500, models.Response{
 			Message: "Failure",
 			Content: "Oops, smth went wrong",
@@ -97,6 +112,9 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 
 	limit, err := strconv.Atoi(sLimit)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:chat/:limit [GET]")
+		logger.STDLogger.Info("/messages/:chat/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -105,6 +123,9 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 
 	cid, err := strconv.Atoi(sCid)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:chat/:limit [GET]")
+		logger.STDLogger.Info("/messages/:chat/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -113,6 +134,9 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 
 	messages, err := m.usecase.GetChatMessages(limit, cid)
 	if err != nil {
+		logger.FileLogger.Info("/messages/:chat/:limit [GET]")
+		logger.STDLogger.Info("/messages/:chat/:limit [GET]")
+
 		return e.JSON(500, models.Response{
 			Message: "Failure",
 			Content: "Oops, smth went wrong",
@@ -133,6 +157,9 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 
 	err := e.Bind(&message)
 	if err != nil {
+		logger.FileLogger.Info("/message [PUT]")
+		logger.STDLogger.Info("/message [PUT]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -141,6 +168,9 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 
 	err = m.usecase.UpdateMessage(message)
 	if err != nil {
+		logger.FileLogger.Info("/message [PUT]")
+		logger.STDLogger.Info("/message [PUT]")
+
 		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrEmptyFields) {
 			return e.JSON(400, models.Response{
 				Message: "Failure",
@@ -162,6 +192,9 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	sId := e.Param("id")
 	id, err := strconv.Atoi(sId)
 	if err != nil {
+		logger.FileLogger.Info("/message [DELETE]")
+		logger.STDLogger.Info("/message [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -170,6 +203,9 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 
 	err = m.usecase.DeleteMessage(id)
 	if err != nil {
+		logger.FileLogger.Info("/message [DELETE]")
+		logger.STDLogger.Info("/message [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,

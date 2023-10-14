@@ -46,6 +46,9 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 	limit := e.QueryParam("limit")
 	lm, err := strconv.Atoi(limit)
 	if err != nil {
+		logger.FileLogger.Info("/users/:limit [GET]")
+		logger.STDLogger.Info("/users/:limit [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrBadParamInput,
@@ -67,6 +70,9 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 	stringID := e.QueryParam("id")
 	id, err := strconv.Atoi(stringID)
 	if err != nil {
+		logger.FileLogger.Info("/user/:id [GET]")
+		logger.STDLogger.Info("/user/:id [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrBadParamInput,
@@ -75,6 +81,9 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 
 	user, err := u.usecase.GetById(id)
 	if err != nil && (errors.Is(err, models.ErrNotFound)) {
+		logger.FileLogger.Info("/user/:id [GET]")
+		logger.STDLogger.Info("/user/:id [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrNotFound,
@@ -94,6 +103,9 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 	var user models.User
 
 	if err := e.Bind(&user); err != nil {
+		logger.FileLogger.Info("/user [POST]")
+		logger.STDLogger.Info("/user [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -102,6 +114,9 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 
 	err := u.usecase.CreateUser(user)
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists)) {
+		logger.FileLogger.Info("/user [POST]")
+		logger.STDLogger.Info("/user [POST]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrAlreadyExists.Error() + "or" + models.ErrEmptyFields.Error(),
@@ -122,6 +137,9 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 	var user models.User
 
 	if err := e.Bind(&user); err != nil {
+		logger.FileLogger.Info("/user [PUT]")
+		logger.STDLogger.Info("/user [PUT]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -130,6 +148,9 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 
 	err := u.usecase.UpdateUser(user)
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound)) {
+		logger.FileLogger.Info("/user [PUT]")
+		logger.STDLogger.Info("/user [PUT]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,
@@ -150,6 +171,9 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 	var user models.User
 
 	if err := e.Bind(&user); err != nil {
+		logger.FileLogger.Info("/user [DELETE]")
+		logger.STDLogger.Info("/user [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -158,6 +182,9 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 
 	err := u.usecase.DeleteUser(user.ID)
 	if err != nil && (errors.Is(err, models.ErrNotFound)) {
+		logger.FileLogger.Info("/user [DELETE]")
+		logger.STDLogger.Info("/user [DELETE]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrNotFound.Error(),
@@ -178,6 +205,9 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	var user models.User
 
 	if err := e.Bind(&user); err != nil {
+		logger.FileLogger.Info("/user/jwt [GET]")
+		logger.STDLogger.Info("/user/jwt [GET]")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -199,6 +229,8 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 	uid, err := strconv.Atoi(sUid)
 	if err != nil {
+		logger.STDLogger.Info("/websocket/start")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -207,6 +239,8 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 	cid, err := strconv.Atoi(sCid)
 	if err != nil {
+		logger.STDLogger.Info("/websocket/start")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
@@ -214,6 +248,8 @@ func (u *UserHandler) Join(e echo.Context) error {
 	}
 
 	if !u.usecase.ValidateIncommer(uid, cid) {
+		logger.STDLogger.Info("/websocket/start")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrPermisionDenied,
@@ -222,6 +258,8 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 	user, err := u.usecase.GetById(uid)
 	if err != nil {
+		logger.STDLogger.Info("/websocket/start")
+
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err,
