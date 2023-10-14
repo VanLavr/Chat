@@ -6,6 +6,7 @@ import (
 	schema "chat/migrations"
 	"chat/models"
 	jwtmiddleware "chat/pkg/jwt_middleware"
+	"chat/pkg/logger"
 	"errors"
 	"log"
 	"net/http"
@@ -52,6 +53,10 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 	}
 
 	users := u.usecase.GetUsers(lm)
+
+	logger.FileLogger.Info("/users [GET]")
+	logger.STDLogger.Info("/users [GET]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: users,
@@ -76,6 +81,9 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 		})
 	}
 
+	logger.FileLogger.Info("/user/:id [GET]")
+	logger.STDLogger.Info("/user/:id [GET]")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: user,
@@ -99,6 +107,10 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 			Content: models.ErrAlreadyExists.Error() + "or" + models.ErrEmptyFields.Error(),
 		})
 	} else {
+
+		logger.FileLogger.Info("/user [POST]")
+		logger.STDLogger.Info("/user [POST]")
+
 		return e.JSON(200, models.Response{
 			Message: "Success",
 			Content: "user created",
@@ -123,6 +135,10 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 			Content: err,
 		})
 	} else {
+
+		logger.FileLogger.Info("/user [PUT]")
+		logger.STDLogger.Info("/user [PUT]")
+
 		return e.JSON(200, models.Response{
 			Message: "Success",
 			Content: "user updated",
@@ -147,6 +163,10 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 			Content: models.ErrNotFound.Error(),
 		})
 	} else {
+
+		logger.FileLogger.Info("/user [DELETE]")
+		logger.STDLogger.Info("/user [DELETE]")
+
 		return e.JSON(200, models.Response{
 			Message: "Success",
 			Content: "user deleted",
@@ -163,6 +183,9 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 			Content: "Invalid params",
 		})
 	}
+
+	logger.FileLogger.Info("/user/jwt [GET]")
+	logger.STDLogger.Info("/user/jwt [GET]")
 
 	return e.JSON(200, models.Response{
 		Message: "Success",
@@ -209,7 +232,7 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 	conn, err := u.Upgrade(e.Response().Writer, e.Request(), nil)
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	user.Connection = conn
@@ -219,16 +242,19 @@ func (u *UserHandler) Join(e echo.Context) error {
 	// go u.readMessage(&user)
 	go func(user *models.User) {
 		if user.ID == 0 {
-			log.Fatal(errors.New("can not resolve user"))
+			logger.STDLogger.Fatal(errors.New("can not resolve user").Error())
 		}
 
 		u.readMessage(user)
 	}(&user)
 
+	logger.STDLogger.Info("/websocket/start")
+
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: "connection established",
 	})
+
 }
 
 func (u *UserHandler) readMessage(user *models.User) {
@@ -244,8 +270,6 @@ func (u *UserHandler) readMessage(user *models.User) {
 			}
 		}
 
-		log.Println(string(message))
-
 		u.multicast(msgT, message, user)
 	}
 }
@@ -260,6 +284,8 @@ func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) 
 		Content:    string(message),
 	})
 
+	logger.STDLogger.Info(string(message))
+
 	if err != nil {
 		return
 	}
@@ -267,7 +293,7 @@ func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) 
 	for i := 0; i < len(u.hub); i++ {
 		if u.hub[i].CurrentChatroomID == user.CurrentChatroomID && u.hub[i].ID != user.ID {
 			if err := u.hub[i].Connection.WriteMessage(msgType, message); err != nil {
-				log.Fatal(err)
+				logger.STDLogger.Fatal(err.Error())
 			}
 		}
 	}

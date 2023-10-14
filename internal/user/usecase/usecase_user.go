@@ -3,8 +3,8 @@ package usecase
 import (
 	"chat/models"
 	"chat/pkg/hash"
+	"chat/pkg/logger"
 	"errors"
-	"log"
 )
 
 type usecase struct {
@@ -23,7 +23,7 @@ func (u *usecase) GetById(uid int) (models.User, error) {
 		if errors.Is(err, models.ErrNotFound) {
 			return models.User{}, err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 
@@ -33,7 +33,7 @@ func (u *usecase) GetById(uid int) (models.User, error) {
 func (u *usecase) GetUsers(limit int) []models.User {
 	users, err := u.repo.Fetch(limit)
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return users
@@ -47,7 +47,7 @@ func (u *usecase) CreateUser(user models.User) error {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
 			return err
 		} else {
-			log.Fatal(err)
+			logger.STDLogger.Fatal(err.Error())
 		}
 	}
 

@@ -3,7 +3,7 @@ package schema
 import (
 	"chat/models"
 	"chat/pkg/config"
-	"log"
+	"chat/pkg/logger"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -20,7 +20,7 @@ func NewStorage() *Storage {
 	var err error
 	s.Postrgres, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return s
@@ -29,18 +29,18 @@ func NewStorage() *Storage {
 func (a Storage) MigrateAll() {
 	err := a.Postrgres.Migrator().AutoMigrate(&models.User{})
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 	err = a.Postrgres.Migrator().AutoMigrate(&models.Chatroom{})
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 	err = a.Postrgres.Migrator().AutoMigrate(&models.Message{})
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 	err = a.Postrgres.Migrator().AutoMigrate(&UserChat{})
 	if err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 }

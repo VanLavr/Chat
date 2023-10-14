@@ -3,8 +3,8 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"chat/pkg/logger"
 	"errors"
-	"log"
 )
 
 type userRepository struct {
@@ -104,7 +104,7 @@ func (u *userRepository) GetChatters() []models.User {
 	var chatusers []schema.UserChat
 
 	if err := u.db.Postrgres.Find(&chatusers).Error; err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	var ids []int
@@ -114,7 +114,7 @@ func (u *userRepository) GetChatters() []models.User {
 
 	var chatters []models.User
 	if err := u.db.Postrgres.Find(&chatters, ids).Error; err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return chatters
@@ -125,12 +125,12 @@ func (u *userRepository) GetUserPassword(id int) (string, error) {
 	if err != nil && errors.Is(err, models.ErrNotFound) {
 		return "", err
 	} else if err != nil && !errors.Is(err, models.ErrNotFound) {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	var user models.User
 	if err := u.db.Postrgres.Where("id = ?", id).Find(&user).Error; err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return user.Password, nil
@@ -140,7 +140,7 @@ func (u *userRepository) BeforeJoin(uid, cid int) bool {
 	var pair schema.UserChat
 
 	if err := u.db.Postrgres.Where("user_id = ?", uid).Where("chatroom_id = ?", cid).Find(&pair).Error; err != nil {
-		log.Fatal(err)
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	return !(pair.ID == 0)
