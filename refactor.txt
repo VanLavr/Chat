@@ -4,7 +4,7 @@
 4) add JWT validation
 5) add swagger docs
 
-15) Renewed project:
+6) Renewed project:
     +   chats under passwords, owner can delete 'em 
     +   Echo
     +   GORM
@@ -17,5 +17,14 @@
     -   post photos availabiblity (base64 in postgres/redis/mongo or file server)
     -   gracefull shutdown?
     -   proxy?
-    +-  testing (unit, integration [https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package, https://dev.to/kliukovkin/integration-tests-with-go-and-testcontainers-6o5])
-    -    templates + htmx version (static)
+    -   testing (unit, integration [https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package, https://dev.to/kliukovkin/integration-tests-with-go-and-testcontainers-6o5])
+    -   templates + htmx version (static)
+
+7) used tools:
+    Echo
+    JWT
+    GORM
+    bcrypt
+    viper
+    postgres
+    gorilla websocket
