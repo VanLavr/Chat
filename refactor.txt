@@ -1,0 +1,21 @@
+1) add Where functions with "" at repo layer
+2) add value recievers in every repo function
+3) add hashing passwords
+4) add JWT validation
+5) add swagger docs
+
+15) Renewed project:
+    +   chats under passwords, owner can delete 'em 
+    +   Echo
+    +   GORM
+    +   JWT
+    -   Swagger
+    -   Logrus (zap better, or, maybe echo built in logger...)
+    -   parallel websocket (gorilla/mux)
+    -   docker containers (docker compose (orcestrate the sql and backend containers))
+    +   MVC
+    -   post photos availabiblity (base64 in postgres/redis/mongo or file server)
+    -   gracefull shutdown?
+    -   proxy?
+    +-  testing (unit, integration [https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package, https://dev.to/kliukovkin/integration-tests-with-go-and-testcontainers-6o5])
+    -    templates + htmx version (static)
