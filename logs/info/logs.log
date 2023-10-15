@@ -8,3 +8,8 @@
 {"level":"info","ts":1697366793.153656,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697366798.3840263,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697370413.2469192,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697371056.205692,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697371179.1622925,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1697371343.3807535,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1697371536.189577,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697371541.2060308,"msg":"/user/:id [GET]"}

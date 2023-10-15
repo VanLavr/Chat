@@ -51,7 +51,7 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrBadParamInput,
+			Content: models.ErrBadParamInput.Error(),
 		})
 	}
 
@@ -75,7 +75,7 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrBadParamInput,
+			Content: models.ErrBadParamInput.Error(),
 		})
 	}
 
@@ -86,7 +86,7 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrNotFound,
+			Content: models.ErrNotFound.Error(),
 		})
 	}
 
@@ -119,7 +119,7 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrAlreadyExists.Error() + "or" + models.ErrEmptyFields.Error(),
+			Content: err.Error(),
 		})
 	} else {
 
@@ -153,7 +153,7 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	} else {
 
@@ -252,7 +252,7 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrPermisionDenied,
+			Content: models.ErrPermisionDenied.Error(),
 		})
 	}
 

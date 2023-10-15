@@ -34,7 +34,7 @@ func (u *userRepository) Fetch(limit int) ([]models.User, error) {
 
 func (u *userRepository) FetchOne(id int) (models.User, error) {
 	var result models.User
-	tx := u.db.Postrgres.Where("id = ?", id).First(&result)
+	tx := u.db.Postrgres.Where("id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return models.User{}, tx.Error
 	}
