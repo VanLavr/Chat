@@ -63,7 +63,7 @@ func (c *chatroomRepository) Update(chat models.Chatroom) error {
 		return err
 	}
 
-	tx := c.db.Postrgres.Save(chat)
+	tx := c.db.Postrgres.Save(&chat)
 	if tx.Error != nil {
 		return tx.Error
 	}
