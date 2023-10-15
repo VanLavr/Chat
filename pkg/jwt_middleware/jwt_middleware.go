@@ -3,6 +3,7 @@ package jwtmiddleware
 import (
 	"chat/models"
 	"chat/pkg/config"
+	"fmt"
 	"log"
 	"time"
 
@@ -28,7 +29,7 @@ func (j *JwtMiddleware) GenerateToken(user models.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwtClaims{
 		User: user,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute).Unix(),
+			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
 			Issuer:    user.Name,
 		},
 	})
@@ -51,7 +52,8 @@ func (j *JwtMiddleware) ValidateToken(next func(e echo.Context) error) func(e ec
 				Content: models.ErrPermisionDenied.Error(),
 			})
 		}
-		tokenString := authHeader[len("Bearer "):]
+		hdr := authHeader[0]
+		tokenString := hdr[len("Bearer "):]
 
 		if len(tokenString) == 0 {
 			return e.JSON(401, models.Response{
@@ -60,10 +62,11 @@ func (j *JwtMiddleware) ValidateToken(next func(e echo.Context) error) func(e ec
 			})
 		}
 
-		token, err := jwt.ParseWithClaims(tokenString[0], &jwtClaims{}, func(t *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(tokenString, &jwtClaims{}, func(t *jwt.Token) (interface{}, error) {
 			return []byte(j.secret), nil
 		})
 		if err != nil {
+			fmt.Println(err.Error())
 			return e.JSON(401, models.Response{
 				Message: "Failure",
 				Content: models.ErrPermisionDenied.Error(),
