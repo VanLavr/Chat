@@ -45,12 +45,18 @@ func (j *JwtMiddleware) ValidateToken(next func(e echo.Context) error) func(e ec
 	return func(e echo.Context) error {
 		header := e.Request().Header
 		authHeader := header["Authorization"]
+		if len(authHeader) == 0 {
+			return e.JSON(401, models.Response{
+				Message: "Failure",
+				Content: models.ErrPermisionDenied.Error(),
+			})
+		}
 		tokenString := authHeader[len("Bearer "):]
 
 		if len(tokenString) == 0 {
 			return e.JSON(401, models.Response{
 				Message: "Failure",
-				Content: models.ErrPermisionDenied,
+				Content: models.ErrPermisionDenied.Error(),
 			})
 		}
 
@@ -60,14 +66,14 @@ func (j *JwtMiddleware) ValidateToken(next func(e echo.Context) error) func(e ec
 		if err != nil {
 			return e.JSON(401, models.Response{
 				Message: "Failure",
-				Content: models.ErrPermisionDenied,
+				Content: models.ErrPermisionDenied.Error(),
 			})
 		}
 
 		if !token.Valid {
 			return e.JSON(401, models.Response{
 				Message: "Failure",
-				Content: models.ErrPermisionDenied,
+				Content: models.ErrPermisionDenied.Error(),
 			})
 		} else {
 			next(e)

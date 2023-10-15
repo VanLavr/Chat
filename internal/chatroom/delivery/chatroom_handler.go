@@ -52,7 +52,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 
@@ -62,7 +62,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: models.ErrPermisionDenied,
+			Content: models.ErrPermisionDenied.Error(),
 		})
 	}
 
@@ -73,7 +73,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 
@@ -119,7 +119,7 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 
@@ -153,7 +153,7 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 
 			return e.JSON(400, models.Response{
 				Message: "Failure",
-				Content: err,
+				Content: err.Error(),
 			})
 		}
 	}
@@ -188,7 +188,7 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 
 			return e.JSON(400, models.Response{
 				Message: "Failure",
-				Content: err,
+				Content: err.Error(),
 			})
 		}
 	}
@@ -226,7 +226,7 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 

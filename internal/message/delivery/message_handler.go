@@ -174,7 +174,7 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 		if errors.Is(err, models.ErrNotFound) || errors.Is(err, models.ErrEmptyFields) {
 			return e.JSON(400, models.Response{
 				Message: "Failure",
-				Content: err,
+				Content: err.Error(),
 			})
 		}
 	}
@@ -208,7 +208,7 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 

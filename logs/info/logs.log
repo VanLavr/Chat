@@ -13,3 +13,9 @@
 {"level":"info","ts":1697371343.3807535,"msg":"/user/:id [GET]"}
 {"level":"info","ts":1697371536.189577,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697371541.2060308,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1697373676.3986611,"msg":"/user [POST]"}
+{"level":"info","ts":1697373686.40395,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697373709.330818,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1697373726.3810723,"msg":"/user [POST]"}
+{"level":"info","ts":1697373729.429774,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697373815.4208143,"msg":"/users/:limit [GET]"}

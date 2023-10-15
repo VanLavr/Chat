@@ -262,7 +262,7 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 		return e.JSON(400, models.Response{
 			Message: "Failure",
-			Content: err,
+			Content: err.Error(),
 		})
 	}
 
