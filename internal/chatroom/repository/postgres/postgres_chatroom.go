@@ -33,7 +33,7 @@ func (c *chatroomRepository) Fetch(limit int) ([]models.Chatroom, error) {
 
 func (c *chatroomRepository) FetchOne(id int) (models.Chatroom, error) {
 	var result models.Chatroom
-	tx := c.db.Postrgres.First(&result, id)
+	tx := c.db.Postrgres.Where("id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return models.Chatroom{}, tx.Error
 	}

@@ -63,3 +63,8 @@
 {"level":"info","ts":1697378274.8783872,"msg":"/chatroom [POST]"}
 {"level":"info","ts":1697378945.8320584,"msg":"/user/jwt [GET]"}
 {"level":"info","ts":1697378960.5216105,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697382463.781309,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697383565.8567147,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697383602.2235336,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697383784.0520675,"msg":"/chatroom/:id"}
+{"level":"info","ts":1697383795.745229,"msg":"/chatroom/:id"}

@@ -21,11 +21,79 @@ func Register(e *echo.Echo, u models.ChatroomUsecase) {
 
 	ch := &ChatroomHandler{usecase: u, JwtMiddleware: *jwt}
 
+	e.GET("/chatrooms/:limit", ch.GetRooms)
+	e.GET("/chatroom/:id", ch.GetById)
 	e.POST("/user/enterChatroom", ch.ValidateToken(ch.EnterChatroom))
 	e.GET("/user/:uid/leaveRoom/:chatroom_id", ch.ValidateToken(ch.LeaveChatroom))
 	e.POST("/chatroom", ch.ValidateToken(ch.CreateChat))
 	e.PUT("/chatroom", ch.ValidateToken(ch.UpdateChat))
 	e.DELETE("/chatroom", ch.ValidateToken(ch.DeleteChat))
+}
+
+func (c *ChatroomHandler) GetById(e echo.Context) error {
+	sid := e.Param("id")
+	id, err := strconv.Atoi(sid)
+	if err != nil {
+		logger.STDLogger.Info("/chatroom/:id")
+		logger.FileLogger.Info("/chatroom/:id")
+
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	chat, err := c.usecase.GetById(id)
+	if err != nil {
+		logger.STDLogger.Info("/chatroom/:id")
+		logger.FileLogger.Info("/chatroom/:id")
+
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	logger.STDLogger.Info("/chatroom/:id")
+	logger.FileLogger.Info("/chatroom/:id")
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: chat,
+	})
+}
+
+func (c *ChatroomHandler) GetRooms(e echo.Context) error {
+	sLimit := e.Param("limit")
+	limit, err := strconv.Atoi(sLimit)
+	if err != nil {
+		logger.FileLogger.Info("/chatrooms [GET]")
+		logger.STDLogger.Info("/chatrooms [GET]")
+
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	chats, err := c.usecase.Get(limit)
+	if err != nil {
+		logger.FileLogger.Info("/chatrooms [GET]")
+		logger.STDLogger.Info("/chatrooms [GET]")
+
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	logger.FileLogger.Info("/chatrooms [GET]")
+	logger.STDLogger.Info("/chatrooms [GET]")
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: chats,
+	})
 }
 
 func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
