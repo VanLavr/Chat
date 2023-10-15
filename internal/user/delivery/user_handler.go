@@ -43,7 +43,7 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 }
 
 func (u *UserHandler) GetUsers(e echo.Context) error {
-	limit := e.QueryParam("limit")
+	limit := e.Param("limit")
 	lm, err := strconv.Atoi(limit)
 	if err != nil {
 		logger.FileLogger.Info("/users/:limit [GET]")
@@ -67,7 +67,7 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 }
 
 func (u *UserHandler) GetUser(e echo.Context) error {
-	stringID := e.QueryParam("id")
+	stringID := e.Param("id")
 	id, err := strconv.Atoi(stringID)
 	if err != nil {
 		logger.FileLogger.Info("/user/:id [GET]")

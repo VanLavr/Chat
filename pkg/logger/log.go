@@ -57,12 +57,12 @@ func NewSTDLogger() *zap.Logger {
 }
 
 func NewFILELogger() *zap.Logger {
-	log, err = os.OpenFile("../../logs/info/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	log, err = os.OpenFile("./logs/info/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
 
-	errorf, err = os.OpenFile("../../logs/error/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	errorf, err = os.OpenFile("./logs/error/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
 	}

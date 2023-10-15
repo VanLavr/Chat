@@ -4,6 +4,7 @@ import (
 	chatroomDelivery "chat/internal/chatroom/delivery"
 	chatroomRepo "chat/internal/chatroom/repository/postgres"
 	chatroomUsecase "chat/internal/chatroom/usecase"
+	"chat/models"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,6 +21,7 @@ import (
 
 	"chat/pkg/config"
 	corsmiddleware "chat/pkg/cors_middleware"
+	"chat/pkg/logger"
 
 	"log"
 
@@ -37,6 +39,12 @@ func main() {
 
 	e := echo.New()
 	corsmiddleware.NewMiddleware(e)
+	e.GET("/", func(c echo.Context) error {
+		logger.STDLogger.Info("/ping")
+		return c.JSON(200, models.Response{
+			Message: "ping",
+		})
+	})
 
 	userRepo := userRepo.NewUserRepository(storage)
 	userUsecase := userUsecase.NewUsecase(userRepo)
@@ -56,7 +64,7 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
-	log.Println("Server started...")
+	logger.STDLogger.Info("Server started...")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
