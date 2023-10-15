@@ -38,7 +38,7 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 	e.POST("/user", uh.CreateUser)
 	e.PUT("/user", uh.ValidateToken(uh.UpdateUser))
 	e.DELETE("/user", uh.ValidateToken(uh.DeleteUser))
-	e.GET("/user/jwt", uh.GetJWT)
+	e.POST("/user/jwt", uh.GetJWT)
 	e.GET("/ws/start/:uid/:cid", uh.ValidateToken(uh.Join))
 }
 
@@ -241,6 +241,21 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
+		})
+	}
+
+	ok, err := u.usecase.ValidatePassword(user.ID, user.Password)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	if !ok {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
 		})
 	}
 

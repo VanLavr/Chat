@@ -39,3 +39,4 @@
 {"level":"info","ts":1697375906.674272,"msg":"/user [POST]"}
 {"level":"info","ts":1697376015.2221253,"msg":"/user [DELETE]"}
 {"level":"info","ts":1697376018.8212786,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697376431.086706,"msg":"/user/jwt [GET]"}
