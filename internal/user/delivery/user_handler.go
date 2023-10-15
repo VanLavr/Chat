@@ -112,6 +112,13 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 		})
 	}
 
+	if user.Name == "" || user.Password == "" {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrEmptyFields.Error(),
+		})
+	}
+
 	err := u.usecase.CreateUser(user)
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists)) {
 		logger.FileLogger.Info("/user [POST]")
@@ -143,6 +150,13 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: "Invalid params",
+		})
+	}
+
+	if user.Password == "" {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
 		})
 	}
 

@@ -40,3 +40,12 @@
 {"level":"info","ts":1697376015.2221253,"msg":"/user [DELETE]"}
 {"level":"info","ts":1697376018.8212786,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697376431.086706,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697376938.7426746,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697376946.5666244,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1697376956.1024783,"msg":"/user [POST]"}
+{"level":"info","ts":1697376961.9851937,"msg":"/user [POST]"}
+{"level":"info","ts":1697376982.7360632,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697376989.002594,"msg":"/user [DELETE]"}
+{"level":"info","ts":1697376992.2946942,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697377125.5142992,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697377141.2384255,"msg":"/user [PUT]"}
