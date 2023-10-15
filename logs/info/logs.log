@@ -68,3 +68,31 @@
 {"level":"info","ts":1697383602.2235336,"msg":"/chatrooms [GET]"}
 {"level":"info","ts":1697383784.0520675,"msg":"/chatroom/:id"}
 {"level":"info","ts":1697383795.745229,"msg":"/chatroom/:id"}
+{"level":"info","ts":1697384145.8860238,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697384161.4401548,"msg":"/chatroom [PUT]"}
+{"level":"info","ts":1697384166.1764102,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384184.3399148,"msg":"/chatroom [PUT]"}
+{"level":"info","ts":1697384201.2887094,"msg":"/chatroom [PUT]"}
+{"level":"info","ts":1697384209.2171886,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384215.659802,"msg":"/chatroom/:id"}
+{"level":"info","ts":1697384381.0592403,"msg":"/chatroom [PUT]"}
+{"level":"info","ts":1697384384.8032436,"msg":"/chatroom/:id"}
+{"level":"info","ts":1697384394.834511,"msg":"/chatroom [PUT]"}
+{"level":"info","ts":1697384398.161914,"msg":"/chatroom/:id"}
+{"level":"info","ts":1697384433.5284994,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697384436.7531645,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384441.840828,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384443.9311533,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384446.38476,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697384641.706475,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697384814.4934733,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697384834.3389146,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1697384904.9352124,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1697384970.3252711,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1697385006.3494139,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1697385024.8738801,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1697385033.201235,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697385185.4472277,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1697385198.5433905,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1697385207.4826953,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1697385307.4022272,"msg":"/user/:uid/leaveRoom/:chatroom_id [GET]"}

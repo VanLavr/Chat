@@ -252,6 +252,21 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 		})
 	}
 
+	ok, err := c.usecase.ValidatePassword(chat.ID, chat.Password)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	if !ok {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
+		})
+	}
+
 	if err = c.usecase.UpdateChat(chat); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			logger.FileLogger.Info("/chatroom [PUT]")
@@ -275,8 +290,8 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 
 func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 	var deletion struct {
-		uid int
-		cid int
+		Uid int `json:"uid"`
+		Cid int `json:"cid"`
 	}
 
 	err := e.Bind(&deletion)
@@ -290,7 +305,9 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 		})
 	}
 
-	err = c.usecase.DeleteChat(deletion.uid, deletion.cid)
+	fmt.Println(deletion)
+
+	err = c.usecase.DeleteChat(deletion.Uid, deletion.Cid)
 	if err != nil {
 		logger.FileLogger.Info("/chatroom [DELETE]")
 		logger.STDLogger.Info("/chatroom [DELETE]")
