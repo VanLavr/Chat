@@ -65,6 +65,9 @@ func (u *usecase) DeleteUser(id int) error {
 }
 
 func (u *usecase) UpdateUser(user models.User) error {
+	hashed := hash.Hshr.Hash(user.Password)
+	user.Password = hashed
+
 	if err := u.repo.Update(user); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return err

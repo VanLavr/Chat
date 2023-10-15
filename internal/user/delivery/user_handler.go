@@ -146,7 +146,22 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 		})
 	}
 
-	err := u.usecase.UpdateUser(user)
+	ok, err := u.usecase.ValidatePassword(user.ID, user.Password)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	if !ok {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
+		})
+	}
+
+	err = u.usecase.UpdateUser(user)
 	if err != nil && (errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound)) {
 		logger.FileLogger.Info("/user [PUT]")
 		logger.STDLogger.Info("/user [PUT]")
@@ -180,7 +195,22 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 		})
 	}
 
-	err := u.usecase.DeleteUser(user.ID)
+	ok, err := u.usecase.ValidatePassword(user.ID, user.Password)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	if !ok {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
+		})
+	}
+
+	err = u.usecase.DeleteUser(user.ID)
 	if err != nil && (errors.Is(err, models.ErrNotFound)) {
 		logger.FileLogger.Info("/user [DELETE]")
 		logger.STDLogger.Info("/user [DELETE]")

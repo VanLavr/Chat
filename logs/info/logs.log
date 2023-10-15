@@ -25,3 +25,17 @@
 {"level":"info","ts":1697374935.8539467,"msg":"/user/jwt [GET]"}
 {"level":"info","ts":1697374952.0787802,"msg":"/user [PUT]"}
 {"level":"info","ts":1697374956.939069,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375500.84974,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375539.8274415,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375615.8129323,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375625.3160982,"msg":"/user [POST]"}
+{"level":"info","ts":1697375628.7852724,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375671.5609245,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375693.806729,"msg":"/user [PUT]"}
+{"level":"info","ts":1697375697.5377066,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375709.608629,"msg":"/user [PUT]"}
+{"level":"info","ts":1697375712.495071,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1697375898.9256306,"msg":"/user [POST]"}
+{"level":"info","ts":1697375906.674272,"msg":"/user [POST]"}
+{"level":"info","ts":1697376015.2221253,"msg":"/user [DELETE]"}
+{"level":"info","ts":1697376018.8212786,"msg":"/users/:limit [GET]"}
