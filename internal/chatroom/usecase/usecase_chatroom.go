@@ -65,6 +65,9 @@ func (u *usecase) DeleteChat(deleter, id int) error {
 }
 
 func (u *usecase) UpdateChat(chat models.Chatroom) error {
+	hashed := hash.Hshr.Hash(chat.Password)
+	chat.Password = hashed
+
 	if err := u.repo.Update(chat); err != nil {
 		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrNotFound) {
 			return err

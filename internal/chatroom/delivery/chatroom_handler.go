@@ -5,6 +5,7 @@ import (
 	jwtmiddleware "chat/pkg/jwt_middleware"
 	"chat/pkg/logger"
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -50,6 +51,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 		logger.FileLogger.Info("/user/enterChatroom [POST]")
 		logger.STDLogger.Info("/user/enterChatroom [POST]")
 
+		fmt.Println(err.Error())
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err.Error(),
@@ -71,6 +73,7 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 		logger.FileLogger.Info("/user/enterChatroom [POST]")
 		logger.STDLogger.Info("/user/enterChatroom [POST]")
 
+		fmt.Println(err.Error())
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: err.Error(),

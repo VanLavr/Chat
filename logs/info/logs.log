@@ -49,3 +49,17 @@
 {"level":"info","ts":1697376992.2946942,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697377125.5142992,"msg":"/users/:limit [GET]"}
 {"level":"info","ts":1697377141.2384255,"msg":"/user [PUT]"}
+{"level":"info","ts":1697377653.6484673,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697377716.8091369,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697377779.0364397,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697377932.157417,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378053.7105985,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378073.2890468,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378118.1962724,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378150.653976,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378200.0023592,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378241.5595586,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378254.4723618,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378274.8783872,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1697378945.8320584,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697378960.5216105,"msg":"/chatroom [POST]"}
