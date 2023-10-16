@@ -79,7 +79,7 @@ func (m *messageRepository) Delete(id int) error {
 
 func (m *messageRepository) FetchByUserID(limit, id int) ([]models.Message, error) {
 	var result []models.Message
-	tx := m.db.Postrgres.Where("user_id = ?", &models.Message{UserID: id}).Find(&result)
+	tx := m.db.Postrgres.Where("user_id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -89,7 +89,7 @@ func (m *messageRepository) FetchByUserID(limit, id int) ([]models.Message, erro
 
 func (m *messageRepository) FetchByChatroomID(limit, id int) ([]models.Message, error) {
 	var result []models.Message
-	tx := m.db.Postrgres.Where("chatroom_id = ?", &models.Message{ChatroomID: id}).Find(&result)
+	tx := m.db.Postrgres.Where("chatroom_id = ?", id).Find(&result)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

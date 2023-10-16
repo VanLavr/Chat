@@ -21,8 +21,8 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	mh := &MessageHandler{usecase: u, JwtMiddleware: *jwt}
 
 	e.GET("/messages/:limit", mh.ValidateToken(mh.GetMessages))
-	e.GET("/messages/:user/:limit", mh.ValidateToken(mh.GetUserMessages))
-	e.GET("/messages/:chat/:limit", mh.ValidateToken(mh.GetChatMessages))
+	e.GET("/messages/user/:user/:limit", mh.ValidateToken(mh.GetUserMessages))
+	e.GET("/messages/chat/:chat/:limit", mh.ValidateToken(mh.GetChatMessages))
 	e.PUT("/message", mh.ValidateToken(mh.UpdateMessage))
 	e.DELETE("/message/:id", mh.ValidateToken(mh.DeleteMessage))
 }

@@ -96,3 +96,15 @@
 {"level":"info","ts":1697385198.5433905,"msg":"/user/enterChatroom [POST]"}
 {"level":"info","ts":1697385207.4826953,"msg":"/user/enterChatroom [POST]"}
 {"level":"info","ts":1697385307.4022272,"msg":"/user/:uid/leaveRoom/:chatroom_id [GET]"}
+{"level":"info","ts":1697458119.3557353,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697458133.3015575,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1697458370.796913,"msg":"/messages/:limit [GET]"}
+{"level":"info","ts":1697459287.3677907,"msg":"/messages/:chat/:limit [GET]"}
+{"level":"info","ts":1697459292.9609587,"msg":"/messages/:limit [GET]"}
+{"level":"info","ts":1697459298.5423648,"msg":"/messages/:chat/:limit [GET]"}
+{"level":"info","ts":1697462449.8293943,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1697462463.178483,"msg":"/messages/:chat/:limit [GET]"}
+{"level":"info","ts":1697462523.6795108,"msg":"/messages/:chat/:limit [GET]"}
+{"level":"info","ts":1697464949.298967,"msg":"/messages/:user/:limit [GET]"}
+{"level":"info","ts":1697464950.5254116,"msg":"/messages/:user/:limit [GET]"}
+{"level":"info","ts":1697464995.961255,"msg":"/messages/:chat/:limit [GET]"}
