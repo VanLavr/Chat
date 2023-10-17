@@ -5,9 +5,11 @@ import (
 	chatroomRepo "chat/internal/chatroom/repository/postgres"
 	chatroomUsecase "chat/internal/chatroom/usecase"
 	"chat/models"
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	messageDelivery "chat/internal/message/delivery"
 	messageRepo "chat/internal/message/repository/postgres"
@@ -61,12 +63,19 @@ func main() {
 	go func() {
 		err := e.Start(addr + ":" + port)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal(err, "here was the error")
 		}
 	}()
 	logger.STDLogger.Info("Server started...")
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-	<-quit
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
+	<-stop
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	if err := e.Shutdown(ctx); err != nil {
+		logger.STDLogger.Fatal(err.Error())
+	}
 }
