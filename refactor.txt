@@ -3,6 +3,7 @@
 3) add hashing passwords
 4) add JWT validation
 5) add swagger docs
+6) add decrementation after user deleted its room
 
 6) Renewed project:
     +   chats under passwords, owner can delete 'em 
