@@ -1,1 +1,2 @@
 {"level":"fatal","ts":1697458440.4330573,"msg":"failed to encode args[0]: unable to encode &models.Message{ID:0, UserID:0, ChatroomID:3, Content:\"\", Sended:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)} into binary format for int8 (OID 20): cannot find encode plan"}
+{"level":"fatal","ts":1697532550.6378806,"msg":"ОШИБКА: столбец \"user_id\" не существует (SQLSTATE 42703)"}

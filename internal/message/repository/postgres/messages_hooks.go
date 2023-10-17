@@ -26,12 +26,22 @@ func (c *messageRepository) beforeCreate(Message models.Message) error {
 		return models.ErrEmptyFields
 	}
 
-	var user models.User
-	var chat models.Chatroom
-	if err := c.db.Postrgres.Where("user_id = ?", Message.UserID).Find(&user).Error; err != nil {
+	var message models.Message
+	if err := c.db.Postrgres.Where("user_id = ?", Message.UserID).Find(&message).Error; err != nil {
 		return err
 	}
-	if err := c.db.Postrgres.Where("chatroom_id = ?", Message.ChatroomID).Find(&chat).Error; err != nil {
+
+	var user models.User
+	if err := c.db.Postrgres.Where("id = ?", message.UserID).Find(&user).Error; err != nil {
+		return err
+	}
+
+	if err := c.db.Postrgres.Where("chatroom_id = ?", Message.ChatroomID).Find(&message).Error; err != nil {
+		return err
+	}
+
+	var chat models.Chatroom
+	if err := c.db.Postrgres.Where("id = ?", chat.ID).Find(&chat).Error; err != nil {
 		return err
 	}
 

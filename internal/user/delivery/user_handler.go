@@ -8,6 +8,7 @@ import (
 	jwtmiddleware "chat/pkg/jwt_middleware"
 	"chat/pkg/logger"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -340,6 +341,7 @@ func (u *UserHandler) Join(e echo.Context) error {
 
 	u.hub = append(u.hub, user)
 
+	fmt.Println(u.hub, "user appended")
 	// go u.readMessage(&user)
 	go func(user *models.User) {
 		if user.ID == 0 {

@@ -125,3 +125,4 @@
 {"level":"info","ts":1697523822.619852,"msg":"/user/enterChatroom [POST]"}
 {"level":"info","ts":1697523829.9798384,"msg":"/user/enterChatroom [POST]"}
 {"level":"info","ts":1697523836.3019233,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1697532102.6298556,"msg":"/user/jwt [GET]"}
