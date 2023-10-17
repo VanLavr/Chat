@@ -348,6 +348,8 @@ func (u *UserHandler) Join(e echo.Context) error {
 			logger.STDLogger.Fatal(errors.New("can not resolve user").Error())
 		}
 
+		fmt.Println(user)
+
 		u.readMessage(user)
 	}(&user)
 
@@ -387,13 +389,14 @@ func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) 
 	logger.STDLogger.Info(string(message))
 
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
 	for i := 0; i < len(u.hub); i++ {
 		if u.hub[i].CurrentChatroomID == user.CurrentChatroomID && u.hub[i].ID != user.ID {
 			if err := u.hub[i].Connection.WriteMessage(msgType, message); err != nil {
-				logger.STDLogger.Fatal(err.Error())
+				logger.STDLogger.Warn(err.Error())
 			}
 		}
 	}
