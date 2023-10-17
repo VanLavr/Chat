@@ -73,6 +73,14 @@ func (c *chatroomRepository) beforeDelete(deleter, id int) error {
 		return err
 	}
 
+	fmt.Println(author)
+	author.RoomsOwned--
+	fmt.Println(author)
+	if err := c.db.Postrgres.Save(&author).Error; err != nil {
+		logger.STDLogger.Warn(err.Error())
+		return err
+	}
+
 	fmt.Println(author, result, deleter)
 	if !author.IsAdmin || deleter != result.CreatorID {
 		return models.ErrPermisionDenied

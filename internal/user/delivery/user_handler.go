@@ -367,10 +367,22 @@ func (u *UserHandler) readMessage(user *models.User) {
 		msgT, message, err := user.Connection.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseAbnormalClosure, websocket.CloseGoingAway, websocket.CloseProtocolError, websocket.CloseNoStatusReceived) {
+				if err := u.removeMemberFromHub(*user); err != nil {
+					logger.STDLogger.Fatal(err.Error())
+				}
+
 				log.Println("abnormal disconnect...")
+				fmt.Println(u.hub)
 				break
 			} else {
-				log.Println(err)
+				if err := u.removeMemberFromHub(*user); err != nil {
+					logger.STDLogger.Fatal(err.Error())
+				}
+
+				log.Println("anomal disconnect...")
+				fmt.Println(u.hub)
+
+				logger.STDLogger.Warn(err.Error())
 				break
 			}
 		}
@@ -395,9 +407,21 @@ func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) 
 
 	for i := 0; i < len(u.hub); i++ {
 		if u.hub[i].CurrentChatroomID == user.CurrentChatroomID && u.hub[i].ID != user.ID {
+			fmt.Println(u.hub[i], "message written")
 			if err := u.hub[i].Connection.WriteMessage(msgType, message); err != nil {
 				logger.STDLogger.Warn(err.Error())
 			}
 		}
 	}
+}
+
+func (u *UserHandler) removeMemberFromHub(user models.User) error {
+	for index, usr := range u.hub {
+		if usr.ID == user.ID {
+			u.hub = append(u.hub[:index], u.hub[index+1:]...)
+			return nil
+		}
+	}
+
+	return models.ErrNotFound
 }
