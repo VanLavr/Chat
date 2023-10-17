@@ -21,6 +21,7 @@ type UserHandler struct {
 	hub     []models.User
 	jwtmiddleware.JwtMiddleware
 	websocket.Upgrader
+	messageUsecase models.MessageUsecase
 }
 
 func Register(e *echo.Echo, u models.UserUsecase) {
@@ -31,7 +32,10 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 		CheckOrigin:     func(r *http.Request) bool { return true },
 	}
 
-	uh := &UserHandler{usecase: u, JwtMiddleware: *jwt, Upgrader: upd}
+	Mrepo := postgres.NewMessageRepository(schema.NewStorage())
+	Musecase := usecase.NewUsecase(Mrepo)
+
+	uh := &UserHandler{usecase: u, JwtMiddleware: *jwt, Upgrader: upd, messageUsecase: Musecase}
 
 	e.GET("/users/:limit", uh.GetUsers)
 	e.GET("/user/:id", uh.GetUser)
@@ -372,10 +376,7 @@ func (u *UserHandler) readMessage(user *models.User) {
 }
 
 func (u *UserHandler) multicast(msgType int, message []byte, user *models.User) {
-	Mrepo := postgres.NewMessageRepository(schema.NewStorage())
-	Musecase := usecase.NewUsecase(Mrepo)
-
-	err := Musecase.CreateMessage(models.Message{
+	err := u.messageUsecase.CreateMessage(models.Message{
 		UserID:     user.ID,
 		ChatroomID: user.CurrentChatroomID,
 		Content:    string(message),
