@@ -6,6 +6,7 @@ import (
 	chatroomUsecase "chat/internal/chatroom/usecase"
 	"chat/models"
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -71,6 +72,8 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
 	<-stop
+
+	fmt.Println("shutting down the server...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
