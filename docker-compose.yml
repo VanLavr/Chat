@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: go run /app/cmd/app/main.go
+    restart: unless-stopped
+    container_name: PENIS
+    ports:
+      - "5000:5000"
+    depends_on:
+      - PENIS_db
+
+  PENIS_db:
+    image: postgres:latest
+    env_file:
+      - ./app.env
+    volumes:
+      - ./database/webchat:/var/lib/postgresql/data
+    container_name: PENIS_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=ivan
+      - POSTGRES_DB=webchat
+      - POSTGRES_PASSWORD=qwerty
+    restart: unless-stopped
