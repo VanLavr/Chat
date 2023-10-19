@@ -1,0 +1,60 @@
+basePath: /
+definitions:
+  models.Response:
+    properties:
+      content: {}
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: pidorpidorasi
+  title: chat
+  version: "1.0"
+paths:
+  /chatroom/{id}:
+    get:
+      description: Get a chatroom by its ID
+      operationId: get-chatroom-by-id
+      parameters:
+      - description: Chatroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chatroom by ID
+  /chatrooms/{limit}:
+    get:
+      description: Get a list of chatrooms
+      operationId: get-chatrooms
+      parameters:
+      - description: Number of chatrooms to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chatrooms
+swagger: "2.0"

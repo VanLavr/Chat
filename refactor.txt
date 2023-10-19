@@ -32,4 +32,4 @@
 
 8) used techniques:
     MVC
-    
+    gracefull shutdown 

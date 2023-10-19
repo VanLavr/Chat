@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"strconv"
 
+	_ "chat/docs"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -30,6 +32,14 @@ func Register(e *echo.Echo, u models.ChatroomUsecase) {
 	e.DELETE("/chatroom", ch.ValidateToken(ch.DeleteChat))
 }
 
+// @Summary Get chatroom by ID
+// @Description Get a chatroom by its ID
+// @ID get-chatroom-by-id
+// @Produce json
+// @Param id path int true "Chatroom ID"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Router /chatroom/{id} [get]
 func (c *ChatroomHandler) GetById(e echo.Context) error {
 	sid := e.Param("id")
 	id, err := strconv.Atoi(sid)
@@ -63,6 +73,14 @@ func (c *ChatroomHandler) GetById(e echo.Context) error {
 	})
 }
 
+// @Summary Get chatrooms
+// @Description Get a list of chatrooms
+// @ID get-chatrooms
+// @Produce json
+// @Param limit path int true "Number of chatrooms to retrieve"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Router /chatrooms/{limit} [get]
 func (c *ChatroomHandler) GetRooms(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)

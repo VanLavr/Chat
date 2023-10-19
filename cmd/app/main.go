@@ -29,7 +29,15 @@ import (
 	"log"
 
 	"github.com/labstack/echo/v4"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
+
+//	@title			chat
+//	@description	pidorpidorasi
+//	@version		1.0
+//	@basepath		/
+//	@host			localhost:8080
 
 func main() {
 	var storage = schema.NewStorage()
@@ -41,6 +49,7 @@ func main() {
 	)
 
 	e := echo.New()
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	corsmiddleware.NewMiddleware(e)
 	e.GET("/", func(c echo.Context) error {
 		logger.STDLogger.Info("/ping")
