@@ -15,11 +15,133 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/chatroom": {
+            "put": {
+                "description": "Update an existing chatroom",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatroom"
+                ],
+                "summary": "Update chatroom",
+                "operationId": "update-chatroom",
+                "parameters": [
+                    {
+                        "description": "Chatroom information",
+                        "name": "chatroom",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Chatroom"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new chatroom",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatroom"
+                ],
+                "summary": "Create chatroom",
+                "operationId": "create-chatroom",
+                "parameters": [
+                    {
+                        "description": "Chatroom information",
+                        "name": "chatroom",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Chatroom"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an existing chatroom",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatroom"
+                ],
+                "summary": "Delete chatroom",
+                "operationId": "delete-chatroom",
+                "parameters": [
+                    {
+                        "description": "Chatroom deletion information",
+                        "name": "schema.DeleteChat",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.DeleteChat"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/chatroom/{id}": {
             "get": {
                 "description": "Get a chatroom by its ID",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "chatroom"
                 ],
                 "summary": "Get chatroom by ID",
                 "operationId": "get-chatroom-by-id",
@@ -54,6 +176,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "chatroom"
+                ],
                 "summary": "Get chatrooms",
                 "operationId": "get-chatrooms",
                 "parameters": [
@@ -80,15 +205,141 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/enterChatroom": {
+            "post": {
+                "description": "Enter a chatroom",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatroom"
+                ],
+                "summary": "Enter chatroom",
+                "operationId": "enter-chatroom",
+                "parameters": [
+                    {
+                        "description": "User chat information",
+                        "name": "schema.Param",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.Param"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{uid}/leaveRoom/{chatroom_id}": {
+            "get": {
+                "description": "Leave a chatroom",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "chatroom"
+                ],
+                "summary": "Leave chatroom",
+                "operationId": "leave-chatroom",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "uid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Chatroom ID",
+                        "name": "chatroom_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.Chatroom": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Response": {
             "type": "object",
             "properties": {
                 "content": {},
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "schema.DeleteChat": {
+            "type": "object",
+            "properties": {
+                "chatroom": {
+                    "type": "integer"
+                },
+                "deleterID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "schema.Param": {
+            "type": "object",
+            "properties": {
+                "chatroomID": {
+                    "type": "integer"
+                },
+                "chatroomPassword": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
                 }
             }
         }

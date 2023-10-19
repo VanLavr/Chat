@@ -1,10 +1,37 @@
 basePath: /
 definitions:
+  models.Chatroom:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      owner:
+        type: integer
+      password:
+        type: string
+    type: object
   models.Response:
     properties:
       content: {}
       message:
         type: string
+    type: object
+  schema.DeleteChat:
+    properties:
+      chatroom:
+        type: integer
+      deleterID:
+        type: integer
+    type: object
+  schema.Param:
+    properties:
+      chatroomID:
+        type: integer
+      chatroomPassword:
+        type: string
+      userID:
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -13,6 +40,85 @@ info:
   title: chat
   version: "1.0"
 paths:
+  /chatroom:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing chatroom
+      operationId: delete-chatroom
+      parameters:
+      - description: Chatroom deletion information
+        in: body
+        name: schema.DeleteChat
+        required: true
+        schema:
+          $ref: '#/definitions/schema.DeleteChat'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete chatroom
+      tags:
+      - chatroom
+    post:
+      consumes:
+      - application/json
+      description: Create a new chatroom
+      operationId: create-chatroom
+      parameters:
+      - description: Chatroom information
+        in: body
+        name: chatroom
+        required: true
+        schema:
+          $ref: '#/definitions/models.Chatroom'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create chatroom
+      tags:
+      - chatroom
+    put:
+      consumes:
+      - application/json
+      description: Update an existing chatroom
+      operationId: update-chatroom
+      parameters:
+      - description: Chatroom information
+        in: body
+        name: chatroom
+        required: true
+        schema:
+          $ref: '#/definitions/models.Chatroom'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update chatroom
+      tags:
+      - chatroom
   /chatroom/{id}:
     get:
       description: Get a chatroom by its ID
@@ -35,6 +141,8 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get chatroom by ID
+      tags:
+      - chatroom
   /chatrooms/{limit}:
     get:
       description: Get a list of chatrooms
@@ -57,4 +165,62 @@ paths:
           schema:
             $ref: '#/definitions/models.Response'
       summary: Get chatrooms
+      tags:
+      - chatroom
+  /user/{uid}/leaveRoom/{chatroom_id}:
+    get:
+      description: Leave a chatroom
+      operationId: leave-chatroom
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: path
+        name: chatroom_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Leave chatroom
+      tags:
+      - chatroom
+  /user/enterChatroom:
+    post:
+      consumes:
+      - application/json
+      description: Enter a chatroom
+      operationId: enter-chatroom
+      parameters:
+      - description: User chat information
+        in: body
+        name: schema.Param
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Param'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Enter chatroom
+      tags:
+      - chatroom
 swagger: "2.0"
