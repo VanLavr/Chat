@@ -580,4 +580,7 @@ paths:
       summary: Get users
       tags:
       - user
+securityDefinitions:
+  JWTAuth:
+    type: basic
 swagger: "2.0"

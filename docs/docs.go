@@ -879,6 +879,11 @@ const docTemplate = `{
         "models.User": {
             "type": "object"
         }
+    },
+    "securityDefinitions": {
+        "JWTAuth": {
+            "type": "basic"
+        }
     }
 }`
 
