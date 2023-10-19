@@ -33,12 +33,11 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-//	@title			chat
-//	@description	pidorpidorasi
-//	@version		1.0
-//	@basepath		/
-//	@host			localhost:8080
-
+// @title			chat
+// @description	pidorpidorasi
+// @version		1.0
+// @basepath		/
+// @host			localhost:8080
 func main() {
 	var storage = schema.NewStorage()
 	storage.MigrateAll()
