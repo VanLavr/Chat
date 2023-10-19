@@ -1,5 +1,21 @@
 basePath: /
 definitions:
+  delivery.DeleteChatDTO:
+    properties:
+      cid:
+        type: integer
+      uid:
+        type: integer
+    type: object
+  delivery.EnterChatDTO:
+    properties:
+      cid:
+        type: integer
+      roomPassword:
+        type: string
+      uid:
+        type: integer
+    type: object
   models.Chatroom:
     properties:
       id:
@@ -17,22 +33,6 @@ definitions:
       message:
         type: string
     type: object
-  schema.DeleteChat:
-    properties:
-      chatroom:
-        type: integer
-      deleterID:
-        type: integer
-    type: object
-  schema.Param:
-    properties:
-      chatroomID:
-        type: integer
-      chatroomPassword:
-        type: string
-      userID:
-        type: integer
-    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -49,10 +49,10 @@ paths:
       parameters:
       - description: Chatroom deletion information
         in: body
-        name: schema.DeleteChat
+        name: DeleteChatDTO
         required: true
         schema:
-          $ref: '#/definitions/schema.DeleteChat'
+          $ref: '#/definitions/delivery.DeleteChatDTO'
       produces:
       - application/json
       responses:
@@ -205,10 +205,10 @@ paths:
       parameters:
       - description: User chat information
         in: body
-        name: schema.Param
+        name: EnterChatDTO
         required: true
         schema:
-          $ref: '#/definitions/schema.Param'
+          $ref: '#/definitions/delivery.EnterChatDTO'
       produces:
       - application/json
       responses:

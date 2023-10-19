@@ -18,3 +18,5 @@ It also includes methods or functions related to message data access, such as Cr
 
 reference:
 https://github.com/bxcodec/go-clean-arch/blob/master/domain/article.go
+swagger:
+swag init -g smth/smth/main.go

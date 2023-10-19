@@ -110,11 +110,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Chatroom deletion information",
-                        "name": "schema.DeleteChat",
+                        "name": "DeleteChatDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.DeleteChat"
+                            "$ref": "#/definitions/delivery.DeleteChatDTO"
                         }
                     }
                 ],
@@ -223,11 +223,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "User chat information",
-                        "name": "schema.Param",
+                        "name": "EnterChatDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.Param"
+                            "$ref": "#/definitions/delivery.EnterChatDTO"
                         }
                     }
                 ],
@@ -292,6 +292,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "delivery.DeleteChatDTO": {
+            "type": "object",
+            "properties": {
+                "cid": {
+                    "type": "integer"
+                },
+                "uid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "delivery.EnterChatDTO": {
+            "type": "object",
+            "properties": {
+                "cid": {
+                    "type": "integer"
+                },
+                "roomPassword": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Chatroom": {
             "type": "object",
             "properties": {
@@ -315,31 +340,6 @@ const docTemplate = `{
                 "content": {},
                 "message": {
                     "type": "string"
-                }
-            }
-        },
-        "schema.DeleteChat": {
-            "type": "object",
-            "properties": {
-                "chatroom": {
-                    "type": "integer"
-                },
-                "deleterID": {
-                    "type": "integer"
-                }
-            }
-        },
-        "schema.Param": {
-            "type": "object",
-            "properties": {
-                "chatroomID": {
-                    "type": "integer"
-                },
-                "chatroomPassword": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "integer"
                 }
             }
         }
