@@ -27,6 +27,19 @@ definitions:
       password:
         type: string
     type: object
+  models.Message:
+    properties:
+      chat_id:
+        type: integer
+      content:
+        type: string
+      id:
+        type: integer
+      sended:
+        type: string
+      user_id:
+        type: integer
+    type: object
   models.Response:
     properties:
       content: {}
@@ -167,6 +180,159 @@ paths:
       summary: Get chatrooms
       tags:
       - chatroom
+  /message:
+    put:
+      consumes:
+      - application/json
+      description: Update a message with new content
+      operationId: update-message
+      parameters:
+      - description: Message object
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/models.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a message
+      tags:
+      - messages
+  /message/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a message with a specified ID
+      operationId: delete-message
+      parameters:
+      - description: Message ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a message
+      tags:
+      - messages
+  /messages/{chat}/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages for a specific chat with a specified limit
+      operationId: get-chat-messages
+      parameters:
+      - description: Chat ID
+        in: path
+        name: chat
+        required: true
+        type: integer
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chat messages
+      tags:
+      - messages
+  /messages/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages with a specified limit
+      operationId: get-messages
+      parameters:
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get messages
+      tags:
+      - messages
+  /messages/{user}/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages for a specific user with a specified limit
+      operationId: get-user-messages
+      parameters:
+      - description: User ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get user messages
+      tags:
+      - messages
   /user/{uid}/leaveRoom/{chatroom_id}:
     get:
       description: Leave a chatroom

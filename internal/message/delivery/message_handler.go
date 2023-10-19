@@ -7,6 +7,8 @@ import (
 	"errors"
 	"strconv"
 
+	_ "chat/docs"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,6 +29,17 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	e.DELETE("/message/:id", mh.ValidateToken(mh.DeleteMessage))
 }
 
+//	@Summary		Get messages
+//	@Tags			messages
+//	@Description	Retrieve messages with a specified limit
+//	@ID				get-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{limit} [get]
 func (m *MessageHandler) GetMessages(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)
@@ -60,6 +73,18 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 	})
 }
 
+//	@Summary		Get user messages
+//	@Tags			messages
+//	@Description	Retrieve messages for a specific user with a specified limit
+//	@ID				get-user-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	path		int	true	"User ID"
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{user}/{limit} [get]
 func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	sUid := e.Param("user")
 	sLimit := e.Param("limit")
@@ -106,6 +131,18 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	})
 }
 
+//	@Summary		Get chat messages
+//	@Tags			messages
+//	@Description	Retrieve messages for a specific chat with a specified limit
+//	@ID				get-chat-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			chat	path		int	true	"Chat ID"
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{chat}/{limit} [get]
 func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	sCid := e.Param("chat")
 	sLimit := e.Param("limit")
@@ -152,6 +189,16 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	})
 }
 
+//	@Summary		Update a message
+//	@Tags			messages
+//	@Description	Update a message with new content
+//	@ID				update-message
+//	@Accept			json
+//	@Produce		json
+//	@Param			message	body		models.Message	true	"Message object"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Router			/message [put]
 func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	var message models.Message
 
@@ -188,6 +235,16 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	})
 }
 
+//	@Summary		Delete a message
+//	@Tags			messages
+//	@Description	Delete a message with a specified ID
+//	@ID				delete-message
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Message ID"
+//	@Success		200	{object}	models.Response
+//	@Failure		400	{object}	models.Response
+//	@Router			/message/{id} [delete]
 func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	sId := e.Param("id")
 	id, err := strconv.Atoi(sId)

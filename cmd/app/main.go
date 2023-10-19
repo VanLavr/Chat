@@ -86,6 +86,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
+	logger.CloseLogfiles()
 	if err := e.Shutdown(ctx); err != nil {
 		logger.STDLogger.Fatal(err.Error())
 	}
