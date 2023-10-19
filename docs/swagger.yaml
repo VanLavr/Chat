@@ -46,6 +46,8 @@ definitions:
       message:
         type: string
     type: object
+  models.User:
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -333,6 +335,142 @@ paths:
       summary: Get user messages
       tags:
       - messages
+  /user:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing user
+      operationId: delete-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a user
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      operationId: create-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create a user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user
+      operationId: update-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a user
+      tags:
+      - user
+  /user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a user with a specified ID
+      operationId: get-user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a user
+      tags:
+      - user
+  /user/{uid}/chatroom/{cid}:
+    post:
+      consumes:
+      - application/json
+      description: Join a chatroom with the specified user ID and chatroom ID
+      operationId: join-chatroom
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: path
+        name: cid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Join a chatroom
+      tags:
+      - user
   /user/{uid}/leaveRoom/{chatroom_id}:
     get:
       description: Leave a chatroom
@@ -389,4 +527,57 @@ paths:
       summary: Enter chatroom
       tags:
       - chatroom
+  /user/jwt:
+    get:
+      consumes:
+      - application/json
+      description: Generate a JWT token for the user
+      operationId: get-jwt
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Generate JWT token
+      tags:
+      - user
+  /users/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of users with a specified limit
+      operationId: get-users
+      parameters:
+      - description: Limit of users to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get users
+      tags:
+      - user
 swagger: "2.0"

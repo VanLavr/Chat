@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"strconv"
 
+	_ "chat/docs"
+
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 )
@@ -47,6 +49,16 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 	e.GET("/ws/start/:uid/:cid", uh.ValidateToken(uh.Join))
 }
 
+// @Summary		Get users
+// @Tags			user
+// @Description	Retrieve a list of users with a specified limit
+// @ID				get-users
+// @Accept			json
+// @Produce		json
+// @Param			limit	path		int	true	"Limit of users to retrieve"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/users/{limit} [get]
 func (u *UserHandler) GetUsers(e echo.Context) error {
 	limit := e.Param("limit")
 	lm, err := strconv.Atoi(limit)
@@ -71,6 +83,16 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 	})
 }
 
+// @Summary		Get a user
+// @Tags			user
+// @Description	Retrieve a user with a specified ID
+// @ID				get-user
+// @Accept			json
+// @Produce		json
+// @Param			id	path		int	true	"User ID"
+// @Success		200	{object}	models.Response
+// @Failure		400	{object}	models.Response
+// @Router			/user/{id} [get]
 func (u *UserHandler) GetUser(e echo.Context) error {
 	stringID := e.Param("id")
 	id, err := strconv.Atoi(stringID)
@@ -104,6 +126,16 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 	})
 }
 
+// @Summary		Create a user
+// @Tags			user
+// @Description	Create a new user
+// @ID				create-user
+// @Accept			json
+// @Produce		json
+// @Param			user	body		models.User	true	"User object"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/user [post]
 func (u *UserHandler) CreateUser(e echo.Context) error {
 	var user models.User
 
@@ -145,6 +177,16 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 	}
 }
 
+// @Summary		Update a user
+// @Tags			user
+// @Description	Update an existing user
+// @ID				update-user
+// @Accept			json
+// @Produce		json
+// @Param			user	body		models.User	true	"User object"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/user [put]
 func (u *UserHandler) UpdateUser(e echo.Context) error {
 	var user models.User
 
@@ -201,6 +243,16 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 	}
 }
 
+// @Summary		Delete a user
+// @Tags			user
+// @Description	Delete an existing user
+// @ID				delete-user
+// @Accept			json
+// @Produce		json
+// @Param			user	body		models.User	true	"User object"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/user [delete]
 func (u *UserHandler) DeleteUser(e echo.Context) error {
 	var user models.User
 
@@ -250,6 +302,16 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 	}
 }
 
+// @Summary		Generate JWT token
+// @Tags			user
+// @Description	Generate a JWT token for the user
+// @ID				get-jwt
+// @Accept			json
+// @Produce		json
+// @Param			user	body		models.User	true	"User object"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/user/jwt [get]
 func (u *UserHandler) GetJWT(e echo.Context) error {
 	var user models.User
 
@@ -287,6 +349,17 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	})
 }
 
+// @Summary		Join a chatroom
+// @Tags			user
+// @Description	Join a chatroom with the specified user ID and chatroom ID
+// @ID				join-chatroom
+// @Accept			json
+// @Produce		json
+// @Param			uid	path		int	true	"User ID"
+// @Param			cid	path		int	true	"Chatroom ID"
+// @Success		200	{object}	models.Response
+// @Failure		400	{object}	models.Response
+// @Router			/user/{uid}/chatroom/{cid} [post]
 func (u *UserHandler) Join(e echo.Context) error {
 	sUid := e.Param("uid")
 	sCid := e.Param("cid")
