@@ -13,3 +13,7 @@ test:
 	go test ./internal/user/repository/postgres/
 	go test ./internal/chatroom/repository/postgres/
 	go test ./internal/message/repository/postgres/
+
+Create_image:
+	sudo docker buildx build . --tag lavrushkoivan/web_chat
+ 

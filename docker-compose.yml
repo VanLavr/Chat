@@ -1,27 +1,23 @@
-services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: go run /app/cmd/app/main.go
-    restart: unless-stopped
-    container_name: PENIS
-    ports:
-      - "5000:5000"
-    depends_on:
-      - PENIS_db
+version: '3.8'
 
-  PENIS_db:
-    image: postgres:latest
-    env_file:
-      - ./app.env
-    volumes:
-      - ./database/webchat:/var/lib/postgresql/data
-    container_name: PENIS_db
+services:
+  server:
+    image: lavrushkoivan/web_chat
     ports:
-      - "5432:5432"
+      - 8080:8080
+    depends_on:
+      - chat_db
+
+  chat_db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=ivan
-      - POSTGRES_DB=webchat
-      - POSTGRES_PASSWORD=qwerty
-    restart: unless-stopped
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes:
+  postgres-db:

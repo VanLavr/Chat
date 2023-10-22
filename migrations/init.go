@@ -1,6 +1,8 @@
 package schema
 
 import (
+    "log"
+
 	"chat/models"
 	"chat/pkg/config"
 	"chat/pkg/logger"
@@ -16,6 +18,7 @@ type Storage struct {
 func NewStorage() *Storage {
 	s := new(Storage)
 	dsn := config.Con.GetPostgres()
+    log.Println(dsn)
 
 	var err error
 	s.Postrgres, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
