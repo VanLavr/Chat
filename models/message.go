@@ -19,6 +19,7 @@ type MessageRepository interface {
 	FetchByChatroomID(limit, id int) ([]Message, error)
 	Store(Message Message) error
 	StorePhoto(Message Message) (string, error)
+	FindPhoto(message Message) (string, error)
 	Update(Message Message) error
 	Delete(id int) error
 	DeletePhoto(id string) (int64, error)
@@ -31,6 +32,7 @@ type MessageUsecase interface {
 	GetById(id int) (Message, error)
 	CreateMessage(message Message) error
 	StorePhoto(message Message) (string, error)
+	FindPhoto(message Message) (string, error)
 	UpdateMessage(message Message) error
 	DeleteMessage(id int) error
 	DeletePhoto(id string) (int64, error)

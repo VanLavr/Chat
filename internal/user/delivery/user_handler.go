@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"chat/internal/message/repository/postgres"
+	"chat/internal/message/repository/postgres-mongo"
 	"chat/internal/message/usecase"
 	schema "chat/migrations"
 	"chat/models"

@@ -31,6 +31,7 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	e.PUT("/message", mh.ValidateToken(mh.UpdateMessage))
 	e.DELETE("/message/:id", mh.ValidateToken(mh.DeleteMessage))
 	e.POST("/message/upload-photo", mh.ValidateToken(mh.UploadPhoto))
+	e.POST("/message/find-photo", mh.ValidateToken(mh.FindPhoto))
 }
 
 // @Summary		Get messages
@@ -282,6 +283,48 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	})
 }
 
+func (m *MessageHandler) FindPhoto(e echo.Context) error {
+	var messageData models.Message
+	if err := e.Bind(&messageData); err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params",
+		})
+	}
+
+	id, err := m.usecase.FindPhoto(messageData)
+	if err != nil && errors.Is(err, models.ErrBadParamInput) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Invalid params jfkls",
+		})
+	} else if err != nil && !errors.Is(err, models.ErrBadParamInput) {
+		return e.JSON(500, models.Response{
+			Message: "Failure",
+			Content: models.ErrInternalServerError.Error(),
+		})
+	}
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: id,
+	})
+}
+
+// @Summary Uploads a photo
+// @Tags messages
+// @Description Uploads a photo with the specified timing, user ID, chatroom ID, and photo file
+// @ID uploadPhoto
+// @Accept multipart/form-data
+// @Produce json
+// @Param timing formData string true "Timing"
+// @Param user_id formData integer true "User ID"
+// @Param chatroom_id formData integer true "Chatroom ID"
+// @Param photo formData file true "Photo file"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /upload/photo [post]
 func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 	// ectracting data from form (time, user id, chatroom id and file)
 

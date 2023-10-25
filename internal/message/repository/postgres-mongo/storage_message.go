@@ -151,6 +151,39 @@ func (m *messageRepository) DeletePhoto(id string) (int64, error) {
 	return result.DeletedCount, nil
 }
 
+func (m *messageRepository) FindPhoto(message models.Message) (string, error) {
+	imagesCollection := m.db.SetMongoOnStatic()
+	dao, err := m.castToDAO(message)
+	if err != nil {
+		return "", err
+	}
+
+	var document map[string]interface{}
+	err = imagesCollection.FindOne(context.TODO(), bson.M{"userid": dao.UserID, "chatroomid": dao.ChatroomID, "timestamp": dao.Timestamp}).Decode(&document)
+	if err != nil {
+		return "", err
+	}
+
+	id := document["_id"]
+	log.Println(id)
+	oid, ok := id.(primitive.ObjectID)
+	if !ok {
+		logger.STDLogger.Error("can not assert object id")
+		logger.FileLogger.Error("can not assert object id")
+
+		return "", models.ErrInternalServerError
+	}
+
+	runed := []rune(oid.String())
+	runed = append(runed[:len(runed)-1], runed[len(runed):]...)
+	runed = append(runed[:len(runed)-1], runed[len(runed):]...)
+	runed = runed[len("ObjectID(\""):]
+
+	log.Println(string(runed))
+	return string(runed), nil
+}
+
+// message.Sended.IsZero()
 func (m *messageRepository) castToDAO(message models.Message) (*ImageDAO, error) {
 	if message.ChatroomID == 0 || message.UserID == 0 {
 		return nil, models.ErrBadParamInput

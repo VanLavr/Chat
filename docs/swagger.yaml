@@ -335,6 +335,52 @@ paths:
       summary: Get user messages
       tags:
       - messages
+  /upload/photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a photo with the specified timing, user ID, chatroom ID,
+        and photo file
+      operationId: uploadPhoto
+      parameters:
+      - description: Timing
+        in: formData
+        name: timing
+        required: true
+        type: string
+      - description: User ID
+        in: formData
+        name: user_id
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: formData
+        name: chatroom_id
+        required: true
+        type: integer
+      - description: Photo file
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Uploads a photo
+      tags:
+      - messages
   /user:
     delete:
       consumes:

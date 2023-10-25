@@ -4,6 +4,7 @@ import (
 	"chat/models"
 	"chat/pkg/logger"
 	"errors"
+	"log"
 )
 
 type usecase struct {
@@ -87,12 +88,28 @@ func (u *usecase) DeleteMessage(id int) error {
 }
 
 func (u *usecase) StorePhoto(message models.Message) (string, error) {
-	if message.ChatroomID == 0 || message.UserID == 0 {
+	if message.ChatroomID == 0 || message.UserID == 0 || message.Sended.IsZero() {
 		return "", models.ErrBadParamInput
 	}
 
 	id, err := u.repo.StorePhoto(message)
 	if err != nil {
+		return "", err
+	}
+
+	return id, nil
+}
+
+func (u *usecase) FindPhoto(message models.Message) (string, error) {
+	if message.ChatroomID == 0 || message.UserID == 0 {
+		log.Println(message.Sended.IsZero(), message.ChatroomID, message.UserID)
+		return "", models.ErrBadParamInput
+	}
+
+	id, err := u.repo.FindPhoto(message)
+	log.Println(id, "here")
+	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 

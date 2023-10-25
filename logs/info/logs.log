@@ -139,3 +139,4 @@
 {"level":"info","ts":1698236214.9699278,"msg":"write exception: write errors: [E11000 duplicate key error collection: chatserver_static.images index: _id_ dup key: { _id: 0 }]"}
 {"level":"info","ts":1698236364.8593597,"msg":"write exception: write errors: [E11000 duplicate key error collection: chatserver_static.images index: _id_ dup key: { _id: 0 }]"}
 {"level":"info","ts":1698240353.1742926,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1698244117.987818,"msg":"/user/jwt [GET]"}

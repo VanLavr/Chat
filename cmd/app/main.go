@@ -13,7 +13,7 @@ import (
 	"time"
 
 	messageDelivery "chat/internal/message/delivery"
-	messageRepo "chat/internal/message/repository/postgres"
+	messageRepo "chat/internal/message/repository/postgres-mongo"
 	messageUsecase "chat/internal/message/usecase"
 
 	userDelivery "chat/internal/user/delivery"
