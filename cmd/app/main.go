@@ -60,6 +60,10 @@ func main() {
 		})
 	})
 
+	// @Description you have to fetch /static/<image id>
+	// @Router /static [get]
+	e.Static("/static", "./static/images")
+
 	userRepo := userRepo.NewUserRepository(storage)
 	userUsecase := userUsecase.NewUsecase(userRepo)
 	userDelivery.Register(e, userUsecase)
@@ -75,7 +79,7 @@ func main() {
 	go func() {
 		err := e.Start(addr + ":" + port)
 		if err != nil {
-			log.Fatal(err, "here was the error")
+			log.Fatal(err, " here was the error")
 		}
 	}()
 	logger.STDLogger.Info("Server started...")

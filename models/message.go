@@ -5,11 +5,11 @@ import "time"
 const TimeLayout = "2006-01-02T15:04:05.000Z"
 
 type Message struct {
-	ID         int       `gorm:"primarykey" json:"id"      bson:"omitempty"`
-	UserID     int       `gorm:"foreignkey" json:"user_id" bson:"user_id"`
-	ChatroomID int       `gorm:"foreignkey" json:"chat_id" bson:"chatroom_id"`
-	Content    string    `json:"content"                   bson:"omitempty"`
-	Sended     time.Time `json:"sended"                    bson:"timestamp"`
+	ID         int       `gorm:"primarykey" json:"id"`
+	UserID     int       `gorm:"foreignkey" json:"user_id"`
+	ChatroomID int       `gorm:"foreignkey" json:"chat_id"`
+	Content    string    `json:"content"`
+	Sended     time.Time `json:"sended"`
 }
 
 type MessageRepository interface {

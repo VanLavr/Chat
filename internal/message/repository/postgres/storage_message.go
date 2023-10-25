@@ -5,6 +5,7 @@ import (
 	"chat/models"
 	"chat/pkg/logger"
 	"context"
+	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -104,7 +105,13 @@ func (m *messageRepository) FetchByChatroomID(limit, id int) ([]models.Message, 
 
 func (m *messageRepository) StorePhoto(Message models.Message) (string, error) {
 	imagesCollection := m.db.SetMongoOnStatic()
-	result, err := imagesCollection.InsertOne(context.TODO(), Message)
+
+	dao, err := m.castToDAO(Message)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := imagesCollection.InsertOne(context.TODO(), dao)
 	if err != nil {
 		logger.STDLogger.Info(err.Error())
 		logger.FileLogger.Info(err.Error())
@@ -112,6 +119,7 @@ func (m *messageRepository) StorePhoto(Message models.Message) (string, error) {
 	}
 
 	id := result.InsertedID
+	log.Println(id)
 	oid, ok := id.(primitive.ObjectID)
 	if !ok {
 		logger.STDLogger.Error("can not assert object id")
@@ -141,4 +149,16 @@ func (m *messageRepository) DeletePhoto(id string) (int64, error) {
 	}
 
 	return result.DeletedCount, nil
+}
+
+func (m *messageRepository) castToDAO(message models.Message) (*ImageDAO, error) {
+	if message.ChatroomID == 0 || message.UserID == 0 {
+		return nil, models.ErrBadParamInput
+	}
+
+	return &ImageDAO{
+		UserID:     message.UserID,
+		ChatroomID: message.ChatroomID,
+		Timestamp:  message.Sended.Format(models.TimeLayout),
+	}, nil
 }

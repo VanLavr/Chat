@@ -131,3 +131,11 @@
 {"level":"info","ts":1697548494.9571853,"msg":"/chatroom [POST]"}
 {"level":"info","ts":1697548506.567712,"msg":"/chatroom [POST]"}
 {"level":"info","ts":1697548541.5921247,"msg":"/chatroom [DELETE]"}
+{"level":"info","ts":1698235349.172127,"msg":"/user/:id [GET]"}
+{"level":"info","ts":1698235357.8593569,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1698235521.3673804,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1698235596.462812,"msg":"cannot marshal type models.Message to a BSON Document: struct models.Message has duplicated key omitempty"}
+{"level":"info","ts":1698236102.7549214,"msg":"write exception: write errors: [E11000 duplicate key error collection: chatserver_static.images index: _id_ dup key: { _id: 0 }]"}
+{"level":"info","ts":1698236214.9699278,"msg":"write exception: write errors: [E11000 duplicate key error collection: chatserver_static.images index: _id_ dup key: { _id: 0 }]"}
+{"level":"info","ts":1698236364.8593597,"msg":"write exception: write errors: [E11000 duplicate key error collection: chatserver_static.images index: _id_ dup key: { _id: 0 }]"}
+{"level":"info","ts":1698240353.1742926,"msg":"/user/jwt [GET]"}
