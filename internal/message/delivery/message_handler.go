@@ -5,7 +5,10 @@ import (
 	jwtmiddleware "chat/pkg/jwt_middleware"
 	"chat/pkg/logger"
 	"errors"
+	"io"
+	"os"
 	"strconv"
+	"time"
 
 	_ "chat/docs"
 
@@ -27,19 +30,20 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	e.GET("/messages/chat/:chat/:limit", mh.ValidateToken(mh.GetChatMessages))
 	e.PUT("/message", mh.ValidateToken(mh.UpdateMessage))
 	e.DELETE("/message/:id", mh.ValidateToken(mh.DeleteMessage))
+	e.POST("/message/upload-photo", mh.ValidateToken(mh.UploadPhoto))
 }
 
-//	@Summary		Get messages
-//	@Tags			messages
-//	@Description	Retrieve messages with a specified limit
-//	@ID				get-messages
-//	@Accept			json
-//	@Produce		json
-//	@Param			limit	path		int	true	"Limit of messages to retrieve"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Failure		500		{object}	models.Response
-//	@Router			/messages/{limit} [get]
+// @Summary		Get messages
+// @Tags			messages
+// @Description	Retrieve messages with a specified limit
+// @ID				get-messages
+// @Accept			json
+// @Produce		json
+// @Param			limit	path		int	true	"Limit of messages to retrieve"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Failure		500		{object}	models.Response
+// @Router			/messages/{limit} [get]
 func (m *MessageHandler) GetMessages(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)
@@ -73,18 +77,18 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 	})
 }
 
-//	@Summary		Get user messages
-//	@Tags			messages
-//	@Description	Retrieve messages for a specific user with a specified limit
-//	@ID				get-user-messages
-//	@Accept			json
-//	@Produce		json
-//	@Param			user	path		int	true	"User ID"
-//	@Param			limit	path		int	true	"Limit of messages to retrieve"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Failure		500		{object}	models.Response
-//	@Router			/messages/{user}/{limit} [get]
+// @Summary		Get user messages
+// @Tags			messages
+// @Description	Retrieve messages for a specific user with a specified limit
+// @ID				get-user-messages
+// @Accept			json
+// @Produce		json
+// @Param			user	path		int	true	"User ID"
+// @Param			limit	path		int	true	"Limit of messages to retrieve"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Failure		500		{object}	models.Response
+// @Router			/messages/{user}/{limit} [get]
 func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	sUid := e.Param("user")
 	sLimit := e.Param("limit")
@@ -131,18 +135,18 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	})
 }
 
-//	@Summary		Get chat messages
-//	@Tags			messages
-//	@Description	Retrieve messages for a specific chat with a specified limit
-//	@ID				get-chat-messages
-//	@Accept			json
-//	@Produce		json
-//	@Param			chat	path		int	true	"Chat ID"
-//	@Param			limit	path		int	true	"Limit of messages to retrieve"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Failure		500		{object}	models.Response
-//	@Router			/messages/{chat}/{limit} [get]
+// @Summary		Get chat messages
+// @Tags			messages
+// @Description	Retrieve messages for a specific chat with a specified limit
+// @ID				get-chat-messages
+// @Accept			json
+// @Produce		json
+// @Param			chat	path		int	true	"Chat ID"
+// @Param			limit	path		int	true	"Limit of messages to retrieve"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Failure		500		{object}	models.Response
+// @Router			/messages/{chat}/{limit} [get]
 func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	sCid := e.Param("chat")
 	sLimit := e.Param("limit")
@@ -189,16 +193,16 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	})
 }
 
-//	@Summary		Update a message
-//	@Tags			messages
-//	@Description	Update a message with new content
-//	@ID				update-message
-//	@Accept			json
-//	@Produce		json
-//	@Param			message	body		models.Message	true	"Message object"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Router			/message [put]
+// @Summary		Update a message
+// @Tags			messages
+// @Description	Update a message with new content
+// @ID				update-message
+// @Accept			json
+// @Produce		json
+// @Param			message	body		models.Message	true	"Message object"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/message [put]
 func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	var message models.Message
 
@@ -235,16 +239,16 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	})
 }
 
-//	@Summary		Delete a message
-//	@Tags			messages
-//	@Description	Delete a message with a specified ID
-//	@ID				delete-message
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		int	true	"Message ID"
-//	@Success		200	{object}	models.Response
-//	@Failure		400	{object}	models.Response
-//	@Router			/message/{id} [delete]
+// @Summary		Delete a message
+// @Tags			messages
+// @Description	Delete a message with a specified ID
+// @ID				delete-message
+// @Accept			json
+// @Produce		json
+// @Param			id	path		int	true	"Message ID"
+// @Success		200	{object}	models.Response
+// @Failure		400	{object}	models.Response
+// @Router			/message/{id} [delete]
 func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	sId := e.Param("id")
 	id, err := strconv.Atoi(sId)
@@ -276,4 +280,96 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 		Message: "Success",
 		Content: "Message deleted",
 	})
+}
+
+func (m *MessageHandler) UploadPhoto(e echo.Context) error {
+	// ectracting data from form (time, user id, chatroom id and file)
+
+	// converting time from string to time.Time
+	timeStamp := e.FormValue("timing")
+	sendTime, err := m.convertTimestamp(timeStamp)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrBadParamInput.Error(),
+		})
+	}
+
+	// converting user id to int
+	user_id := e.FormValue("user_id")
+	uid, err := strconv.Atoi(user_id)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Ivalid params",
+		})
+	}
+
+	// converting chatroom id to int
+	chatroom_id := e.FormValue("chatroom_id")
+	cid, err := strconv.Atoi(chatroom_id)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: "Ivalid params",
+		})
+	}
+
+	message := &models.Message{
+		Sended:     sendTime,
+		ChatroomID: cid,
+		UserID:     uid,
+	}
+
+	insertedID, err := m.usecase.StorePhoto(*message)
+	if err != nil {
+		logger.STDLogger.Fatal(err.Error())
+	}
+
+	uploaded, err := e.FormFile("photo")
+	if err != nil {
+		return e.JSON(500, models.Response{
+			Message: "Failure",
+			Content: "Can not read uploaded file",
+		})
+	}
+
+	src, err := uploaded.Open()
+	if err != nil {
+		return e.JSON(500, models.Response{
+			Message: "Failure",
+			Content: "Can not open uploaded file",
+		})
+	}
+	defer src.Close()
+
+	dst, err := os.Create("./static/images/" + insertedID)
+	if err != nil {
+		return e.JSON(500, models.Response{
+			Message: "Failure",
+			Content: "Can not save uploaded file",
+		})
+	}
+	defer dst.Close()
+
+	if _, err := io.Copy(dst, src); err != nil {
+		return e.JSON(500, models.Response{
+			Message: "Failure",
+			Content: "Can not write uploaded file",
+		})
+	}
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: insertedID,
+	})
+}
+
+func (m *MessageHandler) convertTimestamp(timeString string) (time.Time, error) {
+	t, err := time.Parse(models.TimeLayout, timeString)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return t, nil
 }

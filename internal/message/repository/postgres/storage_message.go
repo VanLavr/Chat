@@ -3,6 +3,11 @@ package postgres
 import (
 	schema "chat/migrations"
 	"chat/models"
+	"chat/pkg/logger"
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type messageRepository struct {
@@ -95,4 +100,45 @@ func (m *messageRepository) FetchByChatroomID(limit, id int) ([]models.Message, 
 	}
 
 	return result, nil
+}
+
+func (m *messageRepository) StorePhoto(Message models.Message) (string, error) {
+	imagesCollection := m.db.SetMongoOnStatic()
+	result, err := imagesCollection.InsertOne(context.TODO(), Message)
+	if err != nil {
+		logger.STDLogger.Info(err.Error())
+		logger.FileLogger.Info(err.Error())
+		return "", models.ErrInternalServerError
+	}
+
+	id := result.InsertedID
+	oid, ok := id.(primitive.ObjectID)
+	if !ok {
+		logger.STDLogger.Error("can not assert object id")
+		logger.FileLogger.Error("can not assert object id")
+
+		return "", models.ErrInternalServerError
+	}
+
+	runed := []rune(oid.String())
+	runed = append(runed[:len(runed)-1], runed[len(runed):]...)
+	runed = append(runed[:len(runed)-1], runed[len(runed):]...)
+	runed = runed[len("ObjectID(\""):]
+
+	return string(runed), nil
+}
+
+func (m *messageRepository) DeletePhoto(id string) (int64, error) {
+	imagesCollection := m.db.SetMongoOnStatic()
+	filter := bson.M{"_id": id}
+
+	result, err := imagesCollection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		logger.STDLogger.Error(err.Error())
+		logger.FileLogger.Error(err.Error())
+
+		return 0, err
+	}
+
+	return result.DeletedCount, nil
 }

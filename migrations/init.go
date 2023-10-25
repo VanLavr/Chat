@@ -1,27 +1,37 @@
 package schema
 
 import (
-    "log"
+	"context"
+	"log"
 
 	"chat/models"
 	"chat/pkg/config"
 	"chat/pkg/logger"
 
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type Storage struct {
 	Postrgres *gorm.DB
+	Mongo     *mongo.Client
 }
 
 func NewStorage() *Storage {
 	s := new(Storage)
 	dsn := config.Con.GetPostgres()
-    log.Println(dsn)
+	log.Println(dsn)
 
 	var err error
 	s.Postrgres, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		logger.STDLogger.Fatal(err.Error())
+	}
+
+	mongoURI := config.Con.GetMongoHost()
+	s.Mongo, err = mongo.Connect(context.TODO(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		logger.STDLogger.Fatal(err.Error())
 	}
@@ -46,4 +56,8 @@ func (a Storage) MigrateAll() {
 	if err != nil {
 		logger.STDLogger.Fatal(err.Error())
 	}
+}
+
+func (s *Storage) SetMongoOnStatic() *mongo.Collection {
+	return s.Mongo.Database("chatserver_static").Collection("images")
 }

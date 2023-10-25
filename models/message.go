@@ -2,12 +2,14 @@ package models
 
 import "time"
 
+const TimeLayout = "2006-01-02T15:04:05.000Z"
+
 type Message struct {
-	ID         int       `gorm:"primarykey" json:"id"`
-	UserID     int       `gorm:"foreignkey" json:"user_id"`
-	ChatroomID int       `gorm:"foreignkey" json:"chat_id"`
-	Content    string    `json:"content"`
-	Sended     time.Time `json:"sended"`
+	ID         int       `gorm:"primarykey" json:"id"      bson:"omitempty"`
+	UserID     int       `gorm:"foreignkey" json:"user_id" bson:"user_id"`
+	ChatroomID int       `gorm:"foreignkey" json:"chat_id" bson:"chatroom_id"`
+	Content    string    `json:"content"                   bson:"omitempty"`
+	Sended     time.Time `json:"sended"                    bson:"timestamp"`
 }
 
 type MessageRepository interface {
@@ -16,8 +18,10 @@ type MessageRepository interface {
 	FetchByUserID(limit, id int) ([]Message, error)
 	FetchByChatroomID(limit, id int) ([]Message, error)
 	Store(Message Message) error
+	StorePhoto(Message Message) (string, error)
 	Update(Message Message) error
 	Delete(id int) error
+	DeletePhoto(id string) (int64, error)
 }
 
 type MessageUsecase interface {
@@ -26,6 +30,8 @@ type MessageUsecase interface {
 	GetMessages(limit int) ([]Message, error)
 	GetById(id int) (Message, error)
 	CreateMessage(message Message) error
+	StorePhoto(message Message) (string, error)
 	UpdateMessage(message Message) error
 	DeleteMessage(id int) error
+	DeletePhoto(id string) (int64, error)
 }

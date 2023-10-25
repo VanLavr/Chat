@@ -85,3 +85,29 @@ func (u *usecase) DeleteMessage(id int) error {
 
 	return nil
 }
+
+func (u *usecase) StorePhoto(message models.Message) (string, error) {
+	if message.ChatroomID == 0 || message.UserID == 0 {
+		return "", models.ErrBadParamInput
+	}
+
+	id, err := u.repo.StorePhoto(message)
+	if err != nil {
+		return "", err
+	}
+
+	return id, nil
+}
+
+func (u *usecase) DeletePhoto(id string) (int64, error) {
+	if id == "" {
+		return 0, models.ErrBadParamInput
+	}
+
+	deleted, err := u.repo.DeletePhoto(id)
+	if err != nil {
+		return 0, models.ErrInternalServerError
+	}
+
+	return deleted, nil
+}

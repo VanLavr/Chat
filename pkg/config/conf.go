@@ -58,3 +58,7 @@ func (c Configurator) GetOrigin() string {
 func (c Configurator) GetPostgres() string {
 	return c.v.GetString("DSN")
 }
+
+func (c Configurator) GetMongoHost() string {
+	return c.v.GetString("MONGO")
+}
