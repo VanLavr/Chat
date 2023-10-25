@@ -59,9 +59,6 @@ func main() {
 			Message: "ping",
 		})
 	})
-
-	// @Description you have to fetch /static/<image id>
-	// @Router /static [get]
 	e.Static("/static", "./static/images")
 
 	userRepo := userRepo.NewUserRepository(storage)
