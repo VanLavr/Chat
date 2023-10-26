@@ -121,6 +121,7 @@ func (u *usecase) DeletePhoto(id string) (int64, error) {
 		return 0, models.ErrBadParamInput
 	}
 
+	log.Println(id)
 	deleted, err := u.repo.DeletePhoto(id)
 	if err != nil {
 		return 0, models.ErrInternalServerError

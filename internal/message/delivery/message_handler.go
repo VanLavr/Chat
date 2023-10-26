@@ -6,6 +6,7 @@ import (
 	"chat/pkg/logger"
 	"errors"
 	"io"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -32,6 +33,7 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	e.DELETE("/message/:id", mh.ValidateToken(mh.DeleteMessage))
 	e.POST("/message/upload-photo", mh.ValidateToken(mh.UploadPhoto))
 	e.POST("/message/find-photo", mh.ValidateToken(mh.FindPhoto))
+	e.DELETE("/message/delete-photo/:id", mh.ValidateToken(mh.DeletePhoto))
 }
 
 // @Summary		Get messages
@@ -405,6 +407,24 @@ func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 	return e.JSON(200, models.Response{
 		Message: "Success",
 		Content: insertedID,
+	})
+}
+
+func (m *MessageHandler) DeletePhoto(e echo.Context) error {
+	id := e.Param("id")
+
+	log.Println(id)
+	deleted, err := m.usecase.DeletePhoto(id)
+	if err != nil && errors.Is(err, models.ErrBadParamInput) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	return e.JSON(200, models.Response{
+		Message: "Success",
+		Content: deleted,
 	})
 }
 

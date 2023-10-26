@@ -138,7 +138,12 @@ func (m *messageRepository) StorePhoto(Message models.Message) (string, error) {
 
 func (m *messageRepository) DeletePhoto(id string) (int64, error) {
 	imagesCollection := m.db.SetMongoOnStatic()
-	filter := bson.M{"_id": id}
+	documentID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return 0, err
+	}
+
+	filter := bson.M{"_id": documentID}
 
 	result, err := imagesCollection.DeleteOne(context.TODO(), filter)
 	if err != nil {
