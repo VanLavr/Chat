@@ -5,6 +5,8 @@ import (
 	"chat/pkg/logger"
 	"errors"
 	"log"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type usecase struct {
@@ -107,10 +109,10 @@ func (u *usecase) FindPhoto(message models.Message) (string, error) {
 	}
 
 	id, err := u.repo.FindPhoto(message)
-	log.Println(id, "here")
-	if err != nil {
-		log.Println(err)
-		return "", err
+	if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
+		return "", mongo.ErrNoDocuments
+	} else if err != nil && !errors.Is(err, mongo.ErrNoDocuments) {
+		return "", models.ErrInternalServerError
 	}
 
 	return id, nil

@@ -14,6 +14,7 @@ import (
 	_ "chat/docs"
 
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type MessageHandler struct {
@@ -285,6 +286,17 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	})
 }
 
+// FindPhoto godoc
+// @Summary Find a photo
+// @Description Find a photo based on the provided message data
+// @Tags messages
+// @Accept json
+// @Produce json
+// @Param messageData body models.Message true "Message data"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Failure 500 {object} models.Response
+// @Router /message/find-photo [post]
 func (m *MessageHandler) FindPhoto(e echo.Context) error {
 	var messageData models.Message
 	if err := e.Bind(&messageData); err != nil {
@@ -300,10 +312,15 @@ func (m *MessageHandler) FindPhoto(e echo.Context) error {
 			Message: "Failure",
 			Content: "Invalid params jfkls",
 		})
-	} else if err != nil && !errors.Is(err, models.ErrBadParamInput) {
+	} else if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: mongo.ErrNoDocuments.Error(),
+		})
+	} else if err != nil {
 		return e.JSON(500, models.Response{
 			Message: "Failure",
-			Content: models.ErrInternalServerError.Error(),
+			Content: err.Error(),
 		})
 	}
 
@@ -334,6 +351,7 @@ func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 	timeStamp := e.FormValue("timing")
 	sendTime, err := m.convertTimestamp(timeStamp)
 	if err != nil {
+		log.Println("here")
 		return e.JSON(400, models.Response{
 			Message: "Failure",
 			Content: models.ErrBadParamInput.Error(),
@@ -366,17 +384,17 @@ func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 		UserID:     uid,
 	}
 
-	insertedID, err := m.usecase.StorePhoto(*message)
-	if err != nil {
-		logger.STDLogger.Fatal(err.Error())
-	}
-
 	uploaded, err := e.FormFile("photo")
 	if err != nil {
 		return e.JSON(500, models.Response{
 			Message: "Failure",
 			Content: "Can not read uploaded file",
 		})
+	}
+
+	insertedID, err := m.usecase.StorePhoto(*message)
+	if err != nil {
+		logger.STDLogger.Fatal(err.Error())
 	}
 
 	src, err := uploaded.Open()
@@ -410,6 +428,16 @@ func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 	})
 }
 
+// DeletePhoto godoc
+// @Summary Delete a photo
+// @Description Delete a photo based on the provided ID
+// @Tags messages
+// @Param id path string true "Photo ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response
+// @Router /message/delete-photo/:id [delete]
 func (m *MessageHandler) DeletePhoto(e echo.Context) error {
 	id := e.Param("id")
 
@@ -422,13 +450,21 @@ func (m *MessageHandler) DeletePhoto(e echo.Context) error {
 		})
 	}
 
-	return e.JSON(200, models.Response{
-		Message: "Success",
-		Content: deleted,
-	})
+	if deleted != 0 {
+		return e.JSON(200, models.Response{
+			Message: "Success",
+			Content: deleted,
+		})
+	} else {
+		return e.JSON(200, models.Response{
+			Message: "Failure",
+			Content: deleted,
+		})
+	}
 }
 
 func (m *MessageHandler) convertTimestamp(timeString string) (time.Time, error) {
+	log.Println(timeString, models.TimeLayout)
 	t, err := time.Parse(models.TimeLayout, timeString)
 	if err != nil {
 		return time.Time{}, err
