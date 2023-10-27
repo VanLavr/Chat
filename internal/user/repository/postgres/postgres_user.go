@@ -136,6 +136,19 @@ func (u *userRepository) GetUserPassword(id int) (string, error) {
 	return user.Password, nil
 }
 
+func (u *userRepository) GetuserName(id int) (string, error) {
+	var user models.User
+	if err := u.db.Postrgres.Where("id = ?", id).Find(&user).Error; err != nil {
+		logger.STDLogger.Fatal(err.Error())
+	}
+
+	if user.ID != 0 {
+		return user.Name, nil
+	} else {
+		return "", models.ErrNotFound
+	}
+}
+
 func (u *userRepository) BeforeJoin(uid, cid int) bool {
 	var pair schema.UserChat
 

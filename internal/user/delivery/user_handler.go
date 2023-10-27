@@ -340,6 +340,21 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 		})
 	}
 
+	ok, err = u.usecase.ValidateUsername(user.ID, user.Name)
+	if err != nil {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: err.Error(),
+		})
+	}
+
+	if !ok {
+		return e.JSON(400, models.Response{
+			Message: "Failure",
+			Content: models.ErrPermisionDenied.Error(),
+		})
+	}
+
 	logger.FileLogger.Info("/user/jwt [GET]")
 	logger.STDLogger.Info("/user/jwt [GET]")
 

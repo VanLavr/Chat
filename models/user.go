@@ -15,24 +15,26 @@ type User struct {
 }
 
 type UserRepository interface {
-	Fetch(limit int) ([]User, error)
-	FetchOne(id int) (User, error)
-	FetchFewCertain(id ...int) ([]User, error)
-	Store(user User) error
-	Update(user User) error
-	Delete(id int) error
+	Fetch(int) ([]User, error)
+	FetchOne(int) (User, error)
+	FetchFewCertain(...int) ([]User, error)
+	Store(User) error
+	Update(User) error
+	Delete(int) error
 	GetChatters() []User
-	GetUserPassword(id int) (string, error)
-	BeforeJoin(uid, cid int) bool
+	GetUserPassword(int) (string, error)
+	GetuserName(int) (string, error)
+	BeforeJoin(int, int) bool
 }
 
 type UserUsecase interface {
-	GetById(uid int) (User, error)
-	GetUsers(limit int) []User
-	CreateUser(user User) error
-	UpdateUser(user User) error
-	DeleteUser(id int) error
+	GetById(int) (User, error)
+	GetUsers(int) []User
+	CreateUser(User) error
+	UpdateUser(User) error
+	DeleteUser(int) error
 	MakeHub() []User
-	ValidatePassword(uid int, password string) (bool, error)
-	ValidateIncommer(uid, cid int) bool
+	ValidatePassword(int, string) (bool, error)
+	ValidateUsername(int, string) (bool, error)
+	ValidateIncommer(int, int) bool
 }

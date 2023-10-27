@@ -97,3 +97,16 @@ func (u *usecase) ValidatePassword(uid int, password string) (bool, error) {
 func (u *usecase) ValidateIncommer(uid, cid int) bool {
 	return u.repo.BeforeJoin(uid, cid)
 }
+
+func (u *usecase) ValidateUsername(uid int, username string) (bool, error) {
+	usrnm, err := u.repo.GetuserName(uid)
+	if err != nil {
+		return false, models.ErrNotFound
+	}
+
+	if usrnm == username {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}

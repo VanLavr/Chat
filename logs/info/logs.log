@@ -242,3 +242,5 @@
 {"level":"info","ts":1698429105.1297228,"msg":"/user/enterChatroom [POST]"}
 {"level":"info","ts":1698429261.156105,"msg":"/messages/:limit [GET]"}
 {"level":"info","ts":1698429276.537905,"msg":"/messages/:limit [GET]"}
+{"level":"info","ts":1698430182.2844026,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1698430340.2430487,"msg":"/user/jwt [GET]"}
