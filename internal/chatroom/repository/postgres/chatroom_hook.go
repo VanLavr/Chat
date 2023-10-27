@@ -46,12 +46,14 @@ func (c *chatroomRepository) beforeCreate(Chatroom models.Chatroom) error {
 		return err
 	}
 
-	fmt.Println(author)
-	author.RoomsOwned++
-	fmt.Println(author)
-	if err := c.db.Postrgres.Save(&author).Error; err != nil {
-		logger.STDLogger.Warn(err.Error())
-		return err
+	if author.ID != 0 {
+		author.RoomsOwned++
+		if err := c.db.Postrgres.Save(&author).Error; err != nil {
+			logger.STDLogger.Warn(err.Error())
+			return err
+		}
+	} else {
+		return models.ErrNotFound
 	}
 
 	return nil
@@ -73,17 +75,21 @@ func (c *chatroomRepository) beforeDelete(deleter, id int) error {
 		return err
 	}
 
-	fmt.Println(author)
-	author.RoomsOwned--
-	fmt.Println(author)
-	if err := c.db.Postrgres.Save(&author).Error; err != nil {
-		logger.STDLogger.Warn(err.Error())
+	var deleterUser models.User
+	if err := c.db.Postrgres.Where("id = ?", deleter).Find(&deleterUser).Error; err != nil {
 		return err
 	}
 
-	fmt.Println(author, result, deleter)
-	if !author.IsAdmin || deleter != result.CreatorID {
+	if !(deleterUser.ID == author.ID || deleterUser.IsAdmin) {
 		return models.ErrPermisionDenied
+	}
+
+	if author.ID != 0 {
+		author.RoomsOwned--
+		if err := c.db.Postrgres.Save(&author).Error; err != nil {
+			logger.STDLogger.Warn(err.Error())
+			return err
+		}
 	}
 
 	return nil

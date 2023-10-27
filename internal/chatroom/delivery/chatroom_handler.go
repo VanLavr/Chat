@@ -32,15 +32,15 @@ func Register(e *echo.Echo, u models.ChatroomUsecase) {
 	e.DELETE("/chatroom", ch.ValidateToken(ch.DeleteChat))
 }
 
-//	@Summary		Get chatroom by ID
-//	@Tags			chatroom
-//	@Description	Get a chatroom by its ID
-//	@ID				get-chatroom-by-id
-//	@Produce		json
-//	@Param			id	path		int	true	"Chatroom ID"
-//	@Success		200	{object}	models.Response
-//	@Failure		400	{object}	models.Response
-//	@Router			/chatroom/{id} [get]
+// @Summary		Get chatroom by ID
+// @Tags			chatroom
+// @Description	Get a chatroom by its ID
+// @ID				get-chatroom-by-id
+// @Produce		json
+// @Param			id	path		int	true	"Chatroom ID"
+// @Success		200	{object}	models.Response
+// @Failure		400	{object}	models.Response
+// @Router			/chatroom/{id} [get]
 func (c *ChatroomHandler) GetById(e echo.Context) error {
 	sid := e.Param("id")
 	id, err := strconv.Atoi(sid)
@@ -74,15 +74,15 @@ func (c *ChatroomHandler) GetById(e echo.Context) error {
 	})
 }
 
-//	@Summary		Get chatrooms
-//	@Tags			chatroom
-//	@Description	Get a list of chatrooms
-//	@ID				get-chatrooms
-//	@Produce		json
-//	@Param			limit	path		int	true	"Number of chatrooms to retrieve"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Router			/chatrooms/{limit} [get]
+// @Summary		Get chatrooms
+// @Tags			chatroom
+// @Description	Get a list of chatrooms
+// @ID				get-chatrooms
+// @Produce		json
+// @Param			limit	path		int	true	"Number of chatrooms to retrieve"
+// @Success		200		{object}	models.Response
+// @Failure		400		{object}	models.Response
+// @Router			/chatrooms/{limit} [get]
 func (c *ChatroomHandler) GetRooms(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)
@@ -116,16 +116,16 @@ func (c *ChatroomHandler) GetRooms(e echo.Context) error {
 	})
 }
 
-//	@Summary		Enter chatroom
-//	@Tags			chatroom
-//	@Description	Enter a chatroom
-//	@ID				enter-chatroom
-//	@Accept			json
-//	@Produce		json
-//	@Param			EnterChatDTO	body		EnterChatDTO	true	"User chat information"
-//	@Success		200				{object}	models.Response
-//	@Failure		400				{object}	models.Response
-//	@Router			/user/enterChatroom [post]
+// @Summary		Enter chatroom
+// @Tags			chatroom
+// @Description	Enter a chatroom
+// @ID				enter-chatroom
+// @Accept			json
+// @Produce		json
+// @Param			EnterChatDTO	body		EnterChatDTO	true	"User chat information"
+// @Success		200				{object}	models.Response
+// @Failure		400				{object}	models.Response
+// @Router			/user/enterChatroom [post]
 func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 	var UserChat EnterChatDTO
 
@@ -183,16 +183,16 @@ func (c *ChatroomHandler) EnterChatroom(e echo.Context) error {
 	})
 }
 
-//	@Summary		Leave chatroom
-//	@Tags			chatroom
-//	@Description	Leave a chatroom
-//	@ID				leave-chatroom
-//	@Produce		json
-//	@Param			uid			path		int	true	"User ID"
-//	@Param			chatroom_id	path		int	true	"Chatroom ID"
-//	@Success		200			{object}	models.Response
-//	@Failure		400			{object}	models.Response
-//	@Router			/user/{uid}/leaveRoom/{chatroom_id} [get]
+// @Summary		Leave chatroom
+// @Tags			chatroom
+// @Description	Leave a chatroom
+// @ID				leave-chatroom
+// @Produce		json
+// @Param			uid			path		int	true	"User ID"
+// @Param			chatroom_id	path		int	true	"Chatroom ID"
+// @Success		200			{object}	models.Response
+// @Failure		400			{object}	models.Response
+// @Router			/user/{uid}/leaveRoom/{chatroom_id} [get]
 func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 	sUID := e.Param("uid")
 	sCID := e.Param("chatroom_id")
@@ -239,16 +239,16 @@ func (c *ChatroomHandler) LeaveChatroom(e echo.Context) error {
 	})
 }
 
-//	@Summary		Create chatroom
-//	@Tags			chatroom
-//	@Description	Create a new chatroom
-//	@ID				create-chatroom
-//	@Accept			json
-//	@Produce		json
-//	@Param			chatroom	body		models.Chatroom	true	"Chatroom information"
-//	@Success		200			{object}	models.Response
-//	@Failure		400			{object}	models.Response
-//	@Router			/chatroom [post]
+// @Summary		Create chatroom
+// @Tags			chatroom
+// @Description	Create a new chatroom
+// @ID				create-chatroom
+// @Accept			json
+// @Produce		json
+// @Param			chatroom	body		models.Chatroom	true	"Chatroom information"
+// @Success		200			{object}	models.Response
+// @Failure		400			{object}	models.Response
+// @Router			/chatroom [post]
 func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 	var chat models.Chatroom
 
@@ -264,7 +264,7 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 	}
 
 	if err = c.usecase.CreateChat(chat); err != nil {
-		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
+		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) || errors.Is(err, models.ErrNotFound) {
 			logger.FileLogger.Info("/chatroom [POST]")
 			logger.STDLogger.Info("/chatroom [POST]")
 
@@ -284,16 +284,16 @@ func (c *ChatroomHandler) CreateChat(e echo.Context) error {
 	})
 }
 
-//	@Summary		Update chatroom
-//	@Tags			chatroom
-//	@Description	Update an existing chatroom
-//	@ID				update-chatroom
-//	@Accept			json
-//	@Produce		json
-//	@Param			chatroom	body		models.Chatroom	true	"Chatroom information"
-//	@Success		200			{object}	models.Response
-//	@Failure		400			{object}	models.Response
-//	@Router			/chatroom [put]
+// @Summary		Update chatroom
+// @Tags			chatroom
+// @Description	Update an existing chatroom
+// @ID				update-chatroom
+// @Accept			json
+// @Produce		json
+// @Param			chatroom	body		models.Chatroom	true	"Chatroom information"
+// @Success		200			{object}	models.Response
+// @Failure		400			{object}	models.Response
+// @Router			/chatroom [put]
 func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 	var chat models.Chatroom
 
@@ -344,16 +344,16 @@ func (c *ChatroomHandler) UpdateChat(e echo.Context) error {
 	})
 }
 
-//	@Summary		Delete chatroom
-//	@Tags			chatroom
-//	@Description	Delete an existing chatroom
-//	@ID				delete-chatroom
-//	@Accept			json
-//	@Produce		json
-//	@Param			DeleteChatDTO	body		DeleteChatDTO	true	"Chatroom deletion information"
-//	@Success		200				{object}	models.Response
-//	@Failure		400				{object}	models.Response
-//	@Router			/chatroom [delete]
+// @Summary		Delete chatroom
+// @Tags			chatroom
+// @Description	Delete an existing chatroom
+// @ID				delete-chatroom
+// @Accept			json
+// @Produce		json
+// @Param			DeleteChatDTO	body		DeleteChatDTO	true	"Chatroom deletion information"
+// @Success		200				{object}	models.Response
+// @Failure		400				{object}	models.Response
+// @Router			/chatroom [delete]
 func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 	var deletion DeleteChatDTO
 
@@ -367,8 +367,6 @@ func (c *ChatroomHandler) DeleteChat(e echo.Context) error {
 			Content: "Invalid params",
 		})
 	}
-
-	fmt.Println(deletion)
 
 	err = c.usecase.DeleteChat(deletion.Uid, deletion.Cid)
 	if err != nil {

@@ -42,7 +42,7 @@ func (u *usecase) CreateChat(chatroom models.Chatroom) error {
 	chatroom.Password = hashed
 
 	if err := u.repo.Store(chatroom); err != nil {
-		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) {
+		if errors.Is(err, models.ErrEmptyFields) || errors.Is(err, models.ErrAlreadyExists) || errors.Is(err, models.ErrNotFound) {
 			return err
 		} else {
 			logger.STDLogger.Fatal(err.Error())
