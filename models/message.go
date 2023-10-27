@@ -13,27 +13,27 @@ type Message struct {
 }
 
 type MessageRepository interface {
-	Fetch(limit int) ([]Message, error)
-	FetchOne(id int) (Message, error)
-	FetchByUserID(limit, id int) ([]Message, error)
-	FetchByChatroomID(limit, id int) ([]Message, error)
-	Store(Message Message) error
-	StorePhoto(Message Message) (string, error)
-	FindPhoto(message Message) (string, error)
-	Update(Message Message) error
-	Delete(id int) error
-	DeletePhoto(id string) (int64, error)
+	Fetch(int) ([]Message, error)
+	FetchOne(int) (Message, error)
+	FetchByUserID(int, int) ([]Message, error)
+	FetchByChatroomID(int, int) ([]Message, error)
+	Store(Message) error
+	StorePhoto(Message) (string, error)
+	FindPhoto(Message) (string, error)
+	Update(Message) error
+	Delete(int) error
+	DeletePhoto(string) (int64, error)
 }
 
 type MessageUsecase interface {
-	GetChatMessages(limit, id int) ([]Message, error)
-	GetUserMessages(limit, id int) ([]Message, error)
-	GetMessages(limit int) ([]Message, error)
-	GetById(id int) (Message, error)
-	CreateMessage(message Message) error
-	StorePhoto(message Message) (string, error)
-	FindPhoto(message Message) (string, error)
-	UpdateMessage(message Message) error
-	DeleteMessage(id int) error
-	DeletePhoto(id string) (int64, error)
+	GetChatMessages(int, int) ([]Message, error)
+	GetUserMessages(int, int) ([]Message, error)
+	GetMessages(int) ([]Message, error)
+	GetById(int) (Message, error)
+	CreateMessage(Message) error
+	StorePhoto(Message) (string, error)
+	FindPhoto(Message) (string, error)
+	UpdateMessage(Message) error
+	DeleteMessage(int) error
+	DeletePhoto(string) (int64, error)
 }

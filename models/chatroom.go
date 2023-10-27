@@ -8,23 +8,23 @@ type Chatroom struct {
 }
 
 type ChatroomRepository interface {
-	Fetch(limit int) ([]Chatroom, error)
-	FetchOne(id int) (Chatroom, error)
-	Store(chat Chatroom) error
-	Update(chat Chatroom) error
-	Delete(deleter, id int) error
-	GetRoomPassword(id int) (string, error)
-	AddUserToChatroom(uid, chatId int) error
-	RemoveUserFromChatroom(uid, chatId int) error
+	Fetch(int) ([]Chatroom, error)
+	FetchOne(int) (Chatroom, error)
+	Store(Chatroom) error
+	Update(Chatroom) error
+	Delete(int, int) error
+	GetRoomPassword(int) (string, error)
+	AddUserToChatroom(int, int) error
+	RemoveUserFromChatroom(int, int) error
 }
 
 type ChatroomUsecase interface {
-	GetById(id int) (Chatroom, error)
-	Get(limit int) ([]Chatroom, error)
-	CreateChat(chatroom Chatroom) error
-	DeleteChat(deleter, id int) error
-	UpdateChat(chat Chatroom) error
-	ValidatePassword(id int, password string) (bool, error)
-	EnterChat(uid, chatroomID int) error
-	LeaveChat(uid, chatroomID int) error
+	GetById(int) (Chatroom, error)
+	Get(int) ([]Chatroom, error)
+	CreateChat(Chatroom) error
+	DeleteChat(int, int) error
+	UpdateChat(Chatroom) error
+	ValidatePassword(int, string) (bool, error)
+	EnterChat(int, int) error
+	LeaveChat(int, int) error
 }
