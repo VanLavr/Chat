@@ -6,6 +6,7 @@ import (
 	"chat/pkg/logger"
 	"context"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -50,6 +51,9 @@ func (m *messageRepository) Store(Message models.Message) error {
 	if err := m.beforeCreate(Message); err != nil {
 		return err
 	}
+
+	Message.Sended = time.Now().Local().UTC()
+
 	tx := m.db.Postrgres.Save(&Message)
 	if tx.Error != nil {
 		return tx.Error

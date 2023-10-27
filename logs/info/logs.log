@@ -232,3 +232,13 @@
 {"level":"info","ts":1698428316.054556,"msg":"/chatroom [DELETE]"}
 {"level":"info","ts":1698428318.581372,"msg":"/chatroom [DELETE]"}
 {"level":"info","ts":1698428323.133727,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1698429030.0502872,"msg":"/users/:limit [GET]"}
+{"level":"info","ts":1698429035.5014327,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1698429051.0533109,"msg":"/chatroom [POST]"}
+{"level":"info","ts":1698429066.4567056,"msg":"/chatrooms [GET]"}
+{"level":"info","ts":1698429081.3680742,"msg":"/user/jwt [GET]"}
+{"level":"info","ts":1698429098.2053125,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1698429102.1000047,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1698429105.1297228,"msg":"/user/enterChatroom [POST]"}
+{"level":"info","ts":1698429261.156105,"msg":"/messages/:limit [GET]"}
+{"level":"info","ts":1698429276.537905,"msg":"/messages/:limit [GET]"}
