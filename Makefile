@@ -16,4 +16,3 @@ test:
 
 Create_image:
 	sudo docker buildx build . --tag lavrushkoivan/web_chat
- 

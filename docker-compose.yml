@@ -29,4 +29,4 @@ services:
 
 volumes:
   postgres-db:
-  chat_static_db:
+  mongodb:
