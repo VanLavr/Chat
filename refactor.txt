@@ -19,8 +19,8 @@
     +   MVC
     +   post photos availabiblity (base64 in postgres/redis/mongo or file server)
     +   gracefull shutdown?
+    -   testing mocks (unit, integration [https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package, https://dev.to/kliukovkin/integration-tests-with-go-and-testcontainers-6o5])
     -   proxy?
-    -   testing (unit, integration [https://www.digitalocean.com/community/tutorials/how-to-write-unit-tests-in-go-using-go-test-and-the-testing-package, https://dev.to/kliukovkin/integration-tests-with-go-and-testcontainers-6o5])
     -   templates + htmx version (static)
 
 7) used tools:

@@ -14,6 +14,9 @@ import (
 	"gorm.io/gorm"
 )
 
+type storage interface {
+}
+
 type Storage struct {
 	Postrgres *gorm.DB
 	Mongo     *mongo.Client
