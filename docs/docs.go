@@ -626,7 +626,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create a new user",
+                "description": "Create a new user with properties: {\"name\": string, \"password\": string}",
                 "consumes": [
                     "application/json"
                 ],
@@ -944,6 +944,12 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.Response"
                         }
                     },
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -1027,7 +1033,27 @@ const docTemplate = `{
             }
         },
         "models.User": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "admin": {
+                    "type": "boolean"
+                },
+                "currentChatroomID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "rooms_owned": {
+                    "type": "integer"
+                }
+            }
         }
     },
     "securityDefinitions": {

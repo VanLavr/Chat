@@ -11,7 +11,7 @@ type User struct {
 	IsAdmin           bool            `gorm:"default:false" json:"admin"`
 	RoomsOwned        int             `json:"rooms_owned"`
 	CurrentChatroomID int             `gorm:"-"`
-	Connection        *websocket.Conn `gorm:"-"`
+	Connection        *websocket.Conn `gorm:"-" json:"-"`
 }
 
 type UserRepository interface {

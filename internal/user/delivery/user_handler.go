@@ -51,13 +51,13 @@ func Register(e *echo.Echo, u models.UserUsecase) {
 
 //	@Summary		Get users
 //	@Tags			user
-//	@Description	Retrieve a list of users with a specified limit
+//	@Description	Retrieve a list of users with a specified limit if limit is 0 than retrieves all users from database
 //	@ID				get-users
 //	@Accept			json
 //	@Produce		json
 //	@Param			limit	path		int	true	"Limit of users to retrieve"
 //	@Success		200		{object}	models.Response
-//	@Success		200		{object}	models.User
+//	@Success		201		{object}	models.User
 //	@Failure		400		{object}	models.Response
 //	@Router			/users/{limit} [get]
 func (u *UserHandler) GetUsers(e echo.Context) error {
@@ -129,7 +129,7 @@ func (u *UserHandler) GetUser(e echo.Context) error {
 
 //	@Summary		Create a user
 //	@Tags			user
-//	@Description	Create a new user
+//	@Description	Create a new user with properties: {"name": string, "password": string}
 //	@ID				create-user
 //	@Accept			json
 //	@Produce		json
@@ -178,16 +178,19 @@ func (u *UserHandler) CreateUser(e echo.Context) error {
 	}
 }
 
-//	@Summary		Update a user
-//	@Tags			user
-//	@Description	Update an existing user
-//	@ID				update-user
-//	@Accept			json
-//	@Produce		json
-//	@Param			user	body		models.User	true	"User object"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Router			/user [put]
+//	@Summary					Update a user
+//	@Tags						user
+//	@Description				Update an existing user (requires authorization!)
+//	@ID							update-user
+//	@Accept						json
+//	@Produce					json
+//	@Param						user	body		models.User	true	"User object"
+//	@Success					200		{object}	models.Response
+//	@Failure					400		{object}	models.Response
+//	@securityDefinitions.basic	JWTAuth
+//	@in							header
+//	@name						Authorization
+//	@Router						/user [put]
 func (u *UserHandler) UpdateUser(e echo.Context) error {
 	var user models.User
 
