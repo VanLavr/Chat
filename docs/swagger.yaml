@@ -248,7 +248,7 @@ paths:
       summary: Delete a message
       tags:
       - messages
-  /message/delete-photo/:id:
+  /message/delete-photo/{id}:
     delete:
       consumes:
       - application/json
@@ -303,7 +303,37 @@ paths:
       summary: Find a photo
       tags:
       - messages
-  /messages/{chat}/{limit}:
+  /messages/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages with a specified limit
+      operationId: get-messages
+      parameters:
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get messages
+      tags:
+      - messages
+  /messages/chat/{chat}/{limit}:
     get:
       consumes:
       - application/json
@@ -338,37 +368,7 @@ paths:
       summary: Get chat messages
       tags:
       - messages
-  /messages/{limit}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieve messages with a specified limit
-      operationId: get-messages
-      parameters:
-      - description: Limit of messages to retrieve
-        in: path
-        name: limit
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Response'
-      summary: Get messages
-      tags:
-      - messages
-  /messages/{user}/{limit}:
+  /messages/user/{user}/{limit}:
     get:
       consumes:
       - application/json
@@ -403,7 +403,7 @@ paths:
       summary: Get user messages
       tags:
       - messages
-  /upload/photo:
+  /upload-photo:
     post:
       consumes:
       - multipart/form-data

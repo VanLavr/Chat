@@ -247,7 +247,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/message/delete-photo/:id": {
+        "/message/delete-photo/{id}": {
             "delete": {
                 "description": "Delete a photo based on the provided ID",
                 "consumes": [
@@ -370,7 +370,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/messages/{chat}/{limit}": {
+        "/messages/chat/{chat}/{limit}": {
             "get": {
                 "description": "Retrieve messages for a specific chat with a specified limit",
                 "consumes": [
@@ -389,6 +389,58 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Chat ID",
                         "name": "chat",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit of messages to retrieve",
+                        "name": "limit",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/messages/user/{user}/{limit}": {
+            "get": {
+                "description": "Retrieve messages for a specific user with a specified limit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "messages"
+                ],
+                "summary": "Get user messages",
+                "operationId": "get-user-messages",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "user",
                         "in": "path",
                         "required": true
                     },
@@ -467,59 +519,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/messages/{user}/{limit}": {
-            "get": {
-                "description": "Retrieve messages for a specific user with a specified limit",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "messages"
-                ],
-                "summary": "Get user messages",
-                "operationId": "get-user-messages",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "user",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Limit of messages to retrieve",
-                        "name": "limit",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/upload/photo": {
+        "/upload-photo": {
             "post": {
                 "description": "Uploads a photo with the specified timing, user ID, chatroom ID, and photo file",
                 "consumes": [
