@@ -247,16 +247,19 @@ func (u *UserHandler) UpdateUser(e echo.Context) error {
 	}
 }
 
-//	@Summary		Delete a user
-//	@Tags			user
-//	@Description	Delete an existing user
-//	@ID				delete-user
-//	@Accept			json
-//	@Produce		json
-//	@Param			user	body		models.User	true	"User object"
-//	@Success		200		{object}	models.Response
-//	@Failure		400		{object}	models.Response
-//	@Router			/user [delete]
+//	@Summary					Delete a user
+//	@Tags						user
+//	@Description				Delete an existing user
+//	@ID							delete-user
+//	@Accept						json
+//	@Produce					json
+//	@Param						user	body		models.User	true	"User object"
+//	@Success					200		{object}	models.Response
+//	@Failure					400		{object}	models.Response
+//	@securityDefinitions.basic	JWTAuth
+//	@in							header
+//	@name						Authorizationmodels.Response
+//	@Router						/user [delete]
 func (u *UserHandler) DeleteUser(e echo.Context) error {
 	var user models.User
 
@@ -315,7 +318,7 @@ func (u *UserHandler) DeleteUser(e echo.Context) error {
 //	@Param			user	body		models.User	true	"User object"
 //	@Success		200		{object}	models.Response
 //	@Failure		400		{object}	models.Response
-//	@Router			/user/jwt [get]
+//	@Router			/user/jwt [post]
 func (u *UserHandler) GetJWT(e echo.Context) error {
 	var user models.User
 
@@ -368,17 +371,20 @@ func (u *UserHandler) GetJWT(e echo.Context) error {
 	})
 }
 
-//	@Summary		Join a chatroom
-//	@Tags			user
-//	@Description	Join a chatroom with the specified user ID and chatroom ID
-//	@ID				join-chatroom
-//	@Accept			json
-//	@Produce		json
-//	@Param			uid	path		int	true	"User ID"
-//	@Param			cid	path		int	true	"Chatroom ID"
-//	@Success		200	{object}	models.Response
-//	@Failure		400	{object}	models.Response
-//	@Router			/user/{uid}/chatroom/{cid} [post]
+//	@Summary					Join a chatroom
+//	@Tags						user
+//	@Description				Join a chatroom with the specified user ID and chatroom ID
+//	@ID							join-chatroom
+//	@Accept						json
+//	@Produce					json
+//	@Param						uid	path		int	true	"User ID"
+//	@Param						cid	path		int	true	"Chatroom ID"
+//	@Success					200	{object}	models.Response
+//	@Failure					400	{object}	models.Response
+//	@securityDefinitions.basic	JWTAuth
+//	@in							header
+//	@name						Authorization
+//	@Router						/user/{uid}/chatroom/{cid} [get]
 func (u *UserHandler) Join(e echo.Context) error {
 	sUid := e.Param("uid")
 	sCid := e.Param("cid")

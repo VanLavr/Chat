@@ -506,7 +506,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update an existing user
+      description: Update an existing user (requires authorization!)
       operationId: update-user
       parameters:
       - description: User object
@@ -556,7 +556,7 @@ paths:
       tags:
       - user
   /user/{uid}/chatroom/{cid}:
-    post:
+    get:
       consumes:
       - application/json
       description: Join a chatroom with the specified user ID and chatroom ID
@@ -643,7 +643,7 @@ paths:
       tags:
       - chatroom
   /user/jwt:
-    get:
+    post:
       consumes:
       - application/json
       description: Generate a JWT token for the user
@@ -673,7 +673,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve a list of users with a specified limit
+      description: Retrieve a list of users with a specified limit if limit is 0 than
+        retrieves all users from database
       operationId: get-users
       parameters:
       - description: Limit of users to retrieve

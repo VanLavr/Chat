@@ -587,7 +587,7 @@ const docTemplate = `{
         },
         "/user": {
             "put": {
-                "description": "Update an existing user",
+                "description": "Update an existing user (requires authorization!)",
                 "consumes": [
                     "application/json"
                 ],
@@ -746,7 +746,7 @@ const docTemplate = `{
             }
         },
         "/user/jwt": {
-            "get": {
+            "post": {
                 "description": "Generate a JWT token for the user",
                 "consumes": [
                     "application/json"
@@ -826,7 +826,7 @@ const docTemplate = `{
             }
         },
         "/user/{uid}/chatroom/{cid}": {
-            "post": {
+            "get": {
                 "description": "Join a chatroom with the specified user ID and chatroom ID",
                 "consumes": [
                     "application/json"
@@ -916,7 +916,7 @@ const docTemplate = `{
         },
         "/users/{limit}": {
             "get": {
-                "description": "Retrieve a list of users with a specified limit",
+                "description": "Retrieve a list of users with a specified limit if limit is 0 than retrieves all users from database",
                 "consumes": [
                     "application/json"
                 ],
