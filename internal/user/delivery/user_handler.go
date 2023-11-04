@@ -91,6 +91,7 @@ func (u *UserHandler) GetUsers(e echo.Context) error {
 // @Produce		json
 // @Param			id	path		int	true	"User ID"
 // @Success		200	{object}	models.Response
+// @Success		200	{object}	models.User
 // @Failure		400	{object}	models.Response
 // @Router			/user/{id} [get]
 func (u *UserHandler) GetUser(e echo.Context) error {

@@ -37,17 +37,17 @@ func Register(e *echo.Echo, u models.MessageUsecase) {
 	e.DELETE("/message/delete-photo/:id", mh.ValidateToken(mh.DeletePhoto))
 }
 
-// @Summary		Get messages
-// @Tags			messages
-// @Description	Retrieve messages with a specified limit
-// @ID				get-messages
-// @Accept			json
-// @Produce		json
-// @Param			limit	path		int	true	"Limit of messages to retrieve"
-// @Success		200		{object}	models.Response
-// @Failure		400		{object}	models.Response
-// @Failure		500		{object}	models.Response
-// @Router			/messages/{limit} [get]
+//	@Summary		Get messages
+//	@Tags			messages
+//	@Description	Retrieve messages with a specified limit
+//	@ID				get-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{limit} [get]
 func (m *MessageHandler) GetMessages(e echo.Context) error {
 	sLimit := e.Param("limit")
 	limit, err := strconv.Atoi(sLimit)
@@ -81,18 +81,18 @@ func (m *MessageHandler) GetMessages(e echo.Context) error {
 	})
 }
 
-// @Summary		Get user messages
-// @Tags			messages
-// @Description	Retrieve messages for a specific user with a specified limit
-// @ID				get-user-messages
-// @Accept			json
-// @Produce		json
-// @Param			user	path		int	true	"User ID"
-// @Param			limit	path		int	true	"Limit of messages to retrieve"
-// @Success		200		{object}	models.Response
-// @Failure		400		{object}	models.Response
-// @Failure		500		{object}	models.Response
-// @Router			/messages/{user}/{limit} [get]
+//	@Summary		Get user messages
+//	@Tags			messages
+//	@Description	Retrieve messages for a specific user with a specified limit
+//	@ID				get-user-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	path		int	true	"User ID"
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{user}/{limit} [get]
 func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	sUid := e.Param("user")
 	sLimit := e.Param("limit")
@@ -139,18 +139,18 @@ func (m *MessageHandler) GetUserMessages(e echo.Context) error {
 	})
 }
 
-// @Summary		Get chat messages
-// @Tags			messages
-// @Description	Retrieve messages for a specific chat with a specified limit
-// @ID				get-chat-messages
-// @Accept			json
-// @Produce		json
-// @Param			chat	path		int	true	"Chat ID"
-// @Param			limit	path		int	true	"Limit of messages to retrieve"
-// @Success		200		{object}	models.Response
-// @Failure		400		{object}	models.Response
-// @Failure		500		{object}	models.Response
-// @Router			/messages/{chat}/{limit} [get]
+//	@Summary		Get chat messages
+//	@Tags			messages
+//	@Description	Retrieve messages for a specific chat with a specified limit
+//	@ID				get-chat-messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			chat	path		int	true	"Chat ID"
+//	@Param			limit	path		int	true	"Limit of messages to retrieve"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Failure		500		{object}	models.Response
+//	@Router			/messages/{chat}/{limit} [get]
 func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	sCid := e.Param("chat")
 	sLimit := e.Param("limit")
@@ -197,16 +197,16 @@ func (m *MessageHandler) GetChatMessages(e echo.Context) error {
 	})
 }
 
-// @Summary		Update a message
-// @Tags			messages
-// @Description	Update a message with new content
-// @ID				update-message
-// @Accept			json
-// @Produce		json
-// @Param			message	body		models.Message	true	"Message object"
-// @Success		200		{object}	models.Response
-// @Failure		400		{object}	models.Response
-// @Router			/message [put]
+//	@Summary		Update a message
+//	@Tags			messages
+//	@Description	Update a message with new content
+//	@ID				update-message
+//	@Accept			json
+//	@Produce		json
+//	@Param			message	body		models.Message	true	"Message object"
+//	@Success		200		{object}	models.Response
+//	@Failure		400		{object}	models.Response
+//	@Router			/message [put]
 func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	var message models.Message
 
@@ -243,16 +243,16 @@ func (m *MessageHandler) UpdateMessage(e echo.Context) error {
 	})
 }
 
-// @Summary		Delete a message
-// @Tags			messages
-// @Description	Delete a message with a specified ID
-// @ID				delete-message
-// @Accept			json
-// @Produce		json
-// @Param			id	path		int	true	"Message ID"
-// @Success		200	{object}	models.Response
-// @Failure		400	{object}	models.Response
-// @Router			/message/{id} [delete]
+//	@Summary		Delete a message
+//	@Tags			messages
+//	@Description	Delete a message with a specified ID
+//	@ID				delete-message
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Message ID"
+//	@Success		200	{object}	models.Response
+//	@Failure		400	{object}	models.Response
+//	@Router			/message/{id} [delete]
 func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 	sId := e.Param("id")
 	id, err := strconv.Atoi(sId)
@@ -287,16 +287,16 @@ func (m *MessageHandler) DeleteMessage(e echo.Context) error {
 }
 
 // FindPhoto godoc
-// @Summary Find a photo
-// @Description Find a photo based on the provided message data
-// @Tags messages
-// @Accept json
-// @Produce json
-// @Param messageData body models.Message true "Message data"
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
-// @Failure 500 {object} models.Response
-// @Router /message/find-photo [post]
+//	@Summary		Find a photo
+//	@Description	Find a photo based on the provided message data
+//	@Tags			messages
+//	@Accept			json
+//	@Produce		json
+//	@Param			messageData	body		models.Message	true	"Message data"
+//	@Success		200			{object}	models.Response
+//	@Failure		400			{object}	models.Response
+//	@Failure		500			{object}	models.Response
+//	@Router			/message/find-photo [post]
 func (m *MessageHandler) FindPhoto(e echo.Context) error {
 	var messageData models.Message
 	if err := e.Bind(&messageData); err != nil {
@@ -330,20 +330,20 @@ func (m *MessageHandler) FindPhoto(e echo.Context) error {
 	})
 }
 
-// @Summary Uploads a photo
-// @Tags messages
-// @Description Uploads a photo with the specified timing, user ID, chatroom ID, and photo file
-// @ID uploadPhoto
-// @Accept multipart/form-data
-// @Produce json
-// @Param timing formData string true "Timing"
-// @Param user_id formData integer true "User ID"
-// @Param chatroom_id formData integer true "Chatroom ID"
-// @Param photo formData file true "Photo file"
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
-// @Failure 500 {object} models.Response
-// @Router /upload/photo [post]
+//	@Summary		Uploads a photo
+//	@Tags			messages
+//	@Description	Uploads a photo with the specified timing, user ID, chatroom ID, and photo file
+//	@ID				uploadPhoto
+//	@Accept			multipart/form-data
+//	@Produce		json
+//	@Param			timing		formData	string	true	"Timing"
+//	@Param			user_id		formData	integer	true	"User ID"
+//	@Param			chatroom_id	formData	integer	true	"Chatroom ID"
+//	@Param			photo		formData	file	true	"Photo file"
+//	@Success		200			{object}	models.Response
+//	@Failure		400			{object}	models.Response
+//	@Failure		500			{object}	models.Response
+//	@Router			/upload/photo [post]
 func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 	// ectracting data from form (time, user id, chatroom id and file)
 
@@ -429,15 +429,15 @@ func (m *MessageHandler) UploadPhoto(e echo.Context) error {
 }
 
 // DeletePhoto godoc
-// @Summary Delete a photo
-// @Description Delete a photo based on the provided ID
-// @Tags messages
-// @Param id path string true "Photo ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} models.Response
-// @Failure 400 {object} models.Response
-// @Router /message/delete-photo/:id [delete]
+//	@Summary		Delete a photo
+//	@Description	Delete a photo based on the provided ID
+//	@Tags			messages
+//	@Param			id	path	string	true	"Photo ID"
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	models.Response
+//	@Failure		400	{object}	models.Response
+//	@Router			/message/delete-photo/:id [delete]
 func (m *MessageHandler) DeletePhoto(e echo.Context) error {
 	id := e.Param("id")
 
