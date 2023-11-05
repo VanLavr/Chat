@@ -4,6 +4,7 @@ go 1.21.1
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/golang/mock v1.6.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/labstack/echo/v4 v4.11.2
 	github.com/spf13/viper v1.17.0
