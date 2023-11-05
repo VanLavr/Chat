@@ -15,6 +15,7 @@ import (
 )
 
 type Storage interface {
+	FetchOne(param)
 }
 
 type storage struct {
