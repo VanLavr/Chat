@@ -14,25 +14,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type Storage interface {
-	MigrateAll() error
-	SetMongoOnStatic() error
-	FetchOneByID(int64) interface{}
-	FetchOneByName(string) interface{}
-	FetchFewWithLimit(int) []interface{}
-	FetchFewWihtParams(string) []interface{}
-	Save(interface{}) error
-	Update(interface{}) error
-	Delete(interface{}) error
-}
-
-type storage struct {
+type Storage struct {
 	Postrgres *gorm.DB
 	Mongo     *mongo.Client
 }
 
-func NewStorage() Storage {
-	s := new(storage)
+func NewStorage() *Storage {
+	s := new(Storage)
 	dsn := config.Con.GetPostgres()
 	log.Println(dsn)
 
@@ -51,7 +39,7 @@ func NewStorage() Storage {
 	return s
 }
 
-func (a storage) MigrateAll() {
+func (a Storage) MigrateAll() {
 	err := a.Postrgres.Migrator().AutoMigrate(&models.User{})
 	if err != nil {
 		logger.STDLogger.Fatal(err.Error())
@@ -70,6 +58,6 @@ func (a storage) MigrateAll() {
 	}
 }
 
-func (s storage) SetMongoOnStatic() *mongo.Collection {
+func (s Storage) SetMongoOnStatic() *mongo.Collection {
 	return s.Mongo.Database("chatserver_static").Collection("images")
 }
