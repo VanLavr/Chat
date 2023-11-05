@@ -14,16 +14,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type storage interface {
+type Storage interface {
 }
 
-type Storage struct {
+type storage struct {
 	Postrgres *gorm.DB
 	Mongo     *mongo.Client
 }
 
-func NewStorage() *Storage {
-	s := new(Storage)
+func NewStorage() Storage {
+	s := new(storage)
 	dsn := config.Con.GetPostgres()
 	log.Println(dsn)
 
@@ -42,7 +42,7 @@ func NewStorage() *Storage {
 	return s
 }
 
-func (a Storage) MigrateAll() {
+func (a storage) MigrateAll() {
 	err := a.Postrgres.Migrator().AutoMigrate(&models.User{})
 	if err != nil {
 		logger.STDLogger.Fatal(err.Error())
@@ -61,6 +61,6 @@ func (a Storage) MigrateAll() {
 	}
 }
 
-func (s Storage) SetMongoOnStatic() *mongo.Collection {
+func (s storage) SetMongoOnStatic() *mongo.Collection {
 	return s.Mongo.Database("chatserver_static").Collection("images")
 }
