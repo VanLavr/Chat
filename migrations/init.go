@@ -15,7 +15,15 @@ import (
 )
 
 type Storage interface {
-	FetchOne(param)
+	MigrateAll() error
+	SetMongoOnStatic() error
+	FetchOneByID(int64) interface{}
+	FetchOneByName(string) interface{}
+	FetchFewWithLimit(int) []interface{}
+	FetchFewWihtParams(string) []interface{}
+	Save(interface{}) error
+	Update(interface{}) error
+	Delete(interface{}) error
 }
 
 type storage struct {
