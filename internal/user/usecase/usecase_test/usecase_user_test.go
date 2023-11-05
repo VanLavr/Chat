@@ -1,19 +1,17 @@
-package usecase
+package usecase_test
 
 import (
+	"chat/internal/user/usecase"
 	"chat/models"
 	mock_models "chat/models/mock"
 	"errors"
 	"testing"
-
-	"github.com/golang/mock/gomock"
 )
 
 func TestSave(t *testing.T) {
-	Controller := gomock.NewController(t)
-	repo := mock_models.NewMockUserRepository(Controller)
+	repo := mock_models.NewMockUserRepository()
 
-	usecase := NewUsecase(repo)
+	usecase := usecase.NewUsecase(repo)
 
 	DataSet := []models.User{
 		{
