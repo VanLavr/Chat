@@ -1,0 +1,706 @@
+basePath: /
+definitions:
+  delivery.DeleteChatDTO:
+    properties:
+      cid:
+        type: integer
+      uid:
+        type: integer
+    type: object
+  delivery.EnterChatDTO:
+    properties:
+      cid:
+        type: integer
+      roomPassword:
+        type: string
+      uid:
+        type: integer
+    type: object
+  models.Chatroom:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      owner:
+        type: integer
+      password:
+        type: string
+    type: object
+  models.Message:
+    properties:
+      chat_id:
+        type: integer
+      content:
+        type: string
+      id:
+        type: integer
+      sended:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.Response:
+    properties:
+      content: {}
+      message:
+        type: string
+    type: object
+  models.User:
+    properties:
+      admin:
+        type: boolean
+      currentChatroomID:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      rooms_owned:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: pidorpidorasi
+  title: chat
+  version: "1.1"
+paths:
+  /chatroom:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing chatroom
+      operationId: delete-chatroom
+      parameters:
+      - description: Chatroom deletion information
+        in: body
+        name: DeleteChatDTO
+        required: true
+        schema:
+          $ref: '#/definitions/delivery.DeleteChatDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete chatroom
+      tags:
+      - chatroom
+    post:
+      consumes:
+      - application/json
+      description: Create a new chatroom
+      operationId: create-chatroom
+      parameters:
+      - description: Chatroom information
+        in: body
+        name: chatroom
+        required: true
+        schema:
+          $ref: '#/definitions/models.Chatroom'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create chatroom
+      tags:
+      - chatroom
+    put:
+      consumes:
+      - application/json
+      description: Update an existing chatroom
+      operationId: update-chatroom
+      parameters:
+      - description: Chatroom information
+        in: body
+        name: chatroom
+        required: true
+        schema:
+          $ref: '#/definitions/models.Chatroom'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update chatroom
+      tags:
+      - chatroom
+  /chatroom/{id}:
+    get:
+      description: Get a chatroom by its ID
+      operationId: get-chatroom-by-id
+      parameters:
+      - description: Chatroom ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chatroom by ID
+      tags:
+      - chatroom
+  /chatrooms/{limit}:
+    get:
+      description: Get a list of chatrooms
+      operationId: get-chatrooms
+      parameters:
+      - description: Number of chatrooms to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chatrooms
+      tags:
+      - chatroom
+  /message:
+    put:
+      consumes:
+      - application/json
+      description: Update a message with new content
+      operationId: update-message
+      parameters:
+      - description: Message object
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/models.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a message
+      tags:
+      - messages
+  /message/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a message with a specified ID
+      operationId: delete-message
+      parameters:
+      - description: Message ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a message
+      tags:
+      - messages
+  /message/delete-photo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a photo based on the provided ID
+      parameters:
+      - description: Photo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a photo
+      tags:
+      - messages
+  /message/find-photo:
+    post:
+      consumes:
+      - application/json
+      description: Find a photo based on the provided message data
+      parameters:
+      - description: Message data
+        in: body
+        name: messageData
+        required: true
+        schema:
+          $ref: '#/definitions/models.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Find a photo
+      tags:
+      - messages
+  /messages/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages with a specified limit
+      operationId: get-messages
+      parameters:
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get messages
+      tags:
+      - messages
+  /messages/chat/{chat}/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages for a specific chat with a specified limit
+      operationId: get-chat-messages
+      parameters:
+      - description: Chat ID
+        in: path
+        name: chat
+        required: true
+        type: integer
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get chat messages
+      tags:
+      - messages
+  /messages/user/{user}/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve messages for a specific user with a specified limit
+      operationId: get-user-messages
+      parameters:
+      - description: User ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      - description: Limit of messages to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get user messages
+      tags:
+      - messages
+  /upload-photo:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a photo with the specified timing, user ID, chatroom ID,
+        and photo file
+      operationId: uploadPhoto
+      parameters:
+      - description: Timing
+        in: formData
+        name: timing
+        required: true
+        type: string
+      - description: User ID
+        in: formData
+        name: user_id
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: formData
+        name: chatroom_id
+        required: true
+        type: integer
+      - description: Photo file
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Uploads a photo
+      tags:
+      - messages
+  /user:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing user
+      operationId: delete-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Delete a user
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: 'Create a new user with properties: {"name": string, "password":
+        string}'
+      operationId: create-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Create a user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user (requires authorization!)
+      operationId: update-user
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Update a user
+      tags:
+      - user
+  /user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a user with a specified ID
+      operationId: get-user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get a user
+      tags:
+      - user
+  /user/{uid}/chatroom/{cid}:
+    get:
+      consumes:
+      - application/json
+      description: Join a chatroom with the specified user ID and chatroom ID
+      operationId: join-chatroom
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: path
+        name: cid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Join a chatroom
+      tags:
+      - user
+  /user/{uid}/leaveRoom/{chatroom_id}:
+    get:
+      description: Leave a chatroom
+      operationId: leave-chatroom
+      parameters:
+      - description: User ID
+        in: path
+        name: uid
+        required: true
+        type: integer
+      - description: Chatroom ID
+        in: path
+        name: chatroom_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Leave chatroom
+      tags:
+      - chatroom
+  /user/enterChatroom:
+    post:
+      consumes:
+      - application/json
+      description: Enter a chatroom
+      operationId: enter-chatroom
+      parameters:
+      - description: User chat information
+        in: body
+        name: EnterChatDTO
+        required: true
+        schema:
+          $ref: '#/definitions/delivery.EnterChatDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Enter chatroom
+      tags:
+      - chatroom
+  /user/jwt:
+    post:
+      consumes:
+      - application/json
+      description: Generate a JWT token for the user
+      operationId: get-jwt
+      parameters:
+      - description: User object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Generate JWT token
+      tags:
+      - user
+  /users/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of users with a specified limit if limit is 0 than
+        retrieves all users from database
+      operationId: get-users
+      parameters:
+      - description: Limit of users to retrieve
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Get users
+      tags:
+      - user
+securityDefinitions:
+  JWTAuth:
+    type: basic
+swagger: "2.0"

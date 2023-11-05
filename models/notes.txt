@@ -1,0 +1,22 @@
+DAO (data access objects here) integrated whith DTO (data transfer object)
+
+user.go:
+
+This file contains the User struct, which represents a user in the DB.
+The User struct may have fields such as ID, Name, and Password.
+It also includes methods or functions related to user data access, such as CreateUser, GetUserByID, UpdateUser, and DeleteUser, etc.
+
+chatroom.go:
+This file contains the Chatroom struct, which represents a chatroom or a group conversation.
+The Chatroom struct have fields such as ID, Name, Password.
+It also includes methods or functions related to chatroom data access, such as CreateChatroom, GetChatroomByID, UpdateChatroom, and DeleteChatroom, etc.
+
+message.go:
+This file contains the Message struct, which represents a message sent within a chatroom.
+The Message struct may have fields such as ID, Sender, Content, and Chatroom.
+It also includes methods or functions related to message data access, such as CreateMessage, GetMessageByID, UpdateMessage, and DeleteMessage, etc.
+
+reference:
+https://github.com/bxcodec/go-clean-arch/blob/master/domain/article.go
+swagger:
+swag init -g smth/smth/main.go
